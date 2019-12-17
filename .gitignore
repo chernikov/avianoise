@@ -44,4 +44,4 @@ packages
 /.vs
 *.user
 /_workspaces.db
-/logs
+logs/
