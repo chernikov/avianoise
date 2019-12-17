@@ -39,35 +39,9 @@ Icon
 \obj
 packages
 *.suo
-plt4m.Web/Media/Pdf/
-plt4m.Web/Media/files/
-plt4m.Web/Media/logs/
-/.vs/config
-plt4m.Db/plt4m.Db.dbmdl
-Tests/plt4m.ApiTests/Sandbox
-Tests/plt4m.ClearUpTests/Sandbox
-Tests/plt4m.GeneratedTests/Sandbox
-Tests/plt4m.IntegrationTests/Sandbox
-Tests/plt4m.UITests/Sandbox
-Tests/plt4m.UnitTests/Sandbox
-Tests/plt4m.HybridTests/Sandbox
-plt4m.test.sln
 
 
-/plt4m.Db/plt4m.Db.jfm
 /.vs
 *.user
-/plt4m.Web/app
-/plt4m.Web/imagecache
-/plt4m.App/node_modules
-/plt4m.Mob/node_modules
-/plt4m.Mob/platforms
 /_workspaces.db
-TestResults
-/web.bat
-*TestResult.xml
-/Tools/plt4m.ParseLogs/Data
-.sonarqube/
-
-/webTemplate.Web/logs
-/logs/2019-10-23
+/logs
