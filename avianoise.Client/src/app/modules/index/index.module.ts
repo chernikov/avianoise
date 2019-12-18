@@ -5,14 +5,17 @@ import { RegistrationComponent } from './containers/registration.component';
 //import { MaterialModule } from '@shared/material.module';
 import { RouterModule } from '@angular/router';
 import { router } from './index.router';
-
+import { MaterialModule } from '@shared/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [RegistrationComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(router)
-
+    MaterialModule,
+    RouterModule.forChild(router),
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class IndexModule { }
