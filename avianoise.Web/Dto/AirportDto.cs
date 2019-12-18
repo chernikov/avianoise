@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace avianoise.Domain
+namespace avianoise.Web.Dto
 {
-    public class Airport
+    public class AirportDto
     {
-        [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -19,10 +17,10 @@ namespace avianoise.Domain
         public double Lng { get; set; }
 
 
-        private ICollection<File> Files { get; set; }
+        private List<FileDto> Files { get; set; }
 
-        private ICollection<Line> Lines { get; set; }
+        private List<LineDto> Lines { get; set; }
 
-        public ICollection<Zip> Zips { get; set; }
+        public List<ZipDto> Zips { get; set; }
     }
 }

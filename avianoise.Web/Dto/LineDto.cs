@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace avianoise.Domain
+namespace avianoise.Web.Dto
 {
-    public class Line
+    public class LineDto
     {
-        [Key]
         public int Id { get; set; }
 
         public int AirportId { get; set; }
 
-        public Airport Airport { get; set; }
-
         public int FileId { get; set; }
-
-        public File File { get; set; }
 
         public DateTime AddedDate { get; set; }
 
@@ -26,6 +20,6 @@ namespace avianoise.Domain
 
         public bool Published { get; set; }
 
-        public ICollection<Point> Points { get; set; }
+        public List<PointDto> Points { get; set; }
     }
 }
