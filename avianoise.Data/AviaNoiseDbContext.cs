@@ -21,11 +21,23 @@ namespace avianoise.Data
 
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<Airport> Airports { get; set; }
+
+        public DbSet<File> Files { get; set; }
+
+        public DbSet<Line> Lines { get; set; }
+
+        public DbSet<Point> Points { get; set; }
 
         public DbSet<Role> Roles { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         public DbSet<UserRole> UserRoles { get; set; }
+
+        public DbSet<Zip> Zips { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
