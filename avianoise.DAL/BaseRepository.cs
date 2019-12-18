@@ -1,5 +1,5 @@
-﻿using System;
-using avianoise.Data;
+﻿using avianoise.Data;
+using System;
 
 namespace avianoise.DAL
 {
@@ -24,6 +24,14 @@ namespace avianoise.DAL
             using (var dbContext = getDbContext())
             {
                 return functor(dbContext);
+            }
+        }
+
+        protected void Execute(Action<IAviaNoiseDbContext> functor)
+        {
+            using (var dbContext = getDbContext())
+            {
+                functor(dbContext);
             }
         }
 
