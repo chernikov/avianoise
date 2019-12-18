@@ -7,7 +7,7 @@ using avianoise.Data;
 
 namespace avianoise.Data.Migrations
 {
-    [DbContext(typeof(avianoiseDbContext))]
+    [DbContext(typeof(AviaNoiseDbContext))]
     partial class avianoiseDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

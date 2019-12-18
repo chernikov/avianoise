@@ -5,18 +5,18 @@ using NLog.Extensions.Logging;
 
 namespace avianoise.Data
 {
-    public class avianoiseDbContext : DbContext, IavianoiseDbContext
+    public class AviaNoiseDbContext : DbContext, IAviaNoiseDbContext
     {
         public static readonly ILoggerFactory DbContextLoggerFactory;
 
-        static avianoiseDbContext()
+        static AviaNoiseDbContext()
         {
             //DbContextLoggerFactory = new LoggerFactory();
             //DbContextLoggerFactory.AddConsole();
             //DbContextLoggerFactory.AddNLog();
         }
 
-        public avianoiseDbContext(DbContextOptions options) : base(options)
+        public AviaNoiseDbContext(DbContextOptions options) : base(options)
         {
 
         }

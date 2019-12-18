@@ -71,10 +71,10 @@ namespace avianoise.Web
             });
 
             var configurationSection = Configuration.GetSection("ConnectionStrings:DefaultConnection");
-            services.AddDbContext<avianoiseDbContext>(options => options.UseSqlServer(configurationSection.Value));
-            services.AddTransient<IavianoiseDbContext, avianoiseDbContext>();
+            services.AddDbContext<AviaNoiseDbContext>(options => options.UseSqlServer(configurationSection.Value));
+            services.AddTransient<IAviaNoiseDbContext, AviaNoiseDbContext>();
             services.AddScoped(provider =>
-                    new Func<IavianoiseDbContext>(() => provider.GetService<IavianoiseDbContext>())
+                    new Func<IAviaNoiseDbContext>(() => provider.GetService<IAviaNoiseDbContext>())
                 );
             services.AddScoped<IIdentityService, IdentityService>();
 

@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using avianoise.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
-using avianoise.Domain;
 
 namespace avianoise.Data
 {
-    public interface IavianoiseDbContext : IDisposable
+    public interface IAviaNoiseDbContext : IDisposable
     {
         DbSet<User> Users { get; set; }
 

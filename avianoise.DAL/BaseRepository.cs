@@ -6,20 +6,20 @@ namespace avianoise.DAL
     public class BaseRepository
     {
 
-        private readonly Lazy<IavianoiseDbContext> lazyContext;
+        private readonly Lazy<IAviaNoiseDbContext> lazyContext;
 
-        private IavianoiseDbContext context => lazyContext.Value;
+        private IAviaNoiseDbContext context => lazyContext.Value;
 
 
-        protected readonly Func<IavianoiseDbContext> getDbContext;
+        protected readonly Func<IAviaNoiseDbContext> getDbContext;
 
-        public BaseRepository(Func<IavianoiseDbContext> getDbContext)
+        public BaseRepository(Func<IAviaNoiseDbContext> getDbContext)
         {
             this.getDbContext = getDbContext;
-            lazyContext = new Lazy<IavianoiseDbContext>(() => getDbContext());
+            lazyContext = new Lazy<IAviaNoiseDbContext>(() => getDbContext());
         }
 
-        protected T Execute<T>(Func<IavianoiseDbContext, T> functor)
+        protected T Execute<T>(Func<IAviaNoiseDbContext, T> functor)
         {
             using (var dbContext = getDbContext())
             {
@@ -27,7 +27,7 @@ namespace avianoise.DAL
             }
         }
 
-        protected T Query<T>(Func<IavianoiseDbContext, T> functor)
+        protected T Query<T>(Func<IAviaNoiseDbContext, T> functor)
         {
             return functor(context);
         }
