@@ -4,6 +4,10 @@ import { AuthService } from '@services/auth.service';
 import { Router } from '@angular/router';
 import { Login } from '@classes/login.class';
 
+import * as fromRoot from '../../../state/app.state';
+import * as fromAuthActions from '../../../state/auth.actions';
+import { Store } from '@ngrx/store';
+
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -17,7 +21,8 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private store: Store<fromRoot.State>
   ) { }
 
   ngOnInit() {
@@ -38,11 +43,14 @@ export class RegistrationComponent implements OnInit {
       password: this.form.value.password
     };
     this.authService.post(data).subscribe(
-      (res) => {
-        if(res) {
-          console.log(res);
+      (result) => {
+        if(result.token) {
+          console.log(result);
           this.formInProgress = false;
-          //localStorage.setItem('token', JSON.stringify(res));
+          this.store.dispatch(
+            new fromAuthActions.SaveTokenToLocalStorage(result.token)
+          );
+          //localStorage.setItem('token', JSON.stringify(result));
           //this.router.navigateByUrl('test');
         }
       },
