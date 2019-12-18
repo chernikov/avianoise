@@ -12,10 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -92,6 +94,13 @@ namespace avianoise.Web
                 app.UseDeveloperExceptionPage();
             }
             app.UseRequestLog();
+
+            app.UseStaticFiles(
+               new StaticFileOptions
+               {
+                   FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "static")),
+                   RequestPath = "/static"
+               });
 
             app.UseRouting();
 
