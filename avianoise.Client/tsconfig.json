@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -19,8 +19,9 @@
       "dom"
     ],
     "paths": {
-      "@classes/*": ["app/models/classes/*"],
-      "@services/*": ["app/models/services/*"]
+      "@classes/*": ["src/app/models/classes/*"],
+      "@services/*": ["src/app/models/services/*"],
+      "@shared/*": ["src/app/shared/*"]
     }
   }
 }
