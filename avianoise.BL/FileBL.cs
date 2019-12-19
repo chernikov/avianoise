@@ -17,9 +17,24 @@ namespace avianoise.BL
             this.fileRepository = fileRepository;
         }
 
+        public File Get(int fileId)
+        {
+            return fileRepository.Get(fileId);
+        }
+
+        public List<File> GetListByAirport(int airportId)
+        {
+            return fileRepository.GetListByAirport(airportId);
+        }
+
         public File Create(File entry)
         {
             return fileRepository.Create(entry);
+        }
+
+        public void Delete(int fileId)
+        {
+            fileRepository.Delete(fileId);
         }
     }
 }

@@ -2,6 +2,7 @@
 using avianoise.Web.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using netDxf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,12 @@ namespace avianoise.Web.Api
     [Route("api/file/decode")]
     public class FileDecodeController : BaseUserController
     {
-        public FileDecodeController(IUserBL userBL) : base(userBL)
+
+        private readonly IFileBL fileBL;
+
+        public FileDecodeController(IUserBL userBL, IFileBL fileBL) : base(userBL)
         {
+            this.fileBL = fileBL;
         }
 
         [HttpGet("{fileId:int}")]
@@ -24,6 +29,15 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(List<LineDto>), (int)HttpStatusCode.OK)]
         public IActionResult Get(int fileId)
         {
+            var fileEntry = fileBL.Get(fileId);
+
+            switch (fileEntry.Extension)
+            {
+                case ".dfx":
+                    var dfxDocument = DxfDocument.Load(fileEntry.FullPath);
+                    break;
+            }
+
             throw new NotImplementedException();
         }
     }

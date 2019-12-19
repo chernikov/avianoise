@@ -14,12 +14,28 @@ namespace avianoise.DAL
         {
         }
 
-        public File Create(File entry) =>
-            Execute(context =>
+        public List<File> GetListByAirport(int airportId)
+            => Query(context => context.Files.Where(p => p.AirportId == airportId).ToList());
+
+        public File Get(int fileId)
+            => Query(context => context.Files.FirstOrDefault(p => p.Id == fileId));
+
+        public File Create(File entry)
+            => Execute(context =>
+           {
+               context.Files.Add(entry);
+               context.SaveChanges();
+               return entry;
+           });
+
+        public void Delete(int fileId)
+            => Execute(context =>
             {
-                context.Files.Add(entry);
-                context.SaveChanges();
-                return entry;
+                var entry = context.Files.Find(fileId);
+                if (entry != null)
+                {
+                    context.Files.Remove(entry);
+                }
             });
     }
 }

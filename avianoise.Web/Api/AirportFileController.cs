@@ -1,4 +1,6 @@
-﻿using avianoise.BL;
+﻿using AutoMapper;
+using avianoise.BL;
+using avianoise.Domain;
 using avianoise.Web.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +16,13 @@ namespace avianoise.Web.Api
     [Route("api/airport/file")]
     public class AirportFileController : BaseUserController
     {
-        public AirportFileController(IUserBL userBL) : base(userBL)
+        private readonly IFileBL fileBL;
+        private readonly IMapper mapper;
+
+        public AirportFileController(IUserBL userBL, IFileBL fileBL, IMapper mapper) : base(userBL)
         {
+            this.fileBL = fileBL;
+            this.mapper = mapper;
         }
 
         [HttpGet("{airportId:int}")]
@@ -24,7 +31,9 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(List<FileDto>), (int)HttpStatusCode.OK)]
         public IActionResult Get(int airportId)
         {
-            throw new NotImplementedException();
+            var list = fileBL.GetListByAirport(airportId);
+            var result = mapper.Map<List<File>, List<FileDto>>(list);
+            return Ok(result);
         }
 
 

@@ -9,6 +9,11 @@ namespace avianoise.DAL
 {
     public interface IFileRepository : IBaseRepository
     {
+        List<File> GetListByAirport(int airportId);
+        File Get(int fileId);
+
         public File Create(File entry);
+
+        void Delete(int fileId);
     }
 }
