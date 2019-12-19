@@ -13,6 +13,6 @@ namespace avianoise.DAL
 
         Zip Create(Zip zip);
 
-
+        void Delete(int zipId);
     }
 }

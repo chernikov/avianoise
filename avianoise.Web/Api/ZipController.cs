@@ -13,8 +13,11 @@ namespace avianoise.Web.Api
     [Route("api/zip")]
     public class ZipController : BaseUserController
     {
-        public ZipController(IUserBL userBL) : base(userBL)
+        private readonly IZipBL zipBL;
+
+        public ZipController(IUserBL userBL, IZipBL zipBL) : base(userBL)
         {
+            this.zipBL = zipBL;
         }
 
         [Authorize]
@@ -23,7 +26,8 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
         public IActionResult Delete(int zipId)
         {
-            throw new NotImplementedException();
+            zipBL.Delete(zipId);
+            return Ok();
         }
 
     }

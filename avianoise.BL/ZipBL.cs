@@ -16,14 +16,21 @@ namespace avianoise.BL
         {
             this.zipRepository = zipRepository;
         }
+
+        public List<Zip> GetList(int airportId)
+        {
+            return zipRepository.GetList(airportId);
+        }
+
         public Zip Create(Zip entry)
         {
             return zipRepository.Create(entry);
         }
 
-        public List<Zip> GetList(int airportId)
+
+        public void Delete(int zipId)
         {
-            return zipRepository.GetList(airportId);
+            zipRepository.Delete(zipId);
         }
     }
 }

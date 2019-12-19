@@ -12,5 +12,6 @@ namespace avianoise.BL
         Zip Create(Zip entry);
 
         List<Zip> GetList(int airportId);
+        void Delete(int zipId);
     }
 }

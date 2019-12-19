@@ -28,6 +28,15 @@ namespace avianoise.DAL
                 return zip;
             });
 
-
+        public void Delete(int zipId)
+            => Execute(context =>
+            {
+                var entry = context.Zips.Find(zipId);
+                if (entry != null)
+                {
+                    context.Zips.Remove(entry);
+                    context.SaveChanges();
+                }
+            });
     }
 }
