@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
+using avianoise.BL;
+using avianoise.Web.Dto;
+using avianoise.Web.Helpers;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,7 +21,6 @@ namespace avianoise.Web.Services
 {
     public class IdentityService : IIdentityService
     {
-        private readonly IPrincipal principal;
         private readonly AppSettings appSettings;
         private readonly IMapper mapper;
         private readonly IUserAuthBL userAuthBL;
@@ -27,6 +30,7 @@ namespace avianoise.Web.Services
             this.appSettings = appSettings.Value;
             this.mapper = mapper;
             this.userAuthBL = userAuthBL;
+
         }
 
 
@@ -39,11 +43,21 @@ namespace avianoise.Web.Services
                 return null;
             }
 
+            return CreateToken(user);
+        }
+
+        private string CreateToken(User user)
+        {
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
-            var objUser = JsonConvert.SerializeObject(mapper.Map<UserDto>(user));
+            var serializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+            var objUser = JsonConvert.SerializeObject(mapper.Map<UserDto>(user), serializerSettings);
             var claims = new List<Claim>() {
                             new Claim(ClaimTypes.Sid, user.Id.ToString()),
                             new Claim(ClaimTypes.Name, user.Email),
