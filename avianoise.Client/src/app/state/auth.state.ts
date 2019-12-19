@@ -8,3 +8,13 @@ export const getToken = createSelector(
     getAuthState,
     state => state.token
 );
+
+export const getUserRoles = createSelector(
+    getAuthState,
+    state => state.user.roles
+);
+
+export const getUser = createSelector(
+    getAuthState,
+    state => state.user
+);
