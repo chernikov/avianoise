@@ -4,9 +4,12 @@ import { AuthorGuard } from './guards/author.guard';
 
 
 export const router: Routes = [
-    { path: '', redirectTo: '/registration', pathMatch: 'full' },
+    { path: '', redirectTo: 'registration', pathMatch: 'full' },
+    { path: 'a', redirectTo: 'registration', pathMatch: 'full' },
     { path: 'registration', loadChildren: './modules/index/index.module#IndexModule' },
-    { path: 'test', canActivate: [AuthorGuard], canLoad: [AuthorGuard], canActivateChild: [AuthorGuard], loadChildren: './modules/test/test.module#TestModule' },
+    { path: 'test', loadChildren: './modules/test/test.module#TestModule' },
+    { path: 'admin', canActivate: [AuthorGuard], loadChildren: './modules/admin/admin.module#AdminModule' },
+  
     { path: '**', redirectTo: '/registration', pathMatch: 'full' }
 ]
 

@@ -49,7 +49,7 @@ export class RegistrationComponent implements OnInit {
           this.store.dispatch(
             new fromAuthActions.SaveTokenToLocalStorage(result.token)
           );
-          //this.router.navigateByUrl('test');
+          this.router.navigateByUrl('admin');
         }
       },
       (error) => {

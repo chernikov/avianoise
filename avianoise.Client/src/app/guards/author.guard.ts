@@ -5,41 +5,52 @@ import { Store, select } from '@ngrx/store';
 import * as fromAppState from '../state/app.state';
 import * as fromAuthState from '../state/auth.state';
 import { Role } from '@classes/role.class';
+import { Observable, of } from 'rxjs';
+import { filter, take, switchMap, catchError, map, tap } from 'rxjs/operators';
 
 @Injectable()
-export class AuthorGuard implements CanLoad, CanActivate, CanActivateChild {
-    role: Role;
-
+export class AuthorGuard implements CanActivate, CanActivateChild, CanLoad {
     constructor(
         private router: Router,
         private store: Store<fromAppState.State>
-    ) {
-        this.store.pipe(select(fromAuthState.getUserRole)).subscribe(role => {
-            this.role = role
-        });
+    ) { }
+
+    canActivate(): Observable<boolean> {
+        return this.process().pipe(
+            switchMap(() => of(true)),
+            catchError(() => {
+                this.router.navigateByUrl('/registration');
+                return of(false);
+            })
+        )
     }
 
-    canLoad(): boolean {
-        return this.process();
+    canActivateChild(): Observable<boolean> {
+        return this.process().pipe(
+            switchMap(() => of(true)),
+            catchError(() => {
+                this.router.navigateByUrl('/registration');
+                return of(false);
+            })
+        )
     }
 
-    canActivate(): boolean {
-        return this.process();
+    canLoad(): Observable<boolean> {
+        return this.process().pipe(
+            switchMap(() => of(true)),
+            catchError(() => {
+                this.router.navigateByUrl('/registration');
+                return of(false);
+            })
+        )
     }
 
-    canActivateChild(): boolean {
-        return this.process();
-    }
-
-    process(): boolean {
-        if(this.role) {
-            let role = this.role.code;
-        
-            if(role != 'admin') {
-                this.router.navigateByUrl('index');
-            }
-            return true;
-        } else return false;
-
+    process(): Observable<any> {
+        return this.store.pipe(
+            select(fromAuthState.getUserRole),
+            tap(p => p),
+            filter((data: Role) => data.code === 'admin'),
+            take(1)
+        )
     }
 }
