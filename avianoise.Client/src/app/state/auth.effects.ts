@@ -24,7 +24,11 @@ export class AuthEffects {
             let token = this.localStorage.getItem(applicationOptions.authTokenName);
             if(token && !this.jwtHelperService.isTokenExpired(token)) {
                 let obj = this.jwtHelperService.decodeToken(token);
-                return of(new authActions.LoadTokenFromLocalStorageSuccess(token));
+                let user = JSON.parse(obj.user)
+                return of(
+                    new authActions.LoadTokenFromLocalStorageSuccess(token),
+                    new authActions.PopulateUser(user)
+                );
             } else {
                 return of(new authActions.ClearAuthStorage());
             }
@@ -39,7 +43,9 @@ export class AuthEffects {
             let token = (action as authActions.SaveTokenToLocalStorage).payload;
             if(token && !this.jwtHelperService.isTokenExpired(token)) {
                 this.localStorage.setItem(applicationOptions.authTokenName, token);
-                return; /* Потрібно щось повертати */
+                let obj = this.jwtHelperService.decodeToken(token);
+                let user = JSON.parse(obj.user);
+                return new authActions.PopulateUser(user);
             } else {
                 return new authActions.ClearAuthStorage();
             }

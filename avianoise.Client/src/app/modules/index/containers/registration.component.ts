@@ -50,7 +50,6 @@ export class RegistrationComponent implements OnInit {
           this.store.dispatch(
             new fromAuthActions.SaveTokenToLocalStorage(result.token)
           );
-          //localStorage.setItem('token', JSON.stringify(result));
           //this.router.navigateByUrl('test');
         }
       },
