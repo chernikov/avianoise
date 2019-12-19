@@ -7,14 +7,8 @@ using System.Threading.Tasks;
 
 namespace avianoise.BL
 {
-    public interface IZipBL : IBaseBL
+    public interface IFileBL : IBaseBL
     {
-        Zip Create(Zip entry);
-
-        List<Zip> GetList(int airportId);
-
-        Zip Get(int zipId);
-
-        void Delete(int zipId);
+        File Create(File entry);
     }
 }

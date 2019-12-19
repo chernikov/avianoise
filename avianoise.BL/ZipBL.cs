@@ -22,6 +22,11 @@ namespace avianoise.BL
             return zipRepository.GetList(airportId);
         }
 
+        public Zip Get(int zipId)
+        {
+            return zipRepository.Get(zipId);
+        }
+
         public Zip Create(Zip entry)
         {
             return zipRepository.Create(entry);
@@ -32,5 +37,7 @@ namespace avianoise.BL
         {
             zipRepository.Delete(zipId);
         }
+
+
     }
 }

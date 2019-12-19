@@ -11,8 +11,12 @@ namespace avianoise.DAL
     {
         List<Zip> GetList(int airportId);
 
+        Zip Get(int zipId);
+
         Zip Create(Zip zip);
 
         void Delete(int zipId);
+
+
     }
 }
