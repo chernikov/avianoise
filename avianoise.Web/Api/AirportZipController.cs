@@ -62,7 +62,8 @@ namespace avianoise.Web.Api
                     {
                         AddedDate = DateTime.Now,
                         AirportId = airportId,
-                        FilePath = filePath
+                        FilePath = filePath,
+                        FileName = fileName
                     };
                     var newZip = zipBL.Create(zip);
 

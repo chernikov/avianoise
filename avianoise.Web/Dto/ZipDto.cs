@@ -14,6 +14,8 @@ namespace avianoise.Web.Dto
 
         public DateTime AddedDate { get; set; }
 
+        public string FileName { get; set; }
+
         public string FilePath { get; set; }
     }
 }
