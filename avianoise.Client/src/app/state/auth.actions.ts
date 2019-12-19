@@ -1,11 +1,13 @@
 import { Action } from '@ngrx/store';
 import { User } from '@classes/user.class';
+import { Role } from '@classes/role.class';
 
 export enum AuthActionTypes {
     GetTokenFromLocalStorage = '[Auth] Get token from localStorage',
     LoadTokenFromLocalStorageSuccess = '[Auth] Load token from localStorage success',
     LoadTokenFromLocalStorageFail = '[Auth] Load token from localStorage fail',
-    PopulateUser = '[Auth] Pupulate User from Auth token',
+    PopulateUser = '[Auth] Populate User from Auth token',
+    PopulateRole = '[Auth] Populate User Role',
     SaveTokenToLocalStorage = '[Auth] Save token to localStorage',
     ClearAuthStorage = '[Auth] Clear Auth'
 }
@@ -29,6 +31,11 @@ export class PopulateUser implements Action {
     constructor(public payload: User) { }
 }
 
+export class PopulateRole implements Action {
+    readonly type = AuthActionTypes.PopulateRole;
+    constructor(public payload: Role) { }
+}
+
 export class SaveTokenToLocalStorage implements Action {
     readonly type = AuthActionTypes.SaveTokenToLocalStorage;
     constructor(public payload: string) { }
@@ -44,4 +51,5 @@ export type AuthActions =
     LoadTokenFromLocalStorageFail |
     SaveTokenToLocalStorage |
     PopulateUser |
+    PopulateRole |
     ClearAuthStorage;

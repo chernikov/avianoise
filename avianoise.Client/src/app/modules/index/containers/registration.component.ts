@@ -45,7 +45,6 @@ export class RegistrationComponent implements OnInit {
     this.authService.post(data).subscribe(
       (result) => {
         if(result.token) {
-          console.log(result);
           this.formInProgress = false;
           this.store.dispatch(
             new fromAuthActions.SaveTokenToLocalStorage(result.token)
@@ -56,7 +55,6 @@ export class RegistrationComponent implements OnInit {
       (error) => {
         this.errorMessage = error.error.message;
         this.formInProgress = false;
-        console.log(this.errorMessage);
       }
     );
   }

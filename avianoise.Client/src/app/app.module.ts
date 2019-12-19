@@ -16,6 +16,7 @@ import * as fromAuthReducer from './state/auth.reducer';
 
 import { environment } from '../environments/environment';
 import { JWT_Module_Options } from './config/jwt-options.config';
+import { AuthorGuard } from './guards/author.guard';
 
 
 @NgModule({
@@ -37,7 +38,9 @@ import { JWT_Module_Options } from './config/jwt-options.config';
     EffectsModule.forRoot([AuthEffects]),
     JwtModule.forRoot(JWT_Module_Options)
   ],
-  providers: [],
+  providers: [
+    AuthorGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

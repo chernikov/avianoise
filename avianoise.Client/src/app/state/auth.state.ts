@@ -9,9 +9,9 @@ export const getToken = createSelector(
     state => state.token
 );
 
-export const getUserRoles = createSelector(
+export const getUserRole = createSelector(
     getAuthState,
-    state => state.user.roles
+    state => state.role
 );
 
 export const getUser = createSelector(
