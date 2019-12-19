@@ -9,6 +9,10 @@ namespace avianoise.DAL
 {
     public interface IZipRepository : IBaseRepository
     {
+        List<Zip> GetList(int airportId);
+
         Zip Create(Zip zip);
+
+
     }
 }

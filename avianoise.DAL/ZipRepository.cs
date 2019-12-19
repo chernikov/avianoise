@@ -14,6 +14,12 @@ namespace avianoise.DAL
         {
         }
 
+        public List<Zip> GetList(int airportId)
+            => Query(context =>
+             context
+            .Zips.Where(p => p.AirportId == airportId)
+            .ToList());
+
         public Zip Create(Zip zip)
             => Execute(context =>
             {
@@ -21,5 +27,7 @@ namespace avianoise.DAL
                 context.SaveChanges();
                 return zip;
             });
+
+
     }
 }
