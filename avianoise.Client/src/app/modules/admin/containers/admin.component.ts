@@ -24,6 +24,6 @@ export class AdminComponent implements OnInit {
     this.store.dispatch(
       new fromAuthActions.ClearAuthStorage()
     );
-    this.router.navigateByUrl('registration');
+    this.router.navigateByUrl('login');
   }
 }

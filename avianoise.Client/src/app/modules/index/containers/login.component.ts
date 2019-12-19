@@ -9,11 +9,11 @@ import * as fromAuthActions from '../../../state/auth.actions';
 import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-registration',
-  templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class RegistrationComponent implements OnInit {
+export class LoginComponent implements OnInit {
   form: FormGroup;
   formInProgress: boolean;
   errorMessage: string;

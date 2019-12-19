@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { RegistrationComponent } from './containers/registration.component';
+import { LoginComponent } from './containers/login.component';
 
 
 export const router: Routes = [
-    { path: '', component: RegistrationComponent },
+    { path: '', component: LoginComponent },
 ]

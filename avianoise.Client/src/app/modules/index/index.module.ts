@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { RegistrationComponent } from './containers/registration.component';
-//import { MaterialModule } from '@shared/material.module';
+import { LoginComponent } from './containers/login.component';
 import { RouterModule } from '@angular/router';
 import { router } from './index.router';
 import { MaterialModule } from '@shared/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [RegistrationComponent],
+  declarations: [LoginComponent],
   imports: [
     CommonModule,
     MaterialModule,

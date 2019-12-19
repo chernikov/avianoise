@@ -4,13 +4,13 @@ import { AuthorGuard } from './guards/author.guard';
 
 
 export const router: Routes = [
-    { path: '', redirectTo: 'registration', pathMatch: 'full' },
-    { path: 'a', redirectTo: 'registration', pathMatch: 'full' },
-    { path: 'registration', loadChildren: './modules/index/index.module#IndexModule' },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    
+    { path: 'login', loadChildren: './modules/index/index.module#IndexModule' },
     { path: 'test', loadChildren: './modules/test/test.module#TestModule' },
     { path: 'admin', canActivate: [AuthorGuard], loadChildren: './modules/admin/admin.module#AdminModule' },
   
-    { path: '**', redirectTo: '/registration', pathMatch: 'full' }
+    { path: '**', redirectTo: '/login', pathMatch: 'full' }
 ]
 
 export const routes: ModuleWithProviders = RouterModule.forRoot(router);

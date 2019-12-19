@@ -19,7 +19,7 @@ export class AuthorGuard implements CanActivate, CanActivateChild, CanLoad {
         return this.process().pipe(
             switchMap(() => of(true)),
             catchError(() => {
-                this.router.navigateByUrl('/registration');
+                this.router.navigateByUrl('/login');
                 return of(false);
             })
         )
@@ -29,7 +29,7 @@ export class AuthorGuard implements CanActivate, CanActivateChild, CanLoad {
         return this.process().pipe(
             switchMap(() => of(true)),
             catchError(() => {
-                this.router.navigateByUrl('/registration');
+                this.router.navigateByUrl('/login');
                 return of(false);
             })
         )
@@ -39,7 +39,7 @@ export class AuthorGuard implements CanActivate, CanActivateChild, CanLoad {
         return this.process().pipe(
             switchMap(() => of(true)),
             catchError(() => {
-                this.router.navigateByUrl('/registration');
+                this.router.navigateByUrl('/login');
                 return of(false);
             })
         )
