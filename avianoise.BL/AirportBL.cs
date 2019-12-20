@@ -11,15 +11,24 @@ namespace avianoise.BL
     public class AirportBL : IAirportBL
     {
         private readonly IAirportRepository airportRepository;
+        private readonly ILineRepository lineRepository;
 
-        public AirportBL(IAirportRepository airportRepository)
+        public AirportBL(IAirportRepository airportRepository, ILineRepository lineRepository)
         {
             this.airportRepository = airportRepository;
+            this.lineRepository = lineRepository;
         }
 
         public Airport Get(int airportId)
         {
-            return airportRepository.Get(airportId);
+            var airport = airportRepository.Get(airportId);
+            if (airport != null)
+            {
+                var lines = lineRepository.GetListByAirport(airportId);
+                airport.Lines = lines;
+                return airport;
+            }
+            return null;
         }
 
         public List<Airport> GetList()
