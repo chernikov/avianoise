@@ -15,6 +15,8 @@ namespace avianoise.DAL
 
         Line Create(Line entry);
 
+        Line Update(Line entry);
 
+        void Delete(int lineId);
     }
 }

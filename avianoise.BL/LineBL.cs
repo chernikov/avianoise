@@ -31,6 +31,14 @@ namespace avianoise.BL
             return lineRepository.Create(entry);
         }
 
+        public Line Update(Line entry)
+        {
+            return lineRepository.Update(entry);
+        }
 
+        public void Delete(int lineId)
+        {
+            lineRepository.Delete(lineId);
+        }
     }
 }

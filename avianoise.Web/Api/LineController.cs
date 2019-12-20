@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using avianoise.BL;
+using avianoise.Domain;
 using avianoise.Web.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,8 +43,23 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(LineDto), (int)HttpStatusCode.OK)]
         public IActionResult Put([FromBody]LineDto line)
         {
-            throw new NotImplementedException();
+            var entry = mapper.Map<Line>(line);
+
+            var newLine = lineBL.Update(entry);
+            var result = mapper.Map<LineDto>(newLine);
+
+            return Ok(result);
         }
 
+
+        [HttpDelete("{lineId:int}")]
+        [Authorize]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
+        public IActionResult Delete(int lineId)
+        {
+            lineBL.Delete(lineId);
+            return Ok();
+        }
     }
 }

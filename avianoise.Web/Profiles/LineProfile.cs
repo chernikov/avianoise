@@ -14,6 +14,7 @@ namespace avianoise.Web.Profiles
         public LineProfile()
         {
             CreateMap<Line, LineDto>();
+            CreateMap<LineDto, Line>();
         }
     }
 }

@@ -15,15 +15,6 @@ namespace avianoise.DAL
         {
         }
 
-        public Line Create(Line entry) =>
-            Execute(context =>
-            {
-                entry.AddedDate = DateTime.Now;
-                context.Lines.Add(entry);
-                context.SaveChanges();
-                return entry;
-            });
-
         public Line GetById(int entryId)
             => Query(context =>
                 context.Lines
@@ -36,5 +27,41 @@ namespace avianoise.DAL
                     .Include(p => p.Points)
                     .Where(p => p.AirportId == airportId)
                     .ToList());
+
+        public Line Create(Line entry) =>
+          Execute(context =>
+          {
+              entry.AddedDate = DateTime.Now;
+              context.Lines.Add(entry);
+              context.SaveChanges();
+              return entry;
+          });
+
+        public Line Update(Line entry) =>
+            Execute(context =>
+            {
+                var savedEntry = context.Lines.Find(entry.Id);
+                if (savedEntry != null)
+                {
+                    savedEntry.Level = entry.Level;
+                    savedEntry.Name = entry.Name;
+                    savedEntry.Published = entry.Published;
+                    context.Lines.Update(savedEntry);
+                    context.SaveChanges();
+                    return savedEntry;
+                }
+                return null;
+            });
+
+        public void Delete(int lineId) =>
+            Execute(context =>
+            {
+                var savedEntry = context.Lines.Find(lineId);
+                if (savedEntry != null)
+                {
+                    context.Lines.Remove(savedEntry);
+                    context.SaveChanges();
+                }
+            });
     }
 }
