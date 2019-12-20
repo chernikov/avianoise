@@ -14,12 +14,32 @@ namespace avianoise.DAL
         {
         }
 
+        public List<Zip> GetList(int airportId)
+            => Query(context =>
+             context.Zips.Where(p => p.AirportId == airportId)
+            .ToList());
+
+        public Zip Get(int zipId)
+            => Query(context =>
+            context.Zips.FirstOrDefault(p => p.Id == zipId));
+
         public Zip Create(Zip zip)
             => Execute(context =>
             {
                 context.Zips.Add(zip);
                 context.SaveChanges();
                 return zip;
+            });
+
+        public void Delete(int zipId)
+            => Execute(context =>
+            {
+                var entry = context.Zips.Find(zipId);
+                if (entry != null)
+                {
+                    context.Zips.Remove(entry);
+                    context.SaveChanges();
+                }
             });
     }
 }

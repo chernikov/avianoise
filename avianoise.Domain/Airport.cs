@@ -18,10 +18,9 @@ namespace avianoise.Domain
 
         public double Lng { get; set; }
 
+        public ICollection<File> Files { get; set; }
 
-        private ICollection<File> Files { get; set; }
-
-        private ICollection<Line> Lines { get; set; }
+        public ICollection<Line> Lines { get; set; }
 
         public ICollection<Zip> Zips { get; set; }
     }

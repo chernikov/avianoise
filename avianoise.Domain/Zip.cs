@@ -18,6 +18,9 @@ namespace avianoise.Domain
 
         public DateTime AddedDate { get; set; }
 
+        [MaxLength(100)]
+        public string FileName { get; set; }
+
         [MaxLength(150)]
         public string FilePath { get; set; }
     }

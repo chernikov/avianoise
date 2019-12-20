@@ -1,4 +1,6 @@
-﻿using avianoise.BL;
+﻿using AutoMapper;
+using avianoise.BL;
+using avianoise.Domain;
 using avianoise.Web.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +16,13 @@ namespace avianoise.Web.Api
     [Route("api/line")]
     public class LineController : BaseUserController
     {
-        public LineController(IUserBL userBL) : base(userBL)
+        private readonly ILineBL lineBL;
+        private readonly IMapper mapper;
+
+        public LineController(IUserBL userBL, ILineBL lineBL, IMapper mapper) : base(userBL)
         {
+            this.lineBL = lineBL;
+            this.mapper = mapper;
         }
 
 
@@ -25,7 +32,9 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(LineDto), (int)HttpStatusCode.OK)]
         public IActionResult Get(int lineId)
         {
-            throw new NotImplementedException();
+            var entry = lineBL.GetById(lineId);
+            var result = mapper.Map<LineDto>(entry);
+            return Ok(result);
         }
 
         [HttpPut]
@@ -34,8 +43,23 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(LineDto), (int)HttpStatusCode.OK)]
         public IActionResult Put([FromBody]LineDto line)
         {
-            throw new NotImplementedException();
+            var entry = mapper.Map<Line>(line);
+
+            var newLine = lineBL.Update(entry);
+            var result = mapper.Map<LineDto>(newLine);
+
+            return Ok(result);
         }
 
+
+        [HttpDelete("{lineId:int}")]
+        [Authorize]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
+        public IActionResult Delete(int lineId)
+        {
+            lineBL.Delete(lineId);
+            return Ok();
+        }
     }
 }

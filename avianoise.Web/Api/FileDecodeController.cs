@@ -1,21 +1,28 @@
-﻿using avianoise.BL;
+﻿using AutoMapper;
+using avianoise.BL;
+using avianoise.Decoder;
 using avianoise.Web.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace avianoise.Web.Api
 {
     [Route("api/file/decode")]
     public class FileDecodeController : BaseUserController
     {
-        public FileDecodeController(IUserBL userBL) : base(userBL)
+
+        private readonly IFileBL fileBL;
+        private readonly ILineBL lineBL;
+        private readonly IMapper mapper;
+
+        public FileDecodeController(IUserBL userBL, IFileBL fileBL, ILineBL lineBL, IMapper mapper) : base(userBL)
         {
+            this.fileBL = fileBL;
+            this.lineBL = lineBL;
+            this.mapper = mapper;
         }
 
         [HttpGet("{fileId:int}")]
@@ -24,7 +31,41 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(List<LineDto>), (int)HttpStatusCode.OK)]
         public IActionResult Get(int fileId)
         {
-            throw new NotImplementedException();
+            var listOfEntries = new List<Domain.Line>();
+            var fileEntry = fileBL.Get(fileId);
+            IDecoder decoder = null;
+
+            switch (fileEntry.Extension)
+            {
+                case ".dxf":
+                    decoder = new DxfDecoder();
+                    break;
+            }
+
+            if (decoder != null)
+            {
+                var lines = decoder.Decode(fileEntry.Content);
+                foreach (var line in lines)
+                {
+                    var lineEntry = new Domain.Line()
+                    {
+                        AirportId = fileEntry.AirportId,
+                        FileId = fileEntry.Id,
+                        Name = line.Name,
+
+                        Points = line.Points.Select(p => new Domain.Point()
+                        {
+                            Lat = p.X,
+                            Lng = p.Y
+                        }).ToList()
+                    };
+                    var createdLine = lineBL.Create(lineEntry);
+                    var newLineEntry = lineBL.GetById(createdLine.Id);
+                    listOfEntries.Add(newLineEntry);
+                }
+            }
+            var result = mapper.Map<List<Domain.Line>, List<LineDto>>(listOfEntries);
+            return Ok(result);
         }
     }
 }

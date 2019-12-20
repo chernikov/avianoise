@@ -13,8 +13,11 @@ namespace avianoise.Web.Api
     [Route("api/file")]
     public class FileController : BaseUserController
     {
-        public FileController(IUserBL userBL) : base(userBL)
+        private readonly IFileBL fileBL;
+
+        public FileController(IUserBL userBL, IFileBL fileBL) : base(userBL)
         {
+            this.fileBL = fileBL;
         }
 
         [Authorize]
@@ -23,7 +26,8 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
         public IActionResult Delete(int fileId)
         {
-            throw new NotImplementedException();
+            fileBL.Delete(fileId);
+            return Ok();
         }
 
     }

@@ -34,7 +34,9 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(List<ZipDto>), (int)HttpStatusCode.OK)]
         public IActionResult Get(int airportId)
         {
-            throw new NotImplementedException();
+            var list = zipBL.GetList(airportId);
+            var result = mapper.Map<List<Zip>, List<ZipDto>>(list);
+            return Ok(result);
         }
 
 
@@ -62,7 +64,8 @@ namespace avianoise.Web.Api
                     {
                         AddedDate = DateTime.Now,
                         AirportId = airportId,
-                        FilePath = filePath
+                        FilePath = filePath,
+                        FileName = fileName
                     };
                     var newZip = zipBL.Create(zip);
 

@@ -24,6 +24,9 @@ namespace avianoise.Domain
 
         public double Level { get; set; }
 
+        [MaxLength(80)]
+        public string Name { get; set; }
+
         public bool Published { get; set; }
 
         public ICollection<Point> Points { get; set; }
