@@ -1,2 +1,9 @@
 <p>admin works!</p>
 <button (click)="onLogout()">log out</button>
+
+<agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" (mapClick)="addAirport($event)">
+    <agm-marker *ngFor="let airport of airports" [latitude]="airport.lat" [longitude]="airport.lng" [markerDraggable]="true" (markerRightClick)="onAirportRightClick(airport)" (dragEnd)="airportDragEnd(airport, $event)"></agm-marker>
+</agm-map>
+
+<div>Latitude: {{latitude}}</div>
+<div>Longitude: {{longitude}}</div>
