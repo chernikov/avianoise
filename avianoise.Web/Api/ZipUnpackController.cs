@@ -21,6 +21,7 @@ namespace avianoise.Web.Api
     [Route("api/zip/unpack")]
     public class ZipUnpackController : BaseUserController
     {
+        private static readonly string FilesDirectory = "static\\files";
         private readonly IZipBL zipBL;
         private readonly IFileBL fileBL;
         private readonly IMapper mapper;
@@ -70,60 +71,44 @@ namespace avianoise.Web.Api
 
         private List<Domain.File> Unzip(string zipPath, int airportId)
         {
-            var list = new List<Domain.File>();
-            var directory = Path.Combine("static", "files");
             using (var archive = ZipArchive.Open(zipPath))
             {
-                foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
-                {
-                    entry.WriteToDirectory(directory, new ExtractionOptions()
-                    {
-                        ExtractFullPath = true,
-                        Overwrite = true
-                    });
-                    var filePath = entry.Key;
-                    var fileIndex = filePath.LastIndexOf("/");
-                    var fileName = fileIndex > -1 ? filePath.Substring(fileIndex + 1) : filePath;
-                    var fileExtension = fileName.Substring(fileName.LastIndexOf("."));
-
-                    list.Add(new Domain.File()
-                    {
-                        AirportId = airportId,
-                        Extension = fileExtension,
-                        FileName = fileName,
-                        FullPath = Path.Combine(directory, filePath)
-                    });
-                }
+                return Unpack(archive, airportId);
             }
-            return list;
         }
 
-        public List<Domain.File> Unrar(string zipPath, int airportId)
+        private List<Domain.File> Unrar(string zipPath, int airportId)
         {
-            var list = new List<Domain.File>();
-            var directory = Path.Combine("static", "files");
             using (var archive = RarArchive.Open(zipPath))
             {
-                foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
-                {
-                    entry.WriteToDirectory(directory, new ExtractionOptions()
-                    {
-                        ExtractFullPath = true,
-                        Overwrite = true
-                    });
-                    var filePath = entry.Key;
-                    var fileIndex = filePath.LastIndexOf("\\");
-                    var fileName = fileIndex > -1 ? filePath.Substring(fileIndex + 1) : filePath;
-                    var fileExtension = fileName.Substring(fileName.LastIndexOf("."));
+                return Unpack(archive, airportId);
+            }
+        }
 
-                    list.Add(new Domain.File()
-                    {
-                        AirportId = airportId,
-                        Extension = fileExtension,
-                        FileName = fileName,
-                        FullPath = Path.Combine(directory, filePath)
-                    });
-                }
+        public List<Domain.File> Unpack(IArchive archive, int airportId)
+        {
+            var list = new List<Domain.File>();
+            var directory = Path.Combine(FilesDirectory);
+            foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
+            {
+                entry.WriteToDirectory(directory, new ExtractionOptions()
+                {
+                    ExtractFullPath = true,
+                    Overwrite = true
+                });
+                var filePath = entry.Key;
+                var fileIndex = filePath.LastIndexOf("/");
+                var fileName = fileIndex > -1 ? filePath.Substring(fileIndex + 1) : filePath;
+                var fileExtension = fileName.Substring(fileName.LastIndexOf("."));
+                var content = System.IO.File.ReadAllText(Path.Combine(FilesDirectory, filePath));
+                list.Add(new Domain.File()
+                {
+                    AirportId = airportId,
+                    Extension = fileExtension,
+                    FileName = fileName,
+                    Content = content,
+                    FullPath = Path.Combine(directory, filePath)
+                });
             }
             return list;
         }

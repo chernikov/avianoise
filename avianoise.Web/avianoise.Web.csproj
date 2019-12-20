@@ -33,6 +33,7 @@
     <ProjectReference Include="..\avianoise.BL\avianoise.BL.csproj" />
     <ProjectReference Include="..\avianoise.DAL\avianoise.DAL.csproj" />
     <ProjectReference Include="..\avianoise.Data\avianoise.Data.csproj" />
+    <ProjectReference Include="..\avianoise.Decoder\avianoise.Decoder.csproj" />
     <ProjectReference Include="..\avianoise.Domain\avianoise.Domain.csproj" />
   </ItemGroup>
 
