@@ -2,13 +2,8 @@
 using avianoise.Web.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using netDxf;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace avianoise.Web.Api
 {
@@ -33,12 +28,10 @@ namespace avianoise.Web.Api
 
             switch (fileEntry.Extension)
             {
-                case ".dfx":
-                    var dfxDocument = DxfDocument.Load(fileEntry.FullPath);
+                case ".dxf":
                     break;
             }
-
-            throw new NotImplementedException();
+            return Ok();
         }
     }
 }

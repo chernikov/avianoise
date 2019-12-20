@@ -12,7 +12,7 @@ namespace avianoise.DAL
         List<File> GetListByAirport(int airportId);
         File Get(int fileId);
 
-        public File Create(File entry);
+        File Create(File entry);
 
         void Delete(int fileId);
     }
