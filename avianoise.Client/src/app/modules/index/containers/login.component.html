@@ -7,6 +7,6 @@
             <input matInput placeholder="Password" type="password" formControlName="password">
         </mat-form-field>
         <span *ngIf="errorMessage">{{ errorMessage }}</span>
-        <button mat-button [disabled]="!form.valid || formInProgress">Log in</button>
+        <button mat-button [disabled]="!form.valid || formInProgress" [class.primary]="form.valid && !formInProgress">Log in</button>
     </form>
 </div>

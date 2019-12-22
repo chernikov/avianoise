@@ -1,3 +1,29 @@
 @import 'index';
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html, body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.content-center {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1140px;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: rgba(0,0,0,.2) !important;
+    width: 200px;
+    transition: .5s;
+    &.primary {
+        background-color: $primary !important;
+        cursor: pointer;
+        color: #fff;
+    }
+}

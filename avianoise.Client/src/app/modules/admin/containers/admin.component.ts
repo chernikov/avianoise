@@ -6,6 +6,9 @@ import * as fromRoot from '../../../state/app.state';
 import * as fromAuthActions from '../../../state/auth.actions';
 import { Router } from '@angular/router';
 import { Airport } from '@classes/airport.class';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AirportService } from '@services/airport.service';
+import { AirportPost } from '@classes/airport.post.class';
 
 @Component({
   selector: 'app-admin',
@@ -13,28 +16,38 @@ import { Airport } from '@classes/airport.class';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-
   latitude: number;
   longitude: number;
   zoom:number;
+
+  markerCreateAnimation: string;
+  markersInitAnimation: string = 'DROP';
+
+  airport: AirportPost;
   airports: Airport[];
+
+  form: FormGroup;
 
   constructor(
     private store: Store<fromRoot.State>,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private airportService: AirportService
   ) {
     this.airports = [];
+    this.airport = new AirportPost();
   }
 
   ngOnInit() {
-      this.setCurrentLocation();
+    this.initForm();
+    this.setCurrentLocation();
+    this.getAirports();
   }
 
-  onLogout() {
-    this.store.dispatch(
-      new fromAuthActions.ClearAuthStorage()
-    );
-    this.router.navigateByUrl('login');
+  initForm() {
+    this.form = this.formBuilder.group({
+      name: [null, Validators.required]
+    });
   }
 
   private setCurrentLocation() {
@@ -47,23 +60,46 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  airportDragEnd(airport: Airport, event: MouseEvent) {
-    this.latitude = event.coords.lat;
-    this.longitude = event.coords.lng;
+  getAirports() {
+    this.airportService.getAll().subscribe(airports => {
+      if(airports) this.airports = airports;
+    });
   }
 
-  addAirport(event: MouseEvent) {
-    let airport: Airport = {
-      id: this.airports.length + 1,
-      name: 'Some Airport',
-      lat: event.coords.lat,
-      lng: event.coords.lng,
-      zips: []
-    };
-    this.airports.push(airport);
+  createMarker(event: MouseEvent) {
+    this.markerCreateAnimation = 'BOUNCE';
+    this.airport.lat = event.coords.lat;
+    this.airport.lng = event.coords.lng;
+    setTimeout(() => {
+      this.markerCreateAnimation = null;
+    }, 500);
   }
 
-  onAirportRightClick(airport: Airport) {
-    this.airports = this.airports.filter(item => item.id != airport.id);
+  markerDragEnd(event: MouseEvent) {
+    this.airport.lat = event.coords.lat;
+    this.airport.lng = event.coords.lng;
+  }
+
+  saveAirport() {
+    let airport: AirportPost = {
+      lat: this.airport.lat,
+      lng: this.airport.lng,
+      name: this.form.value.name
+    }
+
+    this.airportService.addAirport(airport).subscribe(airport => {
+      if(airport) {
+        this.form.reset();
+        this.airport = new AirportPost();
+        this.airports.push(airport);
+      }
+    })
+  }
+
+  onLogout() {
+    this.store.dispatch(
+      new fromAuthActions.ClearAuthStorage()
+    );
+    this.router.navigateByUrl('login');
   }
 }
