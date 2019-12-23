@@ -3,6 +3,9 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "types": [
+      "googlemaps"
+    ],
     "sourceMap": true,
     "declaration": false,
     "module": "esnext",
@@ -17,6 +20,11 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@classes/*": ["src/app/models/classes/*"],
+      "@services/*": ["src/app/models/services/*"],
+      "@shared/*": ["src/app/shared/*"]
+    }
   }
 }
