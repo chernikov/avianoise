@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MouseEvent } from '@agm/core';
 import { Store } from '@ngrx/store';
 
@@ -10,12 +10,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AirportService } from '@services/airport.service';
 import { AirportPost } from '@classes/airport.post.class';
 
+import { takeWhile } from 'rxjs/operators';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnDestroy {
   latitude: number;
   longitude: number;
   zoom:number;
@@ -36,9 +39,6 @@ export class AdminComponent implements OnInit {
   ) {
     this.airports = [];
     this.airport = new AirportPost();
-  }
-
-  ngOnInit() {
     this.initForm();
     this.setCurrentLocation();
     this.getAirports();
@@ -61,7 +61,7 @@ export class AdminComponent implements OnInit {
   }
 
   getAirports() {
-    this.airportService.getAll().subscribe(airports => {
+    this.airportService.getAll().pipe(untilDestroyed(this)).subscribe(airports => {
       if(airports) this.airports = airports;
     });
   }
@@ -87,7 +87,7 @@ export class AdminComponent implements OnInit {
       name: this.form.value.name
     }
 
-    this.airportService.addAirport(airport).subscribe(airport => {
+    this.airportService.addAirport(airport).pipe(untilDestroyed(this)).subscribe(airport => {
       if(airport) {
         this.form.reset();
         this.airport = new AirportPost();
@@ -102,4 +102,6 @@ export class AdminComponent implements OnInit {
     );
     this.router.navigateByUrl('login');
   }
+
+  ngOnDestroy() { }
 }
