@@ -26,7 +26,7 @@ jobs:
       - checkout
       - run:
           name: "[Client] Restore packages"
-          command: yarn install
+          command: npm install
       - run:
           name: "[Client] Build angular"
           command: npm run build
