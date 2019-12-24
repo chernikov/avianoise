@@ -28,20 +28,12 @@ jobs:
       - run:
           name: "[Client] Show current branch"
           command: echo ${CIRCLE_BRANCH}
-      - restore_cache:
-        keys:
-        - v1-dependencies-{{ checksum "package-lock.json" }}
-        - v1-dependencies-  
       - run:
           name: "[Client] Restore packages"
           command: yarn install
       - run:
           name: "[Client] Install angular CLI"
           command: npm i @angular/cli -g
-      - save_cache:
-        key: v1-dependencies-{{ checksum "package-lock.json" }}
-        paths:
-            - node_modules
       - run:
           name: "[Client] Build angular"
           command: ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
