@@ -58,5 +58,5 @@ jobs:
 workflows:
   build:
     jobs:
-      #- build-server          
-      - build-client
+      - build-server          
+     # - build-client
