@@ -4,11 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "app": "ng serve --proxy-config proxy.conf.json"
+    "app": "ng serve --proxy-config proxy.conf.json",
+    "build": "ng build --deploy-url /app/ --aot --extract-css true --build-optimizer true"
   },
   "private": true,
   "dependencies": {
