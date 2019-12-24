@@ -20,12 +20,13 @@ jobs:
           command: dotnet build --configuration Release
   build-client:
     description: "[Client] Build client application"
-    working_directory: ~/avianoise.Client
+  
     docker: 
       - image: circleci/node:10-browsers
     steps:
       - checkout
       - run:
+          working_directory: avianoise.Client
           name: "[Client] Where am I"
           command: echo $(ls)
 workflows:
