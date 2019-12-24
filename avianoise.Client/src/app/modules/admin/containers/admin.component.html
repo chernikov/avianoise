@@ -12,8 +12,6 @@
     
     <form [formGroup]="form" (ngSubmit)="saveAirport()">
         <div class="form-container">
-            <!-- <div class="coords">{{ airport.lat }}</div>
-            <div class="coords">{{ airport.lng }}</div> -->
             <mat-form-field>
                 <input matInput type="text" placeholder="Latitude" [value]="airport.lat" disabled>
             </mat-form-field>
