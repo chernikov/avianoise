@@ -22,7 +22,7 @@ jobs:
     description: "[Client] Build client application"
     working_directory: ~/avianoise.Client
     docker: 
-      - image : angular/ngcontainer
+      - image: circleci/node:latest
     steps:
       - checkout
       - run:
