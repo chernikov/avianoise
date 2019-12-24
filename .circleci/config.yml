@@ -36,7 +36,7 @@ jobs:
           command: npm i @angular/cli
       - run:
           name: "[Client] Build angular"
-          command: ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
+          command: ~/node_modules/@angular/cli/bin/ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
 workflows:
   build:
     jobs:
