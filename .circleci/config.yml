@@ -30,7 +30,7 @@ jobs:
           working_directory: avianoise.Client
           command: yarn install
       - save_cache:
-          key: dependencies-{{ checksum "package-lock.json" }}
+          key: dependencies-{{ checksum "avianoise.Client/package-lock.json" }}
           paths:
             - avianoise.Client/node_modules
       - run:
