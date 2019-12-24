@@ -24,12 +24,27 @@ jobs:
       - image : circleci/node:10
     steps:
       - checkout
+      # Log the current branch
+      - run:
+        name: Show current branch
+        command: echo ${CIRCLE_BRANCH}
+      - restore_cache:
+        keys:
+        - v1-dependencies-{{ checksum "package-lock.json" }}
+        - v1-dependencies-  
       - run:
           name: "[Client] Restore packages"
-          command: npm install
+          command: yarn install
+      - run:
+          name: "[Client] Install angular CLI"
+          command: npm i @angular/cli -g
+      - save_cache:
+        key: v1-dependencies-{{ checksum "package-lock.json" }}
+        paths:
+            - node_modules
       - run:
           name: "[Client] Build angular"
-          command: npm run build
+          command: ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
 workflows:
   build:
     jobs:
