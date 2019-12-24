@@ -4,6 +4,7 @@ general:
       only:
         - staging
         - master
+        - ci
 jobs:
   build-server:
     description: "[Server] Build .net application"
@@ -27,6 +28,9 @@ jobs:
       - run:
           name: "[Client] Restore packages"
           command: yarn install
+      - run:
+          name: "[Client] Install angular CLI"
+          command: npm i -g @angular/cli
       - run:
           name: "[Client] Build angular"
           command: ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
