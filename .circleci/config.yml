@@ -26,6 +26,9 @@ jobs:
     steps:
       - checkout
       - run:
+        name: "[Client] Where am I"
+        command: ls
+      - run:
           name: "[Client] Restore packages"
           command: yarn install
       - run:
