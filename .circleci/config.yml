@@ -26,9 +26,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "[Client] Restore packages"
           working_directory: avianoise.Client
-          name: "[Client] Where am I"
-          command: echo $(ls)
+          command: yarn install
+      - run:
+          name: "[Client] Build angular"
+          working_directory: avianoise.Client
+          command: yarn ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
 workflows:
   build:
     jobs:
