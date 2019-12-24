@@ -25,17 +25,13 @@ jobs:
       - image: circleci/node:10-browsers
     steps:
       - checkout
-      - restore_cache:
-        keys:
-        - dependencies-{{ checksum "package-lock.json" }}
-        - dependencies-
       - run:
           name: "[Client] Restore packages"
           working_directory: avianoise.Client
           command: yarn install
       - save_cache:
-        key: dependencies-{{ checksum "package-lock.json" }}
-        paths:
+          key: dependencies-{{ checksum "package-lock.json" }}
+          paths:
             - avianoise.Client/node_modules
       - run:
           name: "[Client] Build angular"
