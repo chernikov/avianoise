@@ -17,20 +17,31 @@ jobs:
           command: dotnet restore
       - run:
           name: "[Server] Build .net core"
-          command: dotnet build --configuration Release
+          command: dotnet build
+      - run:
+          name: "[Server] Publish Web"
+          working_directory : "avianoise.Web"
+          command: dotnet publish -c Release -o .build/out
+      - run: 
+         name: "Create avianoise.Web docker image"
+         working_directory: "avianoise.Web"
+         command: docker build -t chernikov/avianoise_web .
+      - run: 
+         name: "Login to hub.docker.com"
+         command : echo "$docker_password" | docker login --username $docker_user --password-stdin
+      - run: 
+         name: "Push image"
+         command : docker push chernikov/avianoise_web
+
   build-client:
     description: "[Client] Build client application"
-  
     docker: 
       - image: circleci/node:10-browsers
     steps:
       - checkout
       - restore_cache:
           keys:
-            # Find a cache corresponding to this specific package-lock.json checksum
-            # when this file is changed, this key will fail
             - dependencies-{{ checksum "avianoise.Client/package-lock.json" }}
-            # Find the most recently generated cache used from any branch
             - dependencies-
       - run:
           name: "[Client] Restore packages"
