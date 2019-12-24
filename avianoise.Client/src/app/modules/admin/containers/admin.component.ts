@@ -2,8 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { MouseEvent } from '@agm/core';
 import { Store } from '@ngrx/store';
 
-import * as fromRoot from '../../../state/app.state';
-import * as fromAuthActions from '../../../state/auth.actions';
+import * as fromRoot from '@state/app.state';
+import * as fromAuthActions from '@state/auth/auth.actions';
 import { Router } from '@angular/router';
 import { Airport } from '@classes/airport.class';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

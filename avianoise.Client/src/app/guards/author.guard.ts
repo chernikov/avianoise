@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import { CanLoad, CanActivate, CanActivateChild, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
-import * as fromAppState from '../state/app.state';
-import * as fromAuthState from '../state/auth.state';
+import * as fromAppState from '@state/app.state';
+import * as fromAuthState from '@state/auth/auth.state';
 import { Role } from '@classes/role.class';
 import { Observable, of } from 'rxjs';
 import { filter, take, switchMap, catchError, map, tap } from 'rxjs/operators';

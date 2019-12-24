@@ -4,8 +4,8 @@ import { AuthService } from '@services/auth.service';
 import { Router } from '@angular/router';
 import { Login } from '@classes/login.class';
 
-import * as fromRoot from '../../../state/app.state';
-import * as fromAuthActions from '../../../state/auth.actions';
+import * as fromRoot from '@state/app.state';
+import * as fromAuthActions from '@state/auth/auth.actions';
 import { Store } from '@ngrx/store';
 import { takeWhile } from 'rxjs/operators';
 import { untilDestroyed } from 'ngx-take-until-destroy';

@@ -8,7 +8,7 @@ import { LOCAL_STORAGE } from '@ng-toolkit/universal';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { map, catchError, switchMap, partition, mergeMap, last } from 'rxjs/operators';
-import { applicationOptions } from '../config/options';
+import { applicationOptions } from '../../config/options';
 
 @Injectable()
 export class AuthEffects {
