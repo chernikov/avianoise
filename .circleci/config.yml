@@ -12,7 +12,8 @@ jobs:
       - image : mcr.microsoft.com/dotnet/core/sdk:3.1
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+        docker_layer_caching: true 
       - run:
           name: "[Server] Restore packages"
           command: dotnet restore
