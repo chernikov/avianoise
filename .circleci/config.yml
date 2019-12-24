@@ -1,0 +1,23 @@
+version: 2.1
+general:
+    branches:
+      only:
+        - staging
+        - master
+jobs:
+  build-server:
+    description: Build .net application
+    docker: 
+      - image : mcr.microsoft.com/dotnet/core/sdk:3.1
+    steps:
+      - checkout
+      - run:
+          name: "Restore packages"
+          command: dotnet restore
+      - run:
+          name: "Build Application according to some given configuration"
+          command: dotnet build --configuration Release
+workflows:
+  build:
+    jobs:
+      - build-server          
