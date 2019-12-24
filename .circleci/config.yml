@@ -26,14 +26,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: "[Client] Where am I"
-        command: ls
-      - run:
-          name: "[Client] Restore packages"
-          command: yarn install
-      - run:
-          name: "[Client] Build angular"
-          command: yarn ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
+          name: "[Client] Where am I"
+          command: echo $(ls)
 workflows:
   build:
     jobs:
