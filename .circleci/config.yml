@@ -25,6 +25,13 @@ jobs:
       - image: circleci/node:10-browsers
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            # Find a cache corresponding to this specific package-lock.json checksum
+            # when this file is changed, this key will fail
+            - dependencies-{{ checksum "avianoise.Client/package-lock.json" }}
+            # Find the most recently generated cache used from any branch
+            - dependencies-
       - run:
           name: "[Client] Restore packages"
           working_directory: avianoise.Client
