@@ -22,18 +22,15 @@ jobs:
     description: "[Client] Build client application"
     working_directory: ~/avianoise.Client
     docker: 
-      - image: circleci/node:latest
+      - image: circleci/node:10-browsers
     steps:
       - checkout
       - run:
           name: "[Client] Restore packages"
           command: yarn install
       - run:
-          name: "[Client] Install angular CLI"
-          command: sudo npm i -g @angular/cli
-      - run:
           name: "[Client] Build angular"
-          command: ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
+          command: yarn ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
 workflows:
   build:
     jobs:
