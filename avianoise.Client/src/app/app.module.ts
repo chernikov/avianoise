@@ -11,12 +11,13 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 
-import { AuthEffects } from './state/auth.effects';
-import * as fromAuthReducer from './state/auth.reducer';
+import { AuthEffects } from '@state/auth/auth.effects';
+import * as fromAuthReducer from '@state/auth/auth.reducer';
 
 import { environment } from '../environments/environment';
 import { JWT_Module_Options } from './config/jwt-options.config';
 import { AuthorGuard } from './guards/author.guard';
+
 
 
 @NgModule({
