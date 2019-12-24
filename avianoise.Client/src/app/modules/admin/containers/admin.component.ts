@@ -1,9 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MouseEvent } from '@agm/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
 import * as fromRoot from '@state/app.state';
 import * as fromAuthActions from '@state/auth/auth.actions';
+import * as fromAirportsActions from '@state/airports/airports.actions';
+import * as fromAirportsState from '@state/airports/airports.state';
 import { Router } from '@angular/router';
 import { Airport } from '@classes/airport.class';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -41,7 +43,14 @@ export class AdminComponent implements OnDestroy {
     this.airport = new AirportPost();
     this.initForm();
     this.setCurrentLocation();
-    this.getAirports();
+    
+    this.store.pipe(select(fromAirportsState.getAirports), 
+      untilDestroyed(this))
+      .subscribe(airports => {
+      this.airports = airports;
+    });
+
+    this.store.dispatch(new fromAirportsActions.GetAllAirports());
   }
 
   initForm() {
@@ -58,12 +67,6 @@ export class AdminComponent implements OnDestroy {
         this.zoom = 8;
       });
     }
-  }
-
-  getAirports() {
-    this.airportService.getAll().pipe(untilDestroyed(this)).subscribe(airports => {
-      if(airports) this.airports = airports;
-    });
   }
 
   createMarker(event: MouseEvent) {
@@ -91,9 +94,15 @@ export class AdminComponent implements OnDestroy {
       if(airport) {
         this.form.reset();
         this.airport = new AirportPost();
-        this.airports.push(airport);
+        this.store.dispatch(new fromAirportsActions.GetAllAirports());
       }
     })
+  }
+
+  deleteAirport(airport: Airport) {
+    this.store.dispatch(
+      new fromAirportsActions.DeleteAirport(airport)
+    );
   }
 
   onLogout() {
