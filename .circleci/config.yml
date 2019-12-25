@@ -26,15 +26,30 @@ jobs:
       - run: 
          name: "Create avianoise.Web docker image"
          working_directory: "avianoise.Web"
-         command: docker build -t chernikov/avianoise_web .
+         command: docker build -t chernikov/avianoise.web .
       - run: 
          name: "Login to hub.docker.com"
          command : echo "$docker_password" | docker login --username $docker_user --password-stdin
       - run: 
          name: "Push image"
-         command : docker push chernikov/avianoise_web
+         command : docker push chernikov/avianoise.web
   build-client:
     description: "[Client] Build client application"
+    machine : true
+    steps:
+      - checkout
+      - run:
+          name: "[Client] Docker build"
+          working_directory: avianoise.Client
+          command: docker build -t chernikov/avianoise.client .
+      - run: 
+         name: "Login to hub.docker.com"
+         command : echo "$docker_password" | docker login --username $docker_user --password-stdin
+      - run: 
+         name: "Push image"
+         command : docker push chernikov/avianoise.client
+  test-client:
+    description: "[Client] Test client application"
     docker: 
       - image: circleci/node:10-browsers
     steps:
@@ -52,11 +67,12 @@ jobs:
           paths:
             - avianoise.Client/node_modules
       - run:
-          name: "[Client] Build angular"
+          name: "[Client] Test angular"
           working_directory: avianoise.Client
-          command: yarn ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
+          command: npm test
 workflows:
   build:
     jobs:
-      - build-server  
+    #  - build-server  
+    - build-client
     # - build-client
