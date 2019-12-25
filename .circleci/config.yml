@@ -29,16 +29,15 @@ jobs:
     machine: true
     description: "[Server] Create docker image for server"
     steps:
-       - run: 
+      - run: 
          name: "Create avianoise.Web docker image"
          working_directory: "avianoise.Web"
          command: docker build -t chernikov/avianoise_web .
-       - run: 
+      - run: 
          name: "Login to hub.docker.com"
-         command : | 
-         echo "$docker_password" | docker login --username $docker_user --password-stdin
-        - run: 
-          name: "Push image"
+         command : echo "$docker_password" | docker login --username $docker_user --password-stdin
+      - run: 
+         name: "Push image"
           command : docker push chernikov/avianoise_web
   build-client:
     description: "[Client] Build client application"
