@@ -35,7 +35,7 @@ jobs:
          command: docker build -t chernikov/avianoise_web .
        - run: 
          name: "Login to hub.docker.com"
-         - command : | 
+         command : | 
          echo "$docker_password" | docker login --username $docker_user --password-stdin
         - run: 
           name: "Push image"
