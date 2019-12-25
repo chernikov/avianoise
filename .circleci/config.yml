@@ -38,7 +38,7 @@ jobs:
          command : echo "$docker_password" | docker login --username $docker_user --password-stdin
       - run: 
          name: "Push image"
-          command : docker push chernikov/avianoise_web
+         command : docker push chernikov/avianoise_web
   build-client:
     description: "[Client] Build client application"
     docker: 
