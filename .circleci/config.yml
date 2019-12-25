@@ -12,8 +12,6 @@ jobs:
       - image : mcr.microsoft.com/dotnet/core/sdk:3.1
     steps:
       - checkout
-      - setup_remote_docker:
-        docker_layer_caching: true 
       - run:
           name: "[Server] Restore packages"
           command: dotnet restore
@@ -24,17 +22,23 @@ jobs:
           name: "[Server] Publish Web"
           working_directory : "avianoise.Web"
           command: dotnet publish -c Release -o .build/out
-      - run: 
-         name: "Create avianoise.Web docker image"
-         working_directory: "avianoise.Web"
-         command: docker build -t chernikov/avianoise_web .
-      - run: 
-         name: "Login to hub.docker.com"
-         command : echo "$docker_password" | docker login --username $docker_user --password-stdin
-      - run: 
-         name: "Push image"
-         command : docker push chernikov/avianoise_web
-
+      - store_artifacts:
+          path: /avianoise.Web/.build/out
+          destination: server_out
+  docker_server: 
+    machine: true
+    description: "[Server] Create docker image for server"
+    - run: 
+       name: "Create avianoise.Web docker image"
+       working_directory: "avianoise.Web"
+       command: docker build -t chernikov/avianoise_web .
+    - run: 
+       name: "Login to hub.docker.com"
+       - command : | 
+       echo "$docker_password" | docker login --username $docker_user --password-stdin
+    - run: 
+       name: "Push image"
+       command : docker push chernikov/avianoise_web
   build-client:
     description: "[Client] Build client application"
     docker: 
@@ -60,5 +64,6 @@ jobs:
 workflows:
   build:
     jobs:
-      - build-server          
+      - build-server  
+      - docker_server
      # - build-client
