@@ -9,7 +9,7 @@ jobs:
   build-server:
     description: "[Server] Build .net application"
     docker: 
-      - image : mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image : chernikov/circleci-dotnet3.1
     steps:
       - checkout
       - run:
@@ -22,13 +22,7 @@ jobs:
           name: "[Server] Publish Web"
           working_directory : "avianoise.Web"
           command: dotnet publish -c Release -o .build/out
-      - store_artifacts:
-          path: /avianoise.Web/.build/out
-          destination: server_out
-  docker_server: 
-    machine: true
-    description: "[Server] Create docker image for server"
-    steps:
+      - setup_remote_docker
       - run: 
          name: "Create avianoise.Web docker image"
          working_directory: "avianoise.Web"
@@ -65,5 +59,4 @@ workflows:
   build:
     jobs:
       - build-server  
-      - docker_server
-     # - build-client
+    # - build-client
