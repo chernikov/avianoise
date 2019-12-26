@@ -8,7 +8,6 @@ import * as fromRoot from '@state/app.state';
 import * as fromAuthActions from '@state/auth/auth.actions';
 import { Store } from '@ngrx/store';
 import { takeWhile } from 'rxjs/operators';
-import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +15,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnDestroy {
+  alive: boolean = true;
   form: FormGroup;
   formInProgress: boolean;
   errorMessage: string;
@@ -42,7 +42,7 @@ export class LoginComponent implements OnDestroy {
       email: this.form.value.email,
       password: this.form.value.password
     };
-    this.authService.post(data).pipe(untilDestroyed(this)).subscribe(
+    this.authService.post(data).pipe(takeWhile(() => this.alive)).subscribe(
       (result) => {
         if(result.token) {
           this.formInProgress = false;
@@ -59,5 +59,7 @@ export class LoginComponent implements OnDestroy {
     );
   }
 
-  ngOnDestroy() { }
+  ngOnDestroy() {
+    this.alive = false;
+  }
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Airport } from '@classes/airport.class';
 import { AirportPost } from '@classes/airport.post.class';
+import { AirportChange } from '@classes/airport.change.class';
 
 @Injectable({ providedIn: 'root' })
 export class AirportService {
@@ -30,8 +31,8 @@ export class AirportService {
         return this.http.get<Airport[]>(this.apiUrl, this.options).pipe();
     }
 
-    changeAirport(id: number): Observable<Airport> {
-        return this.http.put<Airport>(this.apiUrl + '/' + id, this.options).pipe();
+    changeAirport(body: AirportChange): Observable<Airport> {
+        return this.http.put<Airport>(this.apiUrl + '/', body, this.options).pipe();
     }
 
     deleteAirport(id: number): Observable<null> {
