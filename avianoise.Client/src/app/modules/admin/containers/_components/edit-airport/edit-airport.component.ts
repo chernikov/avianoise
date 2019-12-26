@@ -1,19 +1,21 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AirportService } from '@services/airport.service';
-import { AirportPost } from '@classes/airport.post.class';
-import { MouseEvent } from '@agm/core';
+import { Component, OnDestroy } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { MouseEvent } from '@agm/core';
+
+import { Store } from '@ngrx/store';
 import * as fromRoot from '@state/app.state';
 import * as fromAirportsActions from '@state/airports/airports.actions';
 
+import { AirportService } from '@services/airport.service';
+import { AirportPost } from '@classes/airport.post.class';
+
 @Component({
-  selector: 'app-add-airport',
-  templateUrl: './add-airport.component.html',
-  styleUrls: ['./add-airport.component.scss']
+  selector: 'app-edit-airport',
+  templateUrl: './edit-airport.component.html',
+  styleUrls: ['./edit-airport.component.scss']
 })
-export class AddAirportComponent implements OnInit, OnDestroy {
+export class EditAirportComponent implements OnDestroy {
   airport: AirportPost;
 
   latitude: number;
@@ -24,7 +26,6 @@ export class AddAirportComponent implements OnInit, OnDestroy {
   markersInitAnimation: string = 'DROP';
 
   form: FormGroup;
-
   constructor(
     private store: Store<fromRoot.State>,
     private formBuilder: FormBuilder,
@@ -33,9 +34,6 @@ export class AddAirportComponent implements OnInit, OnDestroy {
     this.airport = new AirportPost();
     this.setCurrentLocation();
     this.initForm();
-  }
-
-  ngOnInit() {
   }
 
   initForm() {
@@ -87,5 +85,4 @@ export class AddAirportComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     //need for untilDestroyed
   }
-
 }

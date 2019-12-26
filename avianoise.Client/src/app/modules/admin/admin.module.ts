@@ -6,10 +6,10 @@ import { router } from './admin.router';
 import { AgmCoreModule } from '@agm/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/material.module';
-import { AddAirportComponent } from './containers/_components/add-airport/add-airport.component';
+import { EditAirportComponent } from './containers/_components/edit-airport/edit-airport.component';
 
 @NgModule({
-    declarations: [AdminComponent, AddAirportComponent],
+    declarations: [AdminComponent, EditAirportComponent],
     imports: [
         CommonModule,
         FormsModule,
