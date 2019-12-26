@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { AdminComponent } from './containers/admin.component';
-import { AddAirportComponent } from './containers/_components/add-airport/add-airport.component';
+import { EditAirportComponent } from './containers/_components/edit-airport/edit-airport.component';
 
 export const router: Routes = [
     { path: '', component: AdminComponent , children: 
         [
-            { path: 'add-airport', component: AddAirportComponent }
+            { path: 'edit-airport', component: EditAirportComponent }
         ] 
     },
 ]
