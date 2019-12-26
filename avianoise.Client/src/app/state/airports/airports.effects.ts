@@ -8,7 +8,6 @@ import * as airportsActions from './airports.actions';
 
 import { map, mergeMap, last } from 'rxjs/operators';
 import { AirportService } from '@services/airport.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Injectable()
 export class AirportsEffects {

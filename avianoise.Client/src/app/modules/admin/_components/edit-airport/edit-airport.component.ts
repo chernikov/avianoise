@@ -1,6 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { untilDestroyed } from 'ngx-take-until-destroy';
 import { MouseEvent } from '@agm/core';
 
 import { Store } from '@ngrx/store';
@@ -9,6 +8,10 @@ import * as fromAirportsActions from '@state/airports/airports.actions';
 
 import { AirportService } from '@services/airport.service';
 import { AirportPost } from '@classes/airport.post.class';
+import { ActivatedRoute, Router } from '@angular/router';
+import { takeWhile } from 'rxjs/operators';
+import { Airport } from '@classes/airport.class';
+import { AirportChange } from '@classes/airport.change.class';
 
 @Component({
   selector: 'app-edit-airport',
@@ -16,7 +19,10 @@ import { AirportPost } from '@classes/airport.post.class';
   styleUrls: ['./edit-airport.component.scss']
 })
 export class EditAirportComponent implements OnDestroy {
-  airport: AirportPost;
+  alive: boolean = true;
+  isEdit: boolean = false;
+
+  airport: Airport;
 
   latitude: number;
   longitude: number;
@@ -29,11 +35,30 @@ export class EditAirportComponent implements OnDestroy {
   constructor(
     private store: Store<fromRoot.State>,
     private formBuilder: FormBuilder,
-    private airportService: AirportService
+    private airportService: AirportService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
-    this.airport = new AirportPost();
+    this.airport = new Airport();
     this.setCurrentLocation();
     this.initForm();
+    this.getAirport();
+  }
+
+  getAirport() {
+    this.route.params.subscribe(param => {
+      if(param.id) {
+        this.airportService.getAirport(param.id).pipe(takeWhile(() => this.alive)).subscribe(airport => {
+          this.airport = airport;
+          this.isEdit = true;
+          this.form.setValue({
+            name: airport.name
+          });
+          this.latitude = airport.lat;
+          this.longitude = airport.lng;
+        });
+      }
+    });
   }
 
   initForm() {
@@ -71,18 +96,28 @@ export class EditAirportComponent implements OnDestroy {
       lat: this.airport.lat,
       lng: this.airport.lng,
       name: this.form.value.name
-    }
+    };
+    if(this.isEdit) {
+      let airportChange: AirportChange = {
+        id: this.airport.id,
+        ...airport
+      };
 
-    this.airportService.addAirport(airport).pipe(untilDestroyed(this)).subscribe(airport => {
-      if(airport) {
-        this.form.reset();
-        this.airport = new AirportPost();
+      this.airportService.changeAirport(airportChange).pipe(takeWhile(() => this.alive)).subscribe(airport => {
         this.store.dispatch(new fromAirportsActions.GetAllAirports());
-      }
-    })
+        this.router.navigateByUrl('/admin/airport');
+      });
+    } else {
+      this.airportService.addAirport(airport).pipe(takeWhile(() => this.alive)).subscribe(airport => {
+        if(airport) {
+          this.store.dispatch(new fromAirportsActions.GetAllAirports());
+          this.router.navigateByUrl('/admin/airport');
+        }
+      });
+    }
   }
 
   ngOnDestroy() {
-    //need for untilDestroyed
+    this.alive = false;
   }
 }
