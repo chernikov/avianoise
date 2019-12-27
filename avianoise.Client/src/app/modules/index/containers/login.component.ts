@@ -6,7 +6,8 @@ import { Login } from '@classes/login.class';
 
 import * as fromRoot from '@state/app.state';
 import * as fromAuthActions from '@state/auth/auth.actions';
-import { Store } from '@ngrx/store';
+import * as fromAuthState from '@state/auth/auth.state';
+import { Store, select } from '@ngrx/store';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
@@ -26,7 +27,16 @@ export class LoginComponent implements OnDestroy {
     private router: Router,
     private store: Store<fromRoot.State>
   ) {
+    this.checkRole();
     this.initForm();
+  }
+
+  checkRole() {
+    this.store.pipe(select(fromAuthState.getUserRole), takeWhile(() => this.alive)).subscribe(role => {
+      if(role && role.code && role.code == 'admin') {
+        this.router.navigateByUrl('admin');
+      }
+    });
   }
 
   initForm() {

@@ -7,11 +7,11 @@ import * as fromRoot from '@state/app.state';
 import * as fromAirportsActions from '@state/airports/airports.actions';
 
 import { AirportService } from '@services/airport.service';
-import { AirportPost } from '@classes/airport.post.class';
+import { AirportForAdd } from '@classes/add-airport.class';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeWhile } from 'rxjs/operators';
 import { Airport } from '@classes/airport.class';
-import { AirportChange } from '@classes/airport.change.class';
+import { AirportForChange } from '@classes/change-airport.class';
 
 @Component({
   selector: 'app-edit-airport',
@@ -24,9 +24,9 @@ export class EditAirportComponent implements OnDestroy {
 
   airport: Airport;
 
-  latitude: number;
-  longitude: number;
-  zoom:number;
+  latitude: number = 48.383022;
+  longitude: number = 31.1828699;
+  zoom: number = 6;
 
   markerCreateAnimation: string;
   markersInitAnimation: string = 'DROP';
@@ -92,18 +92,17 @@ export class EditAirportComponent implements OnDestroy {
   }
 
   saveAirport() {
-    let airport: AirportPost = {
+    let airport: AirportForAdd = {
       lat: this.airport.lat,
       lng: this.airport.lng,
       name: this.form.value.name
     };
     if(this.isEdit) {
-      let airportChange: AirportChange = {
+      let airportForChange: AirportForChange = {
         id: this.airport.id,
         ...airport
       };
-
-      this.airportService.changeAirport(airportChange).pipe(takeWhile(() => this.alive)).subscribe(airport => {
+      this.airportService.changeAirport(airportForChange).pipe(takeWhile(() => this.alive)).subscribe(airport => {
         this.store.dispatch(new fromAirportsActions.GetAllAirports());
         this.router.navigateByUrl('/admin/airport');
       });

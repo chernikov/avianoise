@@ -3,8 +3,8 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Airport } from '@classes/airport.class';
-import { AirportPost } from '@classes/airport.post.class';
-import { AirportChange } from '@classes/airport.change.class';
+import { AirportForAdd } from '@classes/add-airport.class';
+import { AirportForChange } from '@classes/change-airport.class';
 
 @Injectable({ providedIn: 'root' })
 export class AirportService {
@@ -19,7 +19,7 @@ export class AirportService {
     
     constructor(private http: HttpClient) { }
 
-    addAirport(body: AirportPost): Observable<Airport> {
+    addAirport(body: AirportForAdd): Observable<Airport> {
         return this.http.post<Airport>(this.apiUrl, body, this.options).pipe();
     }
 
@@ -31,7 +31,7 @@ export class AirportService {
         return this.http.get<Airport[]>(this.apiUrl, this.options).pipe();
     }
 
-    changeAirport(body: AirportChange): Observable<Airport> {
+    changeAirport(body: AirportForChange): Observable<Airport> {
         return this.http.put<Airport>(this.apiUrl + '/', body, this.options).pipe();
     }
 
