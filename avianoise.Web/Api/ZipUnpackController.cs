@@ -85,7 +85,7 @@ namespace avianoise.Web.Api
             }
         }
 
-        public List<Domain.File> Unpack(IArchive archive, int airportId)
+        private List<Domain.File> Unpack(IArchive archive, int airportId)
         {
             var list = new List<Domain.File>();
             var directory = Path.Combine(FilesDirectory);
