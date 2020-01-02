@@ -74,6 +74,8 @@ namespace avianoise.Web
             });
 
             var configurationSection = Configuration.GetSection("ConnectionStrings:DefaultConnection");
+
+            Console.WriteLine($"Connection string {configurationSection.Value}");
             services.AddDbContext<AviaNoiseDbContext>(options => options.UseSqlServer(configurationSection.Value));
             services.AddTransient<IAviaNoiseDbContext, AviaNoiseDbContext>();
             services.AddScoped(provider =>
