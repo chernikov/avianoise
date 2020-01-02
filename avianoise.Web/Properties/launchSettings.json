@@ -1,7 +1,11 @@
-﻿{
+{
   "iisSettings": {
-    "windowsAuthentication": false, 
-    "anonymousAuthentication": true, 
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/avianoise.Web",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:1166",
       "sslPort": 0
@@ -17,19 +21,17 @@
     },
     "avianoise.Web": {
       "commandName": "Project",
-      "launchBrowser": false,
-      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:5000"
     },
-	"avianoise.Web.Local": {
+    "avianoise.Web.Local": {
       "commandName": "Project",
-      "launchBrowser": false,
-      "applicationUrl": "http://localhost:9999",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:9999"
     }
   }
 }
