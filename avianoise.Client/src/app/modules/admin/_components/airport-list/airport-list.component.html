@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="header">
+        <button mat-button class="primary" routerLink="/admin/airport/add">Add Airport</button>
+    </div>
+    <div class="body">
+        <mat-nav-list>
+            <ng-container *ngFor="let airport of airports; index as i">
+            <div class="item">
+                <a mat-list-item [routerLink]="['/admin/airport', airport.id]">{{ i + 1 }}. {{ airport.name }}</a>
+                <button mat-button class="primary" [routerLink]="['/admin/airport/edit', airport.id]">Edit</button>
+            </div>
+            </ng-container>
+        </mat-nav-list>
+    </div>
+</div>
