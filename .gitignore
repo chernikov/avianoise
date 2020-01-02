@@ -45,3 +45,4 @@ packages
 *.user
 /_workspaces.db
 logs/
+static/

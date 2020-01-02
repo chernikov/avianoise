@@ -8,7 +8,7 @@ namespace avianoise.DAL
 {
     public class RoleRepository : BaseRepository, IRoleRepository
     {
-        public RoleRepository(Func<IavianoiseDbContext> getDbContext) : base(getDbContext)
+        public RoleRepository(Func<IAviaNoiseDbContext> getDbContext) : base(getDbContext)
         {
 
         }

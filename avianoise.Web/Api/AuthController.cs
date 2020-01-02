@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using avianoise.Web.Dto;
+﻿using avianoise.Web.Dto;
 using avianoise.Web.Errors;
 using avianoise.Web.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace avianoise.Web.Api
 {
@@ -15,8 +15,6 @@ namespace avianoise.Web.Api
         {
             this.userService = userService;
         }
-
-
 
         [HttpPost]
         [Produces("application/json")]

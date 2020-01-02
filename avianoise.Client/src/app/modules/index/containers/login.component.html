@@ -1,0 +1,12 @@
+<div class="container">
+    <form [formGroup]="form" (ngSubmit)="onLogin()">
+        <mat-form-field>
+            <input matInput placeholder="Email" type="email" formControlName="email">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Password" type="password" formControlName="password">
+        </mat-form-field>
+        <span *ngIf="errorMessage">{{ errorMessage }}</span>
+        <button mat-button [disabled]="!form.valid || formInProgress" [class.primary]="form.valid && !formInProgress">Log in</button>
+    </form>
+</div>

@@ -1,16 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using avianoise.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
-using avianoise.Domain;
 
 namespace avianoise.Data
 {
-    public interface IavianoiseDbContext : IDisposable
+    public interface IAviaNoiseDbContext : IDisposable
     {
-        DbSet<User> Users { get; set; }
+        DbSet<Address> Addresses { get; set; }
+
+        DbSet<Airport> Airports { get; set; }
+
+        DbSet<File> Files { get; set; }
+
+        DbSet<Line> Lines { get; set; }
+
+        DbSet<Point> Points { get; set; }
 
         DbSet<Role> Roles { get; set; }
 
+        DbSet<User> Users { get; set; }
+
         DbSet<UserRole> UserRoles { get; set; }
+
+        DbSet<Zip> Zips { get; set; }
 
         int SaveChanges();
     }

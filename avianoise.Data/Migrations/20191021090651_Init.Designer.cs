@@ -8,7 +8,7 @@ using avianoise.Data;
 
 namespace avianoise.Data.Migrations
 {
-    [DbContext(typeof(avianoiseDbContext))]
+    [DbContext(typeof(AviaNoiseDbContext))]
     [Migration("20191021090651_Init")]
     partial class Init
     {

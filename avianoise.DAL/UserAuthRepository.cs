@@ -1,20 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using avianoise.Data;
+using avianoise.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using avianoise.Data;
-using avianoise.Domain;
 
 namespace avianoise.DAL
 {
     public class UserAuthRepository : BaseRepository, IUserAuthRepository
     {
-        public UserAuthRepository(Func<IavianoiseDbContext> getDbContext) : base(getDbContext)
+        public UserAuthRepository(Func<IAviaNoiseDbContext> getDbContext) : base(getDbContext)
         {
         }
 
         public User Get(int id)
-            => Query(context => context.Users.FirstOrDefault(p => p.Id == id));
+            => Query(context => context.Users
+                .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+                .FirstOrDefault(p => p.Id == id));
 
         public User GetByEmailAndPassword(string email, string password)
             => Query(context =>
