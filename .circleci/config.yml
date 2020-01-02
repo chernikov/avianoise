@@ -33,5 +33,5 @@ jobs:
 workflows:
   build:
     jobs:
-      #- build-server          
+      - build-server          
       - build-client
