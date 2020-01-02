@@ -1,0 +1,22 @@
+<div class="body content-center">
+    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" (mapClick)="createMarker($event)">
+        <agm-marker *ngIf="airport.lat && airport.lng" [animation]="markerCreateAnimation" [latitude]="airport.lat" [longitude]="airport.lng" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)"></agm-marker>
+    </agm-map>
+    
+    <form [formGroup]="form" (ngSubmit)="saveAirport()">
+        <div class="form-container">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Latitude" [value]="airport.lat" disabled>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Longitude" [value]=airport.lng disabled>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="text" formControlName="name" placeholder="Airport name">
+            </mat-form-field>
+        </div>
+        <button mat-button [disabled]="!form.valid || !airport.lat || airport.lat == 0" [class.primary]="form.valid && airport.lat && airport.lat != 0">
+            {{ isEdit ? "Change Airport" : "Add Airport" }}
+        </button>
+    </form>
+</div>

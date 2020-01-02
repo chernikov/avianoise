@@ -11,12 +11,15 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 
-import { AuthEffects } from './state/auth.effects';
-import * as fromAuthReducer from './state/auth.reducer';
+import { AuthEffects } from '@state/auth/auth.effects';
+import { AirportsEffects } from '@state/airports/airports.effects';
+import * as fromAuthReducer from '@state/auth/auth.reducer';
+import * as fromAirportsReducer from '@state/airports/airports.reducer';
 
 import { environment } from '../environments/environment';
 import { JWT_Module_Options } from './config/jwt-options.config';
 import { AuthorGuard } from './guards/author.guard';
+
 
 
 @NgModule({
@@ -29,13 +32,16 @@ import { AuthorGuard } from './guards/author.guard';
     BrowserAnimationsModule,
     NgtUniversalModule,
     MaterialModule,
-    StoreModule.forRoot({auth: fromAuthReducer.reducer}),
+    StoreModule.forRoot({
+      auth: fromAuthReducer.reducer,
+      airports: fromAirportsReducer.reducer
+    }),
     StoreDevtoolsModule.instrument({
       name: 'avianoise',
       maxAge: 25,
       logOnly: environment.production
     }),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, AirportsEffects]),
     JwtModule.forRoot(JWT_Module_Options)
   ],
   providers: [

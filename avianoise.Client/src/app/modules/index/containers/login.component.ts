@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 import { Router } from '@angular/router';
 import { Login } from '@classes/login.class';
 
-import * as fromRoot from '../../../state/app.state';
-import * as fromAuthActions from '../../../state/auth.actions';
-import { Store } from '@ngrx/store';
+import * as fromRoot from '@state/app.state';
+import * as fromAuthActions from '@state/auth/auth.actions';
+import * as fromAuthState from '@state/auth/auth.state';
+import { Store, select } from '@ngrx/store';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnDestroy {
+  alive: boolean = true;
   form: FormGroup;
   formInProgress: boolean;
   errorMessage: string;
@@ -23,10 +26,17 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private store: Store<fromRoot.State>
-  ) { }
-
-  ngOnInit() {
+  ) {
+    this.checkRole();
     this.initForm();
+  }
+
+  checkRole() {
+    this.store.pipe(select(fromAuthState.getUserRole), takeWhile(() => this.alive)).subscribe(role => {
+      if(role && role.code && role.code == 'admin') {
+        this.router.navigateByUrl('admin');
+      }
+    });
   }
 
   initForm() {
@@ -42,7 +52,7 @@ export class LoginComponent implements OnInit {
       email: this.form.value.email,
       password: this.form.value.password
     };
-    this.authService.post(data).subscribe(
+    this.authService.post(data).pipe(takeWhile(() => this.alive)).subscribe(
       (result) => {
         if(result.token) {
           this.formInProgress = false;
@@ -57,5 +67,9 @@ export class LoginComponent implements OnInit {
         this.formInProgress = false;
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }
