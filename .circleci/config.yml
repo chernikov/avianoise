@@ -4,11 +4,12 @@ general:
       only:
         - staging
         - master
+        - ci
 jobs:
   build-server:
     description: "[Server] Build .net application"
     docker: 
-      - image : mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image : chernikov/circleci-dotnet3.1
     steps:
       - checkout
       - run:
@@ -16,22 +17,62 @@ jobs:
           command: dotnet restore
       - run:
           name: "[Server] Build .net core"
-          command: dotnet build --configuration Release
+          command: dotnet build
+      - run:
+          name: "[Server] Publish Web"
+          working_directory : "avianoise.Web"
+          command: dotnet publish -c Release -o .build/out
+      - setup_remote_docker
+      - run: 
+         name: "Create avianoise.Web docker image"
+         working_directory: "avianoise.Web"
+         command: docker build -t chernikov/avianoise.web .
+      - run: 
+         name: "Login to hub.docker.com"
+         command : echo "$docker_password" | docker login --username $docker_user --password-stdin
+      - run: 
+         name: "Push image"
+         command : docker push chernikov/avianoise.web
   build-client:
     description: "[Client] Build client application"
-    working_directory: ~/avianoise.Client
-    docker: 
-      - image : angular/ngcontainer
+    machine : true
     steps:
       - checkout
       - run:
-          name: "[Client] Restore packages"
-          command: yarn install
+          name: "[Client] Docker build"
+          working_directory: avianoise.Client
+          command: docker build -t chernikov/avianoise.client .
+      - run: 
+         name: "Login to hub.docker.com"
+         command : echo "$docker_password" | docker login --username $docker_user --password-stdin
+      - run: 
+         name: "Push image"
+         command : docker push chernikov/avianoise.client
+  test-client:
+    description: "[Client] Test client application"
+    docker: 
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "avianoise.Client/package-lock.json" }}
+            - dependencies-
       - run:
-          name: "[Client] Build angular"
-          command: ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
+          name: "[Client] Restore packages"
+          working_directory: avianoise.Client
+          command: yarn install
+      - save_cache:
+          key: dependencies-{{ checksum "avianoise.Client/package-lock.json" }}
+          paths:
+            - avianoise.Client/node_modules
+      - run:
+          name: "[Client] Test angular"
+          working_directory: avianoise.Client
+          command: npm test
 workflows:
   build:
     jobs:
-      - build-server          
-      - build-client
+    - build-server  
+    - build-client
+    # - test-client
