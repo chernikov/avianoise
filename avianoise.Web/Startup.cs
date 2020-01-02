@@ -116,7 +116,6 @@ namespace avianoise.Web
             {
                 endpoints.MapControllers();
             });
-
         }
 
         private void RegisterBL(IServiceCollection services)
