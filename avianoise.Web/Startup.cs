@@ -39,6 +39,7 @@ namespace avianoise.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllers()
               .AddNewtonsoftJson(opt =>
               {
@@ -83,8 +84,10 @@ namespace avianoise.Web
             RegisterBL(services);
             RegisterRepositories(services);
             RegisterAutomapper(services);
-
+            CreatFolderStatic();
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -94,6 +97,7 @@ namespace avianoise.Web
                 app.UseDeveloperExceptionPage();
             }
             app.UseRequestLog();
+
 
             app.UseStaticFiles(
                new StaticFileOptions
@@ -171,6 +175,15 @@ namespace avianoise.Web
 
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+        }
+
+        private void CreatFolderStatic()
+        {
+            var di = new DirectoryInfo("static/files");
+            if (!di.Exists)
+            {
+                di.Create();
+            }
         }
     }
 }
