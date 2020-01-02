@@ -1,29 +1,23 @@
-
-<div class="header-wrap">
-    <div class="header content-center">
-        <div class="logout" (click)="onLogout()">Log out</div>
-    </div>
-</div>
-<div class="body content-center">
-    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" (mapClick)="createMarker($event)">
-        <agm-marker *ngFor="let airport of airports" [animation]="markersInitAnimation" [latitude]="airport.lat" [longitude]="airport.lng" [markerDraggable]="false"></agm-marker>
-        <agm-marker *ngIf="airport.lat && airport.lng" [animation]="markerCreateAnimation" [latitude]="airport.lat" [longitude]="airport.lng" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)"></agm-marker>
-    </agm-map>
-    
-    <form [formGroup]="form" (ngSubmit)="saveAirport()">
-        <div class="form-container">
-            <!-- <div class="coords">{{ airport.lat }}</div>
-            <div class="coords">{{ airport.lng }}</div> -->
-            <mat-form-field>
-                <input matInput type="text" placeholder="Latitude" [value]="airport.lat" disabled>
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput type="text" placeholder="Longitude" [value]=airport.lng disabled>
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput type="text" formControlName="name" placeholder="Airport name">
-            </mat-form-field>
+<div class="container">
+    <mat-toolbar color="primary" class="toolbar">
+        <div class="left">
+            <button mat-icon-button (click)="sideNav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <h1 class="title">Admin Avianoise</h1>
         </div>
-        <button mat-button [disabled]="!form.valid || !airport.lat || airport.lat == 0" [class.primary]="form.valid && airport.lat && airport.lat != 0">Add Airport</button>
-    </form>
+        <div class="logout" (click)="onLogout()">Log out</div>
+    </mat-toolbar>
+
+    <mat-sidenav-container autosize="true" class="side-nav-container">
+        <mat-sidenav class="side-nav" #sideNav [mode]="'side'" [opened]="true" >
+            <mat-nav-list>
+                <a mat-list-item routerLink="/admin/airport">Airports</a>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
 </div>

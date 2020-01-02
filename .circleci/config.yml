@@ -1,0 +1,37 @@
+version: 2.1
+general:
+    branches:
+      only:
+        - staging
+        - master
+jobs:
+  build-server:
+    description: "[Server] Build .net application"
+    docker: 
+      - image : mcr.microsoft.com/dotnet/core/sdk:3.1
+    steps:
+      - checkout
+      - run:
+          name: "[Server] Restore packages"
+          command: dotnet restore
+      - run:
+          name: "[Server] Build .net core"
+          command: dotnet build --configuration Release
+  build-client:
+    description: "[Client] Build client application"
+    working_directory: ~/avianoise.Client
+    docker: 
+      - image : angular/ngcontainer
+    steps:
+      - checkout
+      - run:
+          name: "[Client] Restore packages"
+          command: yarn install
+      - run:
+          name: "[Client] Build angular"
+          command: ng build --prod --output-path app --deploy-url /app/ --build-optimizer --vendor-chunk=true
+workflows:
+  build:
+    jobs:
+      #- build-server          
+      - build-client
