@@ -74,5 +74,5 @@ workflows:
   build:
     jobs:
     - build-server  
-    #- build-client
+    - build-client
     # - test-client
