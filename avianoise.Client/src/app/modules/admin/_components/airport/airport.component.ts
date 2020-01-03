@@ -12,11 +12,15 @@ import { ActivatedRoute } from '@angular/router';
 import { AirportService } from '@services/airport.service';
 import { ZipService } from '@services/zip.service';
 import { FileService } from '@services/file.service';
-import { takeWhile, take } from 'rxjs/operators';
-import { AirportZip } from '@classes/airport-zip.class';
+import { takeWhile } from 'rxjs/operators';
 import { File } from '@classes/file.class';
 import { Line } from '@classes/line.class';
-import { LineService } from '@services/lines.service';
+import { Zip } from '@classes/zip.class';
+import { AirportFileService } from '@services/airport-file.service';
+import { FileDecodeService } from '@services/file-decode.service';
+import { AirportLineService } from '@services/airport-line.service';
+import { AirportZipService } from '@services/airport-zip.service';
+import { ZipUnpackService } from '@services/zip-unpack.service';
 
 @Component({
   selector: 'app-airport',
@@ -29,7 +33,7 @@ export class AirportComponent implements OnInit, OnDestroy {
   airportIsLoad: boolean;
   url: string;
   token: string;
-  zipList: AirportZip[];
+  zipList: Zip[];
   files: File[];
   lines: Line[];
   public uploader: FileUploader
@@ -38,9 +42,13 @@ export class AirportComponent implements OnInit, OnDestroy {
     private store: Store<fromRoot.State>,
     private route: ActivatedRoute,
     private airportService: AirportService,
-    private zipService: ZipService,
+    private airportZipService: AirportZipService,
     private fileService: FileService,
-    private lineService: LineService
+    private zipService: ZipService,
+    private zipUnpackService: ZipUnpackService,
+    private airportFileService: AirportFileService,
+    private fileDecodeService: FileDecodeService,
+    private airportLineService: AirportLineService
   ) {
     this.lines = [];
     this.airportIsLoad = false;
@@ -60,7 +68,7 @@ export class AirportComponent implements OnInit, OnDestroy {
 
   getAirport() {
     this.route.params.subscribe(param => {
-      this.airportService.getAirport(param.id).pipe(takeWhile(() => this.alive)).subscribe(airport => {
+      this.airportService.get(param.id).pipe(takeWhile(() => this.alive)).subscribe(airport => {
         if(airport) {
           this.airport = airport;
           this.airportIsLoad = true;
@@ -75,19 +83,19 @@ export class AirportComponent implements OnInit, OnDestroy {
   }
 
   getZips() {
-    this.zipService.get(this.airport.id).pipe(takeWhile(() => this.alive)).subscribe(zips => {
+    this.airportZipService.get(this.airport.id).pipe(takeWhile(() => this.alive)).subscribe(zips => {
       this.zipList = zips;
     });
   }
 
   getFiles() {
-    this.fileService.get(this.airport.id).pipe(takeWhile(() => this.alive)).subscribe(files => {
+    this.airportFileService.get(this.airport.id).pipe(takeWhile(() => this.alive)).subscribe(files => {
       this.files = files;
     });
   }
 
   getLines() {
-    this.lineService.getAll(this.airport.id).pipe(takeWhile(() => this.alive)).subscribe(lines => {
+    this.airportLineService.get(this.airport.id).pipe(takeWhile(() => this.alive)).subscribe(lines => {
       this.lines = lines;
     });
   }
@@ -103,13 +111,13 @@ export class AirportComponent implements OnInit, OnDestroy {
   }
 
   onUnpack(id: number) {
-    this.zipService.unpack(id).pipe(takeWhile(() => this.alive)).subscribe(files => {
+    this.zipUnpackService.get(id).pipe(takeWhile(() => this.alive)).subscribe(files => {
       this.files = this.files.concat(files);
     });
   }
 
   onDecodeFile(id: number) {
-    this.fileService.decode(id).pipe(takeWhile(() => this.alive)).subscribe(lines => {
+    this.fileDecodeService.get(id).pipe(takeWhile(() => this.alive)).subscribe(lines => {
       this.lines = this.lines.concat(lines);
       console.log(this.lines);
     });
