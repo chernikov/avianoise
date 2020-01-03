@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
+import { Line } from '../classes/line.class';
+
 
 @Injectable({ providedIn: "root" })
-export class FileService
+export class FileDecodeService
 {
-	private apiUrl:string = 'api/file';
+	private apiUrl:string = 'api/file/decode';
 
 	private headers = new HttpHeaders({
 		"content-type": "application/json",
@@ -19,8 +21,8 @@ export class FileService
 
 	constructor(private http: HttpClient) {}
 
-	delete(fileId: number) : Observable<null> {
-		return this.http.delete<null>(this.apiUrl + "/" + fileId, this.options).pipe();
+	get(fileId: number) : Observable<Line[]> {
+		return this.http.get<Line[]>(this.apiUrl + "/" + fileId, this.options).pipe();
 	}
 
 }

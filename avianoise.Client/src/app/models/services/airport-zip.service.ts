@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
+import { Zip } from '../classes/zip.class';
+
 
 @Injectable({ providedIn: "root" })
-export class FileService
+export class AirportZipService
 {
-	private apiUrl:string = 'api/file';
+	private apiUrl:string = 'api/airport/zip';
 
 	private headers = new HttpHeaders({
 		"content-type": "application/json",
@@ -19,8 +21,12 @@ export class FileService
 
 	constructor(private http: HttpClient) {}
 
-	delete(fileId: number) : Observable<null> {
-		return this.http.delete<null>(this.apiUrl + "/" + fileId, this.options).pipe();
+	get(airportId: number) : Observable<Zip[]> {
+		return this.http.get<Zip[]>(this.apiUrl + "/" + airportId, this.options).pipe();
+	}
+
+	post(airportId: number) : Observable<Zip[]> {
+		return this.http.post<Zip[]>(this.apiUrl + "/" + airportId, this.options).pipe();
 	}
 
 }
