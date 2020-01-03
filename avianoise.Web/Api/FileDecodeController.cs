@@ -55,8 +55,8 @@ namespace avianoise.Web.Api
 
                         Points = line.Points.Select(p => new Domain.Point()
                         {
-                            Lat = p.X,
-                            Lng = p.Y
+                            Lat = p.Y,
+                            Lng = p.X
                         }).ToList()
                     };
                     var createdLine = lineBL.Create(lineEntry);

@@ -1,3 +1,48 @@
-<p>Airport</p>
+<!-- <p>Airport</p>
 <h1 *ngIf="!airportIsLoad">LOADING...</h1>
-<ng-container *ngIf="airport">{{ airport.name }}</ng-container>
+<ng-container *ngIf="airport">{{ airport.name }}</ng-container> -->
+<div class="container" *ngIf="airport">
+    <div class="main-info">
+        <div class="data">
+            <div class="item">{{ airport.name }}</div>
+            <div class="item">{{ airport.lat }}</div>
+            <div class="item">{{ airport.lng }}</div>
+        </div>
+        <div class="map">Map</div>
+    </div>
+    <div class="tabs">
+        <mat-tab-group dynamicHeight="true">
+            <mat-tab label="ZIP-file">
+                
+                    <div class="tab-container">
+                        <button mat-button class="primary" (click)="fileInput.click()">Select file</button>
+                        <input type="file" #fileInput ng2FileSelect [uploader]="uploader" (change)="uploader.uploadAll()" />
+                        <mat-list>
+                            <mat-list-item *ngFor="let zip of zipList; index as i">
+                                <span class="zip-name">{{ i + 1 }}. {{ zip.fileName }}</span>
+                                <button mat-button class="primary" (click)="onUnpack(zip.id)">Unpack</button>
+                                <button mat-button class="primary" (click)="onDeleteZip(zip.id)">Delete</button>
+                            </mat-list-item>
+                        </mat-list>
+                    </div>
+                
+            </mat-tab>
+            <mat-tab label="Files">
+                
+                    <mat-list>
+                        <mat-list-item *ngFor="let file of files; index as i">
+                            <span class="zip-name">{{ i + 1 }}. {{ file.fileName }}</span>
+                            <button mat-button class="primary" (click)="onDecodeFile(file.id)">Decode</button>
+                            <button mat-button class="primary" (click)="onDeleteFile(file.id)">Delete</button>
+                        </mat-list-item>
+                    </mat-list>
+                
+            </mat-tab>
+            <mat-tab label="Lines">
+                <agm-map [latitude]="airport.lat" [longitude]="airport.lng" [zoom]="2">
+                    <agm-polygon *ngFor="let line of lines" [paths]="line.points"></agm-polygon>
+                </agm-map>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
