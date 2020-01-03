@@ -46,3 +46,4 @@ packages
 /_workspaces.db
 logs/
 static/
+.build/
