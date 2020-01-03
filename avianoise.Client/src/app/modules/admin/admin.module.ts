@@ -9,10 +9,10 @@ import { MaterialModule } from '@shared/material.module';
 import { EditAirportComponent } from './_components/edit-airport/edit-airport.component';
 import { AirportComponent } from './_components/airport/airport.component';
 import { AirportListComponent } from './_components/airport-list/airport-list.component';
-import { FileSelectDirective } from 'ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
-    declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent, FileSelectDirective],
+    declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -21,7 +21,8 @@ import { FileSelectDirective } from 'ng2-file-upload';
         RouterModule.forChild(router),
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyCdcXxwWC9ritIfQ1f8QDocDtwd1oxG8-w'
-        })
+        }),
+        FileUploadModule
     ]
 })
 export class AdminModule { }
