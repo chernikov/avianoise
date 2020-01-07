@@ -8,7 +8,7 @@ import { RoleService } from '@services/role.service';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-root',
+  selector: 'ngx-app',
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnDestroy {
