@@ -18,5 +18,7 @@ namespace avianoise.DAL
         Line Update(Line entry);
 
         void Delete(int lineId);
+
+        void CreatePoints(List<Point> points);
     }
 }

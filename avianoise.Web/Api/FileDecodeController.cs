@@ -52,14 +52,16 @@ namespace avianoise.Web.Api
                         AirportId = fileEntry.AirportId,
                         FileId = fileEntry.Id,
                         Name = line.Name,
-
-                        Points = line.Points.Select(p => new Domain.Point()
-                        {
-                            Lat = p.Y,
-                            Lng = p.X
-                        }).ToList()
                     };
                     var createdLine = lineBL.Create(lineEntry);
+                    var points = line.Points.Select(p => new Domain.Point()
+                    {
+                        Number = p.Index,
+                        Lat = p.Y,
+                        Lng = p.X,
+                        LineId = createdLine.Id
+                    }).ToList();
+                    lineBL.CreatePoints(points);
                     var newLineEntry = lineBL.GetById(createdLine.Id);
                     listOfEntries.Add(newLineEntry);
                 }

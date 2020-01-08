@@ -18,5 +18,7 @@ namespace avianoise.BL
         Line Update(Line entry);
 
         void Delete(int lineId);
+
+        void CreatePoints(List<Point> points);
     }
 }
