@@ -8,7 +8,7 @@ namespace avianoise.Decoder
 {
     public class DxfDecoder : IDecoder
     {
-        private static Regex PolylineRegex = new Regex("POLYLINE(?<polyline>.*?)SEQEND", RegexOptions.Singleline);
+        private static readonly Regex PolylineRegex = new Regex("POLYLINE(?<polyline>.*?)SEQEND", RegexOptions.Singleline);
 
         public List<Line> Decode(string content)
         {
@@ -27,14 +27,17 @@ namespace avianoise.Decoder
 
                 var points = Regex.Split(polyline, "VERTEX", RegexOptions.Singleline).ToList();
                 points = points.Skip(1).ToList();
+                var index = 1;
                 foreach (var point in points)
                 {
                     var pointsPart = point.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     line.Points.Add(new Point()
                     {
+                        Index = index,
                         X = Convert.ToDouble(pointsPart[3], CultureInfo.InvariantCulture),
                         Y = Convert.ToDouble(pointsPart[5], CultureInfo.InvariantCulture)
                     });
+                    index++;
                 }
                 list.Add(line);
             }

@@ -40,5 +40,10 @@ namespace avianoise.BL
         {
             lineRepository.Delete(lineId);
         }
+
+        public void CreatePoints(List<Point> points)
+        {
+            lineRepository.CreatePoints(points);
+        }
     }
 }

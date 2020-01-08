@@ -29,5 +29,23 @@ namespace avianoise.Decoder.Tests
             var lines = sup.Decode(text);
             Assert.Pass();
         }
+
+        [Test]
+        public void Decode_Forecast_LaeqD_LL()
+        {
+            string text = File.ReadAllText(TestContext.CurrentContext.TestDirectory + "\\data\\Forecast_LaeqD_LL.dxf");
+            var sup = new DxfDecoder();
+            var lines = sup.Decode(text);
+            Assert.Pass();
+        }
+
+        [Test]
+        public void Decode_Current_LaeqD_LL()
+        {
+            string text = File.ReadAllText(TestContext.CurrentContext.TestDirectory + "\\data\\Current_LaeqD_LL.dxf");
+            var sup = new DxfDecoder();
+            var lines = sup.Decode(text);
+            Assert.Pass();
+        }
     }
 }
