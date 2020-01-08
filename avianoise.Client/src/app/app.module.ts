@@ -19,6 +19,9 @@ import * as fromAirportsReducer from '@state/airports/airports.reducer';
 import { environment } from '../environments/environment';
 import { JWT_Module_Options } from './config/jwt-options.config';
 import { AuthorGuard } from './guards/author.guard';
+import { ThemeModule } from './@theme/theme.module';
+import { NbMenuModule, NbSidebarModule } from '@nebular/theme';
+import { CoreModule } from './@core/core.module';
 
 
 
@@ -27,6 +30,10 @@ import { AuthorGuard } from './guards/author.guard';
     AppComponent
   ],
   imports: [
+    ThemeModule.forRoot(),
+    NbMenuModule.forRoot(),
+    NbSidebarModule.forRoot(),
+    CoreModule.forRoot(),
     HttpClientModule,
     routes,
     BrowserAnimationsModule,

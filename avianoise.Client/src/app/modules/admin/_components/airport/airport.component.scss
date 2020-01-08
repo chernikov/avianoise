@@ -1,0 +1,43 @@
+[type="file"] {
+    display: none;
+}
+
+.container {
+    height: 100%;
+}
+
+.main-info {
+    height: 50%;
+}
+
+.tabs {
+    height: 50%;
+}
+
+mat-tab-group {
+    max-height: 100% !important;
+    min-height: 100% !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+}
+
+mat-list {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.zip-name {
+    margin-right: 20px;
+}
+
+agm-map {
+    height: 300px;
+    width: 300px;
+}
+
+button:last-child {
+    margin-left: 20px;
+}

@@ -8,6 +8,7 @@
             <div class="item">
                 <a mat-list-item [routerLink]="['/admin/airport', airport.id]">{{ i + 1 }}. {{ airport.name }}</a>
                 <button mat-button class="primary" [routerLink]="['/admin/airport/edit', airport.id]">Edit</button>
+                <button mat-button class="primary" (click)="deleteAirport(airport)">Delete</button>
             </div>
             </ng-container>
         </mat-nav-list>

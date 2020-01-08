@@ -22,10 +22,24 @@
       "dom"
     ],
     "paths": {
-      "@classes/*": ["src/app/models/classes/*"],
-      "@services/*": ["src/app/models/services/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@state/*": ["src/app/state/*"]
+      "@angular/*": [
+        "../node_modules/@angular/*"
+      ],
+      "@nebular/*": [
+        "../node_modules/@nebular/*"
+      ],
+      "@classes/*": [
+        "src/app/models/classes/*"
+      ],
+      "@services/*": [
+        "src/app/models/services/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@state/*": [
+        "src/app/state/*"
+      ]
     }
   }
 }

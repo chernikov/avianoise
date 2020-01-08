@@ -31,7 +31,7 @@ export class AirportsEffects {
         ofType(airportsActions.AirportsActionsTypes.DeleteAirport),
         mergeMap(action => {
             let airport = (action as airportsActions.DeleteAirport).payload;
-            return this.airportsService.deleteAirport(airport.id).pipe(map(_ => 
+            return this.airportsService.delete(airport.id).pipe(map(_ => 
                 new airportsActions.GetAllAirports()
             ));
         })

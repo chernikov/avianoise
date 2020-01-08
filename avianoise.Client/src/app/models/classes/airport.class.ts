@@ -1,17 +1,26 @@
-import { AirportZip } from '@classes/airport-zip.class';
+import { File } from './file.class';
+import { Line } from './line.class';
+import { Zip } from './zip.class';
+
 
 export class Airport {
-    id: number;
-    name: string;
-    lat: number;
-    lng: number;
-    zips: AirportZip[];
+	id : number;
+	name : string;
+	lat : number;
+	lng : number;
+	files : File[];
+	lines : Line[];
+	zips : Zip[];
 
-    constructor() {
-        this.id = 0;
-        this.name = '';
-        this.lat = 0;
-        this.lng = 0;
-        this.zips = [];
-    }
+	constructor() {
+		this.id = 0;
+		this.name = '';
+		this.lat = 0;
+		this.lng = 0;
+		this.files = [];
+		this.lines = [];
+		this.zips = [];
+	}
+
+
 }

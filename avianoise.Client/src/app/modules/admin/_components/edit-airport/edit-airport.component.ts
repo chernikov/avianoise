@@ -7,11 +7,9 @@ import * as fromRoot from '@state/app.state';
 import * as fromAirportsActions from '@state/airports/airports.actions';
 
 import { AirportService } from '@services/airport.service';
-import { AirportForAdd } from '@classes/add-airport.class';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeWhile } from 'rxjs/operators';
 import { Airport } from '@classes/airport.class';
-import { AirportForChange } from '@classes/change-airport.class';
 
 @Component({
   selector: 'app-edit-airport',
@@ -48,7 +46,7 @@ export class EditAirportComponent implements OnDestroy {
   getAirport() {
     this.route.params.subscribe(param => {
       if(param.id) {
-        this.airportService.getAirport(param.id).pipe(takeWhile(() => this.alive)).subscribe(airport => {
+        this.airportService.get(param.id).pipe(takeWhile(() => this.alive)).subscribe(airport => {
           this.airport = airport;
           this.isEdit = true;
           this.form.setValue({
@@ -92,22 +90,25 @@ export class EditAirportComponent implements OnDestroy {
   }
 
   saveAirport() {
-    let airport: AirportForAdd = {
+    let airport: Airport = {
+      id: 0,
       lat: this.airport.lat,
       lng: this.airport.lng,
-      name: this.form.value.name
+      name: this.form.value.name,
+      files: [],
+      lines: [],
+      zips: []
     };
     if(this.isEdit) {
-      let airportForChange: AirportForChange = {
-        id: this.airport.id,
-        ...airport
-      };
-      this.airportService.changeAirport(airportForChange).pipe(takeWhile(() => this.alive)).subscribe(airport => {
+      airport.id = this.airport.id;
+      airport.files = this.airport.files;
+      airport.zips = this.airport.zips;
+      this.airportService.put(airport).pipe(takeWhile(() => this.alive)).subscribe(airport => {
         this.store.dispatch(new fromAirportsActions.GetAllAirports());
         this.router.navigateByUrl('/admin/airport');
       });
     } else {
-      this.airportService.addAirport(airport).pipe(takeWhile(() => this.alive)).subscribe(airport => {
+      this.airportService.post(airport).pipe(takeWhile(() => this.alive)).subscribe(airport => {
         if(airport) {
           this.store.dispatch(new fromAirportsActions.GetAllAirports());
           this.router.navigateByUrl('/admin/airport');

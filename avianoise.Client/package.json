@@ -8,7 +8,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "app": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build --deploy-url /app/ --aot --extract-css true --build-optimizer true"
+    "build": "ng build --prod --extract-css true --build-optimizer true"
   },
   "private": true,
   "dependencies": {
@@ -25,13 +25,26 @@
     "@angular/platform-browser-dynamic": "~8.0.0",
     "@angular/router": "~8.0.0",
     "@auth0/angular-jwt": "^3.0.1",
+    "@nebular/auth": "^4.6.0",
+    "@nebular/eva-icons": "^4.6.0",
+    "@nebular/security": "^4.6.0",
+    "@nebular/theme": "^4.6.0",
     "@ng-toolkit/universal": "^8.0.3",
     "@ngrx/effects": "^8.5.2",
     "@ngrx/store": "^8.5.2",
     "@ngrx/store-devtools": "^8.5.2",
+    "bootstrap": "^4.4.1",
+    "eva-icons": "^1.1.2",
     "hammerjs": "^2.0.8",
+    "ionicons": "^4.6.3",
+    "nebular-icons": "^1.1.0",
+    "ng2-file-upload": "^1.4.0",
+    "pace-js": "^1.0.2",
+    "roboto-fontface": "^0.10.0",
     "rxjs": "~6.4.0",
+    "socicon": "^3.0.5",
     "tslib": "^1.9.0",
+    "typeface-exo": "0.0.61",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

@@ -39,13 +39,13 @@ namespace avianoise.Data
 
         public DbSet<Zip> Zips { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseSqlServer("Server=(local);Initial Catalog=avianoise;Trusted_Connection=True;MultipleActiveResultSets=true");
-            options.UseLoggerFactory(DbContextLoggerFactory);
-            options.EnableSensitiveDataLogging(true);
-            base.OnConfiguring(options);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //{
+        //    options.UseSqlServer("Server=(local);Initial Catalog=avianoise;Trusted_Connection=True;MultipleActiveResultSets=true");
+        //    options.UseLoggerFactory(DbContextLoggerFactory);
+        //    options.EnableSensitiveDataLogging(true);
+        //    base.OnConfiguring(options);
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

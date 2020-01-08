@@ -9,10 +9,15 @@ import { MaterialModule } from '@shared/material.module';
 import { EditAirportComponent } from './_components/edit-airport/edit-airport.component';
 import { AirportComponent } from './_components/airport/airport.component';
 import { AirportListComponent } from './_components/airport-list/airport-list.component';
+import { FileUploadModule } from 'ng2-file-upload';
+import { ThemeModule } from 'src/app/@theme/theme.module';
+import { NbMenuModule } from '@nebular/theme';
 
 @NgModule({
     declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent],
     imports: [
+        ThemeModule,
+        NbMenuModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
@@ -20,7 +25,8 @@ import { AirportListComponent } from './_components/airport-list/airport-list.co
         RouterModule.forChild(router),
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyCdcXxwWC9ritIfQ1f8QDocDtwd1oxG8-w'
-        })
+        }),
+        FileUploadModule
     ]
 })
 export class AdminModule { }
