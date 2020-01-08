@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class AirportListComponent {
   airports: Airport[];
+  test: any;
 
   constructor(
     private store: Store<fromRoot.State>,

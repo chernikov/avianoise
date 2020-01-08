@@ -21,6 +21,11 @@ import { FileDecodeService } from '@services/file-decode.service';
 import { AirportLineService } from '@services/airport-line.service';
 import { AirportZipService } from '@services/airport-zip.service';
 import { ZipUnpackService } from '@services/zip-unpack.service';
+import { LineService } from '@services/line.service';
+
+interface IFilteredLine extends Line {
+  checked: false;
+}
 
 @Component({
   selector: 'app-airport',
@@ -36,6 +41,8 @@ export class AirportComponent implements OnInit, OnDestroy {
   zipList: Zip[];
   files: File[];
   lines: Line[];
+  filteredLines: Line[];
+
   public uploader: FileUploader
 
   constructor(
@@ -48,9 +55,11 @@ export class AirportComponent implements OnInit, OnDestroy {
     private zipUnpackService: ZipUnpackService,
     private airportFileService: AirportFileService,
     private fileDecodeService: FileDecodeService,
-    private airportLineService: AirportLineService
+    private airportLineService: AirportLineService,
+    private lineService: LineService
   ) {
     this.lines = [];
+    this.filteredLines = [];
     this.airportIsLoad = false;
   }
 
@@ -97,6 +106,14 @@ export class AirportComponent implements OnInit, OnDestroy {
   getLines() {
     this.airportLineService.get(this.airport.id).pipe(takeWhile(() => this.alive)).subscribe(lines => {
       this.lines = lines;
+      /* let test: IFilteredLine[];
+      lines.forEach(item => {
+        let newItem: IFilteredLine = {
+          ...item,
+          checked: false
+        };
+        test.push(newItem);
+      }); */
     });
   }
 
@@ -119,8 +136,20 @@ export class AirportComponent implements OnInit, OnDestroy {
   onDecodeFile(id: number) {
     this.fileDecodeService.get(id).pipe(takeWhile(() => this.alive)).subscribe(lines => {
       this.lines = this.lines.concat(lines);
-      console.log(this.lines);
     });
+  }
+
+  switchLine(line: Line) {
+    if(this.filteredLines.find(item => item.id == line.id)) {
+      this.filteredLines = this.filteredLines.filter(item => item.id != line.id);
+    } else {
+      this.filteredLines.push(line);
+    }
+  }
+
+  clearMap() {
+    this.filteredLines = [];
+
   }
 
   onDeleteZip(id: number) {
@@ -132,6 +161,13 @@ export class AirportComponent implements OnInit, OnDestroy {
   onDeleteFile(id: number) {
     this.fileService.delete(id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
       this.getFiles();
+    });
+  }
+
+  onDeleteLine(id: number) {
+    this.lineService.delete(id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
+      this.getLines();
+      this.filteredLines = [];
     });
   }
 
