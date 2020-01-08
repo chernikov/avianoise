@@ -13,7 +13,8 @@ namespace avianoise.Web.Profiles
     {
         public LineProfile()
         {
-            CreateMap<Line, LineDto>();
+            CreateMap<Line, LineDto>()
+                .ForMember(p => p.Points, opt => opt.MapFrom(r => r.Points.OrderBy(p => p.Number)));
             CreateMap<LineDto, Line>();
         }
     }

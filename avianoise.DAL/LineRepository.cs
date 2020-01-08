@@ -63,5 +63,15 @@ namespace avianoise.DAL
                     context.SaveChanges();
                 }
             });
+
+        public void CreatePoints(List<Point> points) =>
+            Execute(context =>
+            {
+                foreach (var point in points)
+                {
+                    context.Points.Add(point);
+                }
+                context.SaveChanges();
+            });
     }
 }
