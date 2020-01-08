@@ -2,31 +2,11 @@
     display: none;
 }
 
-.container {
-    height: 100%;
-}
-
-.main-info {
-    height: 50%;
-}
-
-.tabs {
-    height: 50%;
-}
-
-mat-tab-group {
-    max-height: 100% !important;
-    min-height: 100% !important;
-    height: 100% !important;
-    overflow-y: auto !important;
-}
-
-mat-list {
-    display: flex;
-    flex-wrap: wrap;
-    max-height: 100%;
-    overflow-y: auto;
-    box-sizing: border-box;
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 .zip-name {
@@ -34,10 +14,18 @@ mat-list {
 }
 
 agm-map {
-    height: 300px;
-    width: 300px;
+    height: 400px;
+    width: 100%;
 }
 
-button:last-child {
+nb-tab {
+    max-height: 400px;
+}
+
+nb-list-item {
+    justify-content: space-between;
+}
+
+.delete-btn {
     margin-left: 20px;
 }

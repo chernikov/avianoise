@@ -1,48 +1,50 @@
-<!-- <p>Airport</p>
-<h1 *ngIf="!airportIsLoad">LOADING...</h1>
-<ng-container *ngIf="airport">{{ airport.name }}</ng-container> -->
 <div class="container" *ngIf="airport">
-    <div class="main-info">
-        <div class="data">
-            <div class="item">{{ airport.name }}</div>
-            <div class="item">{{ airport.lat }}</div>
-            <div class="item">{{ airport.lng }}</div>
-        </div>
-        <div class="map">Map</div>
-    </div>
-    <div class="tabs">
-        <mat-tab-group dynamicHeight="true">
-            <mat-tab label="ZIP-file">
-                
-                    <div class="tab-container">
-                        <button mat-button class="primary" (click)="fileInput.click()">Select file</button>
-                        <input type="file" #fileInput ng2FileSelect [uploader]="uploader" (change)="uploader.uploadAll()" />
-                        <mat-list>
-                            <mat-list-item *ngFor="let zip of zipList; index as i">
-                                <span class="zip-name">{{ i + 1 }}. {{ zip.fileName }}</span>
-                                <button mat-button class="primary" (click)="onUnpack(zip.id)">Unpack</button>
-                                <button mat-button class="primary" (click)="onDeleteZip(zip.id)">Delete</button>
-                            </mat-list-item>
-                        </mat-list>
+    <div class="title">{{ airport.name }}</div>
+    <agm-map [latitude]="airport.lat" [longitude]="airport.lng" [zoom]="3">
+        <agm-polygon *ngFor="let line of filteredLines" [paths]="line.points"></agm-polygon>
+        <agm-marker *ngIf="airport.lat && airport.lng" [animation]="markerCreateAnimation" [latitude]="airport.lat" [longitude]="airport.lng"></agm-marker>
+    </agm-map>
+    <nb-tabset>
+        <nb-tab tabTitle="ZIP-file">
+            <div class="tab-container">
+                <button nbButton (click)="fileInput.click()">Select file</button>
+                <input type="file" #fileInput ng2FileSelect [uploader]="uploader" (change)="uploader.uploadAll()" />
+                <nb-list>
+                    <nb-list-item *ngFor="let zip of zipList; index as i">
+                        <span class="zip-name">{{ i + 1 }}. {{ zip.fileName }}</span>
+                        <div>
+                            <button nbButton (click)="onUnpack(zip.id)">Unpack</button>
+                            <button class="delete-btn" nbButton [status]="'danger'" (click)="onDeleteZip(zip.id)">Delete</button>
+                        </div>
+                    </nb-list-item>
+                </nb-list>
+            </div>
+        </nb-tab>
+        <nb-tab tabTitle="Files">
+            <nb-list>
+                <nb-list-item *ngFor="let file of files; index as i">
+                    <span class="zip-name">{{ i + 1 }}. {{ file.fileName }}</span>
+                    <div>
+                        <button nbButton (click)="onDecodeFile(file.id)">Decode</button>
+                        <button class="delete-btn" nbButton [status]="'danger'" (click)="onDeleteFile(file.id)">Delete</button>
                     </div>
-                
-            </mat-tab>
-            <mat-tab label="Files">
-                
-                    <mat-list>
-                        <mat-list-item *ngFor="let file of files; index as i">
-                            <span class="zip-name">{{ i + 1 }}. {{ file.fileName }}</span>
-                            <button mat-button class="primary" (click)="onDecodeFile(file.id)">Decode</button>
-                            <button mat-button class="primary" (click)="onDeleteFile(file.id)">Delete</button>
-                        </mat-list-item>
-                    </mat-list>
-                
-            </mat-tab>
-            <mat-tab label="Lines">
-                <agm-map [latitude]="airport.lat" [longitude]="airport.lng" [zoom]="2">
-                    <agm-polygon *ngFor="let line of lines" [paths]="line.points"></agm-polygon>
-                </agm-map>
-            </mat-tab>
-        </mat-tab-group>
-    </div>
+                </nb-list-item>
+            </nb-list>
+        </nb-tab>
+        <nb-tab tabTitle="Lines">
+            <nb-list>
+                <nb-list-item>
+                    <button nbButton (click)="selectAllLines()">Select all</button>
+                    <button nbButton (click)="clearMap()">Clear Map</button>
+                </nb-list-item>
+                <nb-list-item *ngFor="let line of lines">
+                    <div>
+                        {{ line.id }}
+                        <nb-checkbox (change)="switchLine(line)"></nb-checkbox>
+                    </div>
+                    <button nbButton [status]="'danger'" (click)="onDeleteLine(line.id)">Delete</button>
+                </nb-list-item>
+            </nb-list>
+        </nb-tab>
+    </nb-tabset>
 </div>

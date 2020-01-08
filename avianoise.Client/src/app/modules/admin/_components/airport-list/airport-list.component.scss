@@ -1,27 +1,16 @@
-.container {
-    height: 100%;
-}
-
-.header {
-    max-width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 30px;
-    padding-bottom: 30px;
-}
-
-.body {
-    max-width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.item {
+nb-card-header {
     display: flex;
+    justify-content: flex-end;
+}
+
+nb-list-item {
     justify-content: space-between;
-    margin-bottom: 20px;
+}
+
+.del-btn {
+    margin-left: 20px;
 }
 
 a {
-    max-width: 50%;
+    cursor: pointer;
 }
