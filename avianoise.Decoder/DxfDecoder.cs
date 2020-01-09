@@ -34,8 +34,8 @@ namespace avianoise.Decoder
                     line.Points.Add(new Point()
                     {
                         Index = index,
-                        X = Convert.ToDouble(pointsPart[3], CultureInfo.InvariantCulture),
-                        Y = Convert.ToDouble(pointsPart[5], CultureInfo.InvariantCulture)
+                        Lat = Convert.ToDouble(pointsPart[5], CultureInfo.InvariantCulture),
+                        Lng = Convert.ToDouble(pointsPart[3], CultureInfo.InvariantCulture)
                     });
                     index++;
                 }
