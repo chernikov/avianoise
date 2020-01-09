@@ -15,14 +15,13 @@ namespace avianoise.DAL
         }
 
         public User Create(User userEntry)
-        {
-            return Execute(context =>
+            => Execute(context =>
             {
                 context.Users.Add(userEntry);
                 context.SaveChanges();
                 return userEntry;
             });
-        }
+
 
         public User GetByEmail(string email)
              => Query(context => context.Users.FirstOrDefault(p => string.Compare(p.Email, email, true) == 0));
