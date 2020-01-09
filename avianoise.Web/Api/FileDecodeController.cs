@@ -40,6 +40,15 @@ namespace avianoise.Web.Api
                 case ".dxf":
                     decoder = new DxfDecoder();
                     break;
+                case ".geojson":
+                    decoder = new GeoJsonDecoder();
+                    break;
+                case ".kml":
+                    decoder = new KmlDecoder();
+                    break;
+                case ".dwg":
+                    decoder = new DwgDecoder();
+                    break;
             }
 
             if (decoder != null)
@@ -57,8 +66,8 @@ namespace avianoise.Web.Api
                     var points = line.Points.Select(p => new Domain.Point()
                     {
                         Number = p.Index,
-                        Lat = p.Y,
-                        Lng = p.X,
+                        Lat = p.Lat,
+                        Lng = p.Lng,
                         LineId = createdLine.Id
                     }).ToList();
                     lineBL.CreatePoints(points);
