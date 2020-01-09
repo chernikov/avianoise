@@ -32,8 +32,8 @@ namespace avianoise.Decoder
                         line.Points.Add(new Point()
                         {
                             Index = index,
-                            Lat = coordinate[0].Value<double>(),
-                            Lng = coordinate[1].Value<double>(),
+                            Lat = coordinate[1].Value<double>(),
+                            Lng = coordinate[0].Value<double>(),
                         });
                         index++;
                     }
