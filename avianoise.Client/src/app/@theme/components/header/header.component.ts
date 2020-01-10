@@ -4,6 +4,10 @@ import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeServ
 import { UserData } from '../../../@core/data/users';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '@state/app.state';
+import * as fromAuthActions from '@state/auth/auth.actions';
 
 @Component({
   selector: 'ngx-header',
@@ -43,7 +47,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private menuService: NbMenuService,
               private themeService: NbThemeService,
               private userService: UserData,
-              private breakpointService: NbMediaBreakpointsService) {
+              private breakpointService: NbMediaBreakpointsService,
+              private store: Store<fromRoot.State>,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -87,5 +93,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateHome() {
     this.menuService.navigateHome();
     return false;
+  }
+
+  onLogout() {
+    this.store.dispatch(
+      new fromAuthActions.ClearAuthStorage()
+    );
+    this.router.navigateByUrl('login');
   }
 }
