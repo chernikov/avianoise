@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace avianoise.Decoder
 {
-    [DebuggerDisplay("X: {X} Y: {Y}")]
+    [DebuggerDisplay("Lat: {Lat} Lng: {Lng}")]
     public class Point
     {
         public int Index { get; set; }
 
-        public double X { get; set; }
+        public double Lat { get; set; }
 
-        public double Y { get; set; }
+        public double Lng { get; set; }
     }
 }

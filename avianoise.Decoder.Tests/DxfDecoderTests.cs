@@ -3,7 +3,8 @@ using System.IO;
 
 namespace avianoise.Decoder.Tests
 {
-    public class Tests
+    [TestFixture]
+    public class DxfDecoderTests
     {
         [SetUp]
         public void Setup()
