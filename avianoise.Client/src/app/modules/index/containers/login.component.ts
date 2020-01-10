@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import * as fromAuthActions from '@state/auth/auth.actions';
 import * as fromAuthState from '@state/auth/auth.state';
 import { Store, select } from '@ngrx/store';
 import { takeWhile } from 'rxjs/operators';
+import { $ } from 'protractor';
 
 @Component({
   selector: 'app-login',
@@ -42,7 +43,7 @@ export class LoginComponent implements OnDestroy {
   initForm() {
     this.form = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
-      password: [null, [Validators.required]]
+      password: [null]
     });
   }
 

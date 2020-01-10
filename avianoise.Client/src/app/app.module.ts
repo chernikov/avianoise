@@ -6,7 +6,6 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { MaterialModule } from '@shared/material.module';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { NgtUniversalModule } from '@ng-toolkit/universal';
@@ -20,7 +19,7 @@ import { environment } from '../environments/environment';
 import { JWT_Module_Options } from './config/jwt-options.config';
 import { AuthorGuard } from './guards/author.guard';
 import { ThemeModule } from './@theme/theme.module';
-import { NbMenuModule, NbSidebarModule } from '@nebular/theme';
+import { NbMenuModule, NbSidebarModule, NbLayoutModule } from '@nebular/theme';
 import { CoreModule } from './@core/core.module';
 
 
@@ -38,7 +37,6 @@ import { CoreModule } from './@core/core.module';
     routes,
     BrowserAnimationsModule,
     NgtUniversalModule,
-    MaterialModule,
     StoreModule.forRoot({
       auth: fromAuthReducer.reducer,
       airports: fromAirportsReducer.reducer
