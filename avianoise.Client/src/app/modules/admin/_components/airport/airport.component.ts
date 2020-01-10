@@ -22,10 +22,7 @@ import { AirportLineService } from '@services/airport-line.service';
 import { AirportZipService } from '@services/airport-zip.service';
 import { ZipUnpackService } from '@services/zip-unpack.service';
 import { LineService } from '@services/line.service';
-
-interface IFilteredLine extends Line {
-  checked: false;
-}
+import { ProxyLine } from 'src/app/models/proxy-classes/proxy-line.class';
 
 @Component({
   selector: 'app-airport',
@@ -40,8 +37,8 @@ export class AirportComponent implements OnInit, OnDestroy {
   token: string;
   zipList: Zip[];
   files: File[];
-  lines: Line[];
-  filteredLines: Line[];
+  lines: ProxyLine[];
+  filteredLines: ProxyLine[];
 
   public uploader: FileUploader
 
@@ -105,15 +102,16 @@ export class AirportComponent implements OnInit, OnDestroy {
 
   getLines() {
     this.airportLineService.get(this.airport.id).pipe(takeWhile(() => this.alive)).subscribe(lines => {
-      this.lines = lines;
-      /* let test: IFilteredLine[];
+      //this.lines = lines;
+      let newArr: ProxyLine[] = [];
       lines.forEach(item => {
-        let newItem: IFilteredLine = {
+        let newItem: ProxyLine = {
           ...item,
-          checked: false
+          isSelect: false
         };
-        test.push(newItem);
-      }); */
+        newArr.push(newItem);
+      });
+      this.lines = newArr;
     });
   }
 
@@ -135,21 +133,26 @@ export class AirportComponent implements OnInit, OnDestroy {
 
   onDecodeFile(id: number) {
     this.fileDecodeService.get(id).pipe(takeWhile(() => this.alive)).subscribe(lines => {
-      this.lines = this.lines.concat(lines);
+      this.getLines();
     });
   }
 
-  switchLine(line: Line) {
-    if(this.filteredLines.find(item => item.id == line.id)) {
-      this.filteredLines = this.filteredLines.filter(item => item.id != line.id);
-    } else {
-      this.filteredLines.push(line);
-    }
+  switchLine() {
+    this.filterLines();
+  }
+
+  filterLines() {
+    this.filteredLines = this.lines.filter(line => line.isSelect);
+  }
+
+  selectAllLines() {
+    this.lines.map(item => item.isSelect = true);
+    this.filterLines();
   }
 
   clearMap() {
-    this.filteredLines = [];
-
+    this.lines.map(item => item.isSelect = false);
+    this.filterLines();
   }
 
   onDeleteZip(id: number) {

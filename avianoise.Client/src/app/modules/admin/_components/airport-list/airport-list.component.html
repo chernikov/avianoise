@@ -5,7 +5,10 @@
   <nb-card-body>
     <nb-list>
       <nb-list-item *ngFor="let airport of airports; index as i">
-        <a [routerLink]="['/admin/airport', airport.id]">{{ i + 1 }}. {{ airport.name }}</a>
+        <div>
+          <span>{{ i + 1 }}.</span>
+          <a [routerLink]="['/admin/airport', airport.id]"> {{ airport.name }}</a>
+        </div>
         <div>
             <button nbButton [routerLink]="['/admin/airport/edit', airport.id]">Редагувати</button>
             <button nbButton [status]="'danger'" class="del-btn" (click)="deleteAirport(airport)">Видалити</button>
