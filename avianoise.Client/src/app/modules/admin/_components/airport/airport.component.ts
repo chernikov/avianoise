@@ -4,8 +4,6 @@ import { FileUploader } from 'ng2-file-upload';
 
 import * as fromRoot from '@state/app.state';
 import * as fromAuthState from '@state/auth/auth.state';
-import * as fromAirportsActions from '@state/airports/airports.actions';
-import * as fromAirportsState from '@state/airports/airports.state';
 
 import { Airport } from '@classes/airport.class';
 import { ActivatedRoute } from '@angular/router';
@@ -14,7 +12,6 @@ import { ZipService } from '@services/zip.service';
 import { FileService } from '@services/file.service';
 import { takeWhile } from 'rxjs/operators';
 import { File } from '@classes/file.class';
-import { Line } from '@classes/line.class';
 import { Zip } from '@classes/zip.class';
 import { AirportFileService } from '@services/airport-file.service';
 import { FileDecodeService } from '@services/file-decode.service';
@@ -102,7 +99,6 @@ export class AirportComponent implements OnInit, OnDestroy {
 
   getLines() {
     this.airportLineService.get(this.airport.id).pipe(takeWhile(() => this.alive)).subscribe(lines => {
-      //this.lines = lines;
       let newArr: ProxyLine[] = [];
       lines.forEach(item => {
         let newItem: ProxyLine = {

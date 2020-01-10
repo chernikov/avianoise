@@ -10,12 +10,13 @@ import { AirportComponent } from './_components/airport/airport.component';
 import { AirportListComponent } from './_components/airport-list/airport-list.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ThemeModule } from 'src/app/@theme/theme.module';
-import { NbMenuModule, NbButtonModule, NbCardModule, NbListModule, NbInputModule, NbTabsetModule, NbCheckboxModule } from '@nebular/theme';
+import { NbMenuModule, NbButtonModule, NbCardModule, NbListModule, NbInputModule, NbTabsetModule, NbCheckboxModule, NbLayoutModule } from '@nebular/theme';
 
 @NgModule({
     declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent],
     imports: [
         ThemeModule,
+        NbLayoutModule,
         NbMenuModule,
         NbTabsetModule,
         NbButtonModule,
