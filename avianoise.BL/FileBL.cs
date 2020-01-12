@@ -22,9 +22,9 @@ namespace avianoise.BL
             return fileRepository.Get(fileId);
         }
 
-        public List<File> GetListByAirport(int airportId)
+        public List<File> GetListByAirport(int airportId, bool onlyDecoded)
         {
-            return fileRepository.GetListByAirport(airportId);
+            return fileRepository.GetListByAirport(airportId, onlyDecoded);
         }
 
         public File Create(File entry)
@@ -35,6 +35,11 @@ namespace avianoise.BL
         public void Delete(int fileId)
         {
             fileRepository.Delete(fileId);
+        }
+
+        public File MarkDecodeFile(File fileEntry)
+        {
+            return fileRepository.MarkDecodeFile(fileEntry);
         }
     }
 }

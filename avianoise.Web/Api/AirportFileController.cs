@@ -31,9 +31,9 @@ namespace avianoise.Web.Api
         [Authorize]
         [Produces("application/json")]
         [ProducesResponseType(typeof(List<FileDto>), (int)HttpStatusCode.OK)]
-        public IActionResult Get(int airportId)
+        public IActionResult Get(int airportId, bool onlyDecoded = false)
         {
-            var list = fileBL.GetListByAirport(airportId);
+            var list = fileBL.GetListByAirport(airportId, onlyDecoded);
             var result = mapper.Map<List<Domain.File>, List<FileDto>>(list);
             return Ok(result);
         }

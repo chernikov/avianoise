@@ -25,6 +25,7 @@ namespace avianoise.DAL
             => Query(context =>
                 context.Lines
                     .Include(p => p.Points)
+                    .Include(p => p.File)
                     .Where(p => p.AirportId == airportId)
                     .ToList());
 
