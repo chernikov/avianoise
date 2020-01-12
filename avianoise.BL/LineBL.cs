@@ -26,6 +26,11 @@ namespace avianoise.BL
             return lineRepository.GetListByAirport(airportId);
         }
 
+        public List<Line> GetByFileId(int fileId)
+        {
+            return lineRepository.GetByFileId(fileId);
+        }
+
         public Line Create(Line entry)
         {
             return lineRepository.Create(entry);
@@ -45,5 +50,12 @@ namespace avianoise.BL
         {
             lineRepository.CreatePoints(points);
         }
+
+        public void DeleteLinesByFileId(int fileId)
+        {
+            lineRepository.DeleteLinesByFileId(fileId);
+        }
+
+
     }
 }
