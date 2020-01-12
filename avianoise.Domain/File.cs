@@ -27,6 +27,8 @@ namespace avianoise.Domain
 
         public string Content { get; set; }
 
+        public bool IsDecoded { get; set; }
+
         public ICollection<Line> Lines { get; set; }
     }
 }

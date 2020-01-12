@@ -51,6 +51,7 @@ namespace avianoise.Web.Api
                     break;
             }
 
+
             if (decoder != null)
             {
                 var lines = decoder.Decode(fileEntry.Content);
@@ -75,6 +76,9 @@ namespace avianoise.Web.Api
                     listOfEntries.Add(newLineEntry);
                 }
             }
+
+            fileBL.MarkDecodeFile(fileEntry);
+
             var result = mapper.Map<List<Domain.Line>, List<LineDto>>(listOfEntries);
             return Ok(result);
         }

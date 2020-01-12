@@ -11,12 +11,12 @@ namespace avianoise.BL
     {
         File Get(int fileId);
 
-        List<File> GetListByAirport(int airportId);
+        List<File> GetListByAirport(int airportId, bool onlyDecoded);
 
         File Create(File entry);
 
-
         void Delete(int fileId);
 
+        File MarkDecodeFile(File fileEntry);
     }
 }

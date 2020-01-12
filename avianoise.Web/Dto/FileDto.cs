@@ -12,6 +12,8 @@ namespace avianoise.Web.Dto
 
         public int AirportId { get; set; }
 
+        public bool IsDecoded { get; set; }
+
         public string FullPath { get; set; }
 
         public string FileName { get; set; }
