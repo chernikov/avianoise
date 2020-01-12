@@ -30,11 +30,11 @@ namespace avianoise.Web.Api
         [HttpGet("{airportId:int}")]
         [Authorize]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(List<FileDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<ExtendedFileDto>), (int)HttpStatusCode.OK)]
         public IActionResult Get(int airportId, bool onlyDecoded = false)
         {
             var list = fileBL.GetListByAirport(airportId, onlyDecoded);
-            var result = mapper.Map<List<Domain.File>, List<FileDto>>(list);
+            var result = mapper.Map<List<Domain.File>, List<ExtendedFileDto>>(list);
             return Ok(result);
         }
 
@@ -42,7 +42,7 @@ namespace avianoise.Web.Api
         [HttpPost("{airportId:int}")]
         [Authorize]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(List<FileDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<ExtendedFileDto>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Post(int airportId)
         {
             var files = Request.Form.Files;
@@ -70,7 +70,7 @@ namespace avianoise.Web.Api
                     list.Add(newFile);
                 }
             }
-            var result = mapper.Map<List<Domain.File>, List<FileDto>>(list);
+            var result = mapper.Map<List<Domain.File>, List<ExtendedFileDto>>(list);
             return Ok(result);
         }
 

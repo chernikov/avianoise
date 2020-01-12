@@ -29,11 +29,11 @@ namespace avianoise.Web.Api
         [Authorize]
         [HttpGet("{lineId:int}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(LineDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ExtendedLineDto), (int)HttpStatusCode.OK)]
         public IActionResult Get(int lineId)
         {
             var entry = lineBL.GetById(lineId);
-            var result = mapper.Map<LineDto>(entry);
+            var result = mapper.Map<ExtendedLineDto>(entry);
             return Ok(result);
         }
 

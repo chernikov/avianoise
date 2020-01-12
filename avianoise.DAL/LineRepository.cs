@@ -19,6 +19,7 @@ namespace avianoise.DAL
             => Query(context =>
                 context.Lines
                     .Include(p => p.Points)
+                    .Include(p => p.File)
                     .FirstOrDefault(p => p.Id == entryId));
 
         public List<Line> GetListByAirport(int airportId)
