@@ -14,7 +14,10 @@ namespace avianoise.Web.Dto
 
         public int FileId { get; set; }
 
+
         public DateTime AddedDate { get; set; }
+
+        public string Name { get; set; }
 
         public double Level { get; set; }
 

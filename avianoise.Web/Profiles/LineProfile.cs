@@ -15,6 +15,8 @@ namespace avianoise.Web.Profiles
         {
             CreateMap<Line, LineDto>()
                 .ForMember(p => p.Points, opt => opt.MapFrom(r => r.Points.OrderBy(p => p.Number)));
+            CreateMap<Line, ExtendedLineDto>()
+             .ForMember(p => p.Points, opt => opt.MapFrom(r => r.Points.OrderBy(p => p.Number)));
             CreateMap<LineDto, Line>();
         }
     }

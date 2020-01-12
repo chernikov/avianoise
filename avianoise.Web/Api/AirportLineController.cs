@@ -33,7 +33,7 @@ namespace avianoise.Web.Api
         public IActionResult Get(int airportId)
         {
             var list = lineBL.GetListByAirport(airportId);
-            var result = mapper.Map<List<Line>, List<LineDto>>(list);
+            var result = mapper.Map<List<Line>, List<ExtendedLineDto>>(list);
             return Ok(result);
         }
     }
