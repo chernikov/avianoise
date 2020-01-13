@@ -17,11 +17,13 @@ namespace avianoise.Web.Api
     public class LineController : BaseUserController
     {
         private readonly ILineBL lineBL;
+        private readonly IFileBL fileBL;
         private readonly IMapper mapper;
 
-        public LineController(IUserBL userBL, ILineBL lineBL, IMapper mapper) : base(userBL)
+        public LineController(IUserBL userBL, ILineBL lineBL, IFileBL fileBL, IMapper mapper) : base(userBL)
         {
             this.lineBL = lineBL;
+            this.fileBL = fileBL;
             this.mapper = mapper;
         }
 
@@ -58,7 +60,15 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
         public IActionResult Delete(int lineId)
         {
+            var line = lineBL.GetById(lineId);
+            var fileId = line.FileId;
             lineBL.Delete(lineId);
+            var lines = lineBL.GetByFileId(fileId);
+            if (lines.Count == 0)
+            {
+                var file = fileBL.Get(fileId);
+                fileBL.MarkDecodeFile(file, false);
+            }
             return Ok();
         }
     }

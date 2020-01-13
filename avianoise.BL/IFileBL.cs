@@ -17,6 +17,6 @@ namespace avianoise.BL
 
         void Delete(int fileId);
 
-        File MarkDecodeFile(File fileEntry);
+        File MarkDecodeFile(File fileEntry, bool isDecoded = true);
     }
 }
