@@ -13,6 +13,8 @@ namespace avianoise.DAL
 
         List<Line> GetListByAirport(int airportId);
 
+        List<Line> GetByFileId(int fileId);
+
         Line Create(Line entry);
 
         Line Update(Line entry);
@@ -20,5 +22,9 @@ namespace avianoise.DAL
         void Delete(int lineId);
 
         void CreatePoints(List<Point> points);
+
+        void DeleteLinesByFileId(int fileId);
+
+
     }
 }

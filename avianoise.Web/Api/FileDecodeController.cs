@@ -29,10 +29,24 @@ namespace avianoise.Web.Api
         [Authorize]
         [Produces("application/json")]
         [ProducesResponseType(typeof(List<LineDto>), (int)HttpStatusCode.OK)]
-        public IActionResult Get(int fileId)
+        public IActionResult Get(int fileId, bool force = false)
         {
             var listOfEntries = new List<Domain.Line>();
             var fileEntry = fileBL.Get(fileId);
+
+            if (fileEntry.IsDecoded)
+            {
+                if (force)
+                {
+                    lineBL.DeleteLinesByFileId(fileId);
+                }
+                else
+                {
+                    var lines = lineBL.GetByFileId(fileId);
+                    return Ok(mapper.Map<List<Domain.Line>, List<LineDto>>(lines));
+                }
+            }
+
             IDecoder decoder = null;
 
             switch (fileEntry.Extension)

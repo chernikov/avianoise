@@ -19,6 +19,7 @@ namespace avianoise.DAL
             => Query(context =>
                 context.Lines
                     .Include(p => p.Points)
+                    .Include(p => p.File)
                     .FirstOrDefault(p => p.Id == entryId));
 
         public List<Line> GetListByAirport(int airportId)
@@ -27,6 +28,14 @@ namespace avianoise.DAL
                     .Include(p => p.Points)
                     .Include(p => p.File)
                     .Where(p => p.AirportId == airportId)
+                    .ToList());
+
+        public List<Line> GetByFileId(int fileId)
+            => Query(context =>
+                context.Lines
+                    .Include(p => p.Points)
+                    .Include(p => p.File)
+                    .Where(p => p.FileId == fileId)
                     .ToList());
 
         public Line Create(Line entry) =>
@@ -74,5 +83,16 @@ namespace avianoise.DAL
                 }
                 context.SaveChanges();
             });
+
+        public void DeleteLinesByFileId(int fileId)
+             =>
+            Execute(context =>
+            {
+                var forRemove = context.Lines.Where(p => p.FileId == fileId);
+                context.Lines.RemoveRange(forRemove);
+                context.SaveChanges();
+            });
+
+
     }
 }

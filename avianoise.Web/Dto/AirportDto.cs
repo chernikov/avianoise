@@ -17,7 +17,7 @@ namespace avianoise.Web.Dto
         public double Lng { get; set; }
 
 
-        public List<FileDto> Files { get; set; }
+        public List<ExtendedFileDto> Files { get; set; }
 
         public List<LineDto> Lines { get; set; }
 
