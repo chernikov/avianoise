@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
-import { Role } from '../classes/role.class';
+import { Token } from '../classes/token.class';
 
 
 @Injectable({ providedIn: "root" })
-export class RoleService
+export class TokenService
 {
-	private apiUrl:string = 'api/role';
+	private apiUrl:string = 'api/token';
 
 	private headers = new HttpHeaders({
 		"content-type": "application/json",
@@ -21,12 +21,8 @@ export class RoleService
 
 	constructor(private http: HttpClient) {}
 
-	getAll() : Observable<Role[]> {
-		return this.http.get<Role[]>(this.apiUrl, this.options).pipe();
-	}
-
-	get(id: number) : Observable<Role> {
-		return this.http.get<Role>(this.apiUrl + "/" + id, this.options).pipe();
+	get() : Observable<Token> {
+		return this.http.get<Token>(this.apiUrl, this.options).pipe();
 	}
 
 }

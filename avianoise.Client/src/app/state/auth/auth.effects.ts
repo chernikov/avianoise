@@ -45,6 +45,7 @@ export class AuthEffects {
                 this.localStorage.setItem(applicationOptions.authTokenName, token);
                 let obj = this.jwtHelperService.decodeToken(token);
                 let user = JSON.parse(obj.user);
+                console.log(token);
                 return new authActions.PopulateUser(user);
             } else {
                 return new authActions.ClearAuthStorage();

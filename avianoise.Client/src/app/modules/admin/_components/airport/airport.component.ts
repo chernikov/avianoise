@@ -4,8 +4,6 @@ import { FileUploader } from 'ng2-file-upload';
 
 import * as fromRoot from '@state/app.state';
 import * as fromAuthState from '@state/auth/auth.state';
-import * as fromAirportsActions from '@state/airports/airports.actions';
-import * as fromAirportsState from '@state/airports/airports.state';
 
 import { Airport } from '@classes/airport.class';
 import { ActivatedRoute } from '@angular/router';
@@ -14,15 +12,14 @@ import { ZipService } from '@services/zip.service';
 import { FileService } from '@services/file.service';
 import { takeWhile } from 'rxjs/operators';
 import { File } from '@classes/file.class';
-import { Line } from '@classes/line.class';
 import { Zip } from '@classes/zip.class';
 import { AirportFileService } from '@services/airport-file.service';
 import { FileDecodeService } from '@services/file-decode.service';
-import { AirportLineService } from '@services/airport-line.service';
 import { AirportZipService } from '@services/airport-zip.service';
 import { ZipUnpackService } from '@services/zip-unpack.service';
 import { LineService } from '@services/line.service';
 import { ProxyLine } from 'src/app/models/proxy-classes/proxy-line.class';
+import { ProxyFile } from 'src/app/models/proxy-classes/proxy-file.class';
 
 @Component({
   selector: 'app-airport',
@@ -37,6 +34,7 @@ export class AirportComponent implements OnInit, OnDestroy {
   token: string;
   zipList: Zip[];
   files: File[];
+  decodedFiles: ProxyFile[];
   lines: ProxyLine[];
   filteredLines: ProxyLine[];
 
@@ -52,7 +50,6 @@ export class AirportComponent implements OnInit, OnDestroy {
     private zipUnpackService: ZipUnpackService,
     private airportFileService: AirportFileService,
     private fileDecodeService: FileDecodeService,
-    private airportLineService: AirportLineService,
     private lineService: LineService
   ) {
     this.lines = [];
@@ -75,13 +72,12 @@ export class AirportComponent implements OnInit, OnDestroy {
   getAirport() {
     this.route.params.subscribe(param => {
       this.airportService.get(param.id).pipe(takeWhile(() => this.alive)).subscribe(airport => {
-        if(airport) {
+        if (airport) {
           this.airport = airport;
           this.airportIsLoad = true;
           this.url = 'api/airport/zip/' + airport.id;
           this.getZips();
           this.getFiles();
-          this.getLines();
           this.createUploader();
         }
       });
@@ -95,24 +91,33 @@ export class AirportComponent implements OnInit, OnDestroy {
   }
 
   getFiles() {
-    this.airportFileService.get(this.airport.id).pipe(takeWhile(() => this.alive)).subscribe(files => {
+    this.airportFileService.get(this.airport.id, false).pipe(takeWhile(() => this.alive)).subscribe(files => {
       this.files = files;
+      this.getDecodedFiles();
     });
   }
 
-  getLines() {
-    this.airportLineService.get(this.airport.id).pipe(takeWhile(() => this.alive)).subscribe(lines => {
-      //this.lines = lines;
-      let newArr: ProxyLine[] = [];
-      lines.forEach(item => {
-        let newItem: ProxyLine = {
-          ...item,
-          isSelect: false
-        };
-        newArr.push(newItem);
+  getDecodedFiles() {
+    let arr: ProxyFile[] = [];
+    this.files.filter(file => file.isDecoded).forEach(file => {
+      let newLinesArr: ProxyLine[] = [];
+      file.lines.forEach(line => {
+        if (file.lines && file.lines.length) {
+          let newLine: ProxyLine = {
+            ...line,
+            isSelect: false
+          };
+          newLinesArr.push(newLine);
+        }
       });
-      this.lines = newArr;
-    });
+      let newFile: ProxyFile = {
+        ...file,
+        isSelect: false,
+        lines: newLinesArr
+      };
+      arr.push(newFile);
+    })
+    this.decodedFiles = arr;
   }
 
   createUploader() {
@@ -131,28 +136,52 @@ export class AirportComponent implements OnInit, OnDestroy {
     });
   }
 
-  onDecodeFile(id: number) {
-    this.fileDecodeService.get(id).pipe(takeWhile(() => this.alive)).subscribe(lines => {
-      this.getLines();
+  onDecodeFile(file: File) {
+    this.fileDecodeService.get(file.id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
+      this.getFiles();
+      file.isDecoded = true;
     });
   }
 
-  switchLine() {
+  switchFile(decodedFile: ProxyFile) {
+    decodedFile.lines.map(line => {
+      if (decodedFile.isSelect) {
+        line.isSelect = true;
+        this.filteredLines.push(line);
+      } else {
+        line.isSelect = false;
+      }
+    });
     this.filterLines();
+  }
+
+  switchLine(line: ProxyLine) {
+    if (line.isSelect) {
+      this.filteredLines.push(line);
+    } else {
+      this.filteredLines = this.filteredLines.filter(item => item.id != line.id);
+    }
+    this.checkFileSelect();
   }
 
   filterLines() {
-    this.filteredLines = this.lines.filter(line => line.isSelect);
+    this.filteredLines = this.filteredLines.filter(line => line.isSelect);
   }
 
-  selectAllLines() {
-    this.lines.map(item => item.isSelect = true);
-    this.filterLines();
+  checkFileSelect() {
+    this.decodedFiles.map(file => {
+      if (file.lines.some(line => line.isSelect)) {
+        file.isSelect = true;
+      } else {
+        file.isSelect = false;
+      }
+    })
   }
 
   clearMap() {
-    this.lines.map(item => item.isSelect = false);
+    this.filteredLines.map(line => line.isSelect = false);
     this.filterLines();
+    this.checkFileSelect();
   }
 
   onDeleteZip(id: number) {
@@ -167,10 +196,16 @@ export class AirportComponent implements OnInit, OnDestroy {
     });
   }
 
+  onDeleteDecodedFile(id: number) {
+    this.fileService.delete(id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
+      this.getFiles();
+    });
+  }
+
   onDeleteLine(id: number) {
     this.lineService.delete(id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
-      this.getLines();
-      this.filteredLines = [];
+      this.getFiles();
+      this.filteredLines = this.filteredLines.filter(line => line.id != id);
     });
   }
 
