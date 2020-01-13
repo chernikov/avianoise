@@ -38,7 +38,6 @@ export class EditAirportComponent implements OnDestroy {
     private route: ActivatedRoute
   ) {
     this.airport = new Airport();
-    this.setCurrentLocation();
     this.initForm();
     this.getAirport();
   }
@@ -55,6 +54,7 @@ export class EditAirportComponent implements OnDestroy {
           });
           this.latitude = airport.lat;
           this.longitude = airport.lng;
+          this.zoom = 12;
         });
       }
     });
@@ -64,16 +64,6 @@ export class EditAirportComponent implements OnDestroy {
     this.form = this.formBuilder.group({
       name: [null, Validators.required]
     });
-  }
-
-  private setCurrentLocation() {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.zoom = 8;
-      });
-    }
   }
 
   createMarker(event: MouseEvent) {

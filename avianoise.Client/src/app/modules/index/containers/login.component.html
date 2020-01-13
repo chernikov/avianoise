@@ -5,7 +5,7 @@
                 <input nbInput placeholder="Email" type="email" formControlName="email">
                 <input nbInput placeholder="Password" type="password" formControlName="password" required>
                 <span *ngIf="errorMessage">{{ errorMessage }}</span>
-                <button nbButton [disabled]="!form.valid || formInProgress">Log in</button>
+                <button nbButton [disabled]="!form.valid || formInProgress">Увійти</button>
             </form>
         </div>
     </nb-layout-column>

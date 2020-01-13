@@ -13,7 +13,7 @@ export class AdminComponent {
   constructor( ) {
     this.menu = [
       {
-        title: 'Airports',
+        title: 'Аеропорти',
         link: '/admin/airport/',
         icon: 'home-outline'
       }
