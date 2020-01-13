@@ -21,14 +21,7 @@ namespace avianoise.BL
 
         public Airport Get(int airportId)
         {
-            var airport = airportRepository.Get(airportId);
-            if (airport != null)
-            {
-                var lines = lineRepository.GetListByAirport(airportId);
-                airport.Lines = lines;
-                return airport;
-            }
-            return null;
+            return airportRepository.Get(airportId);
         }
 
         public List<Airport> GetList()

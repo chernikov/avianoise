@@ -29,6 +29,5 @@ namespace avianoise.Web.Api
             fileBL.Delete(fileId);
             return Ok();
         }
-
     }
 }

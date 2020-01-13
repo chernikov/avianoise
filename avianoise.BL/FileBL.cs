@@ -37,9 +37,9 @@ namespace avianoise.BL
             fileRepository.Delete(fileId);
         }
 
-        public File MarkDecodeFile(File fileEntry)
+        public File MarkDecodeFile(File fileEntry, bool isDecoded = true)
         {
-            return fileRepository.MarkDecodeFile(fileEntry);
+            return fileRepository.MarkDecodeFile(fileEntry, isDecoded);
         }
     }
 }

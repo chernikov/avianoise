@@ -19,7 +19,6 @@ namespace avianoise.DAL
             => Query(context =>
                 context.Files
                 .Include(p => p.Lines)
-                .ThenInclude(l => l.Points)
                 .Where(p => p.AirportId == airportId && (!onlyDecoded || p.IsDecoded))
                 .ToList());
 
@@ -44,13 +43,13 @@ namespace avianoise.DAL
                 }
             });
 
-        public File MarkDecodeFile(File fileEntry)
+        public File MarkDecodeFile(File fileEntry, bool isDecoded)
              => Execute(context =>
              {
                  var entry = context.Files.Find(fileEntry.Id);
                  if (entry != null)
                  {
-                     entry.IsDecoded = true;
+                     entry.IsDecoded = isDecoded;
                      context.SaveChanges();
                  }
                  return entry;
