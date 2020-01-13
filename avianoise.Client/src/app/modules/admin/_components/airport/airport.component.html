@@ -23,7 +23,7 @@
                 <nb-list-item *ngFor="let file of files; index as i">
                     <span>{{ i + 1 }}. {{ file.fileName }}</span>
                     <div>
-                        <button nbButton (click)="onDecodeFile(file.id)">Decode</button>
+                        <button nbButton (click)="onDecodeFile(file)" [disabled]="file.isDecoded">Decode</button>
                         <button class="delete-btn" nbButton [status]="'danger'" (click)="onDeleteFile(file.id)">Delete</button>
                     </div>
                 </nb-list-item>
@@ -32,15 +32,21 @@
         <nb-tab tabTitle="Lines">
             <nb-list>
                 <nb-list-item>
-                    <button nbButton (click)="selectAllLines()">Select all</button>
                     <button nbButton (click)="clearMap()">Clear Map</button>
                 </nb-list-item>
-                <nb-list-item *ngFor="let line of lines; index as i">
+                <nb-list-item *ngFor="let decodedFile of decodedFiles; index as i">
                     <div>
-                        <span>{{ i + 1 }}. {{ line.id }}</span>
-                        <nb-checkbox [(ngModel)]="line.isSelect" (change)="switchLine()"></nb-checkbox>
+                        <span>{{ i + 1 }}. {{ decodedFile.fileName }}</span>
+                        <nb-checkbox [(ngModel)]="decodedFile.isSelect" (change)="switchFile(decodedFile)"></nb-checkbox>
+                        <nb-list>
+                            <nb-list-item *ngFor="let line of decodedFile.lines">
+                                <span>{{ line.id }}</span>
+                                <nb-checkbox [(ngModel)]="line.isSelect" (change)="switchLine(line)"></nb-checkbox>
+                                <button nbButton [status]="'danger'" (click)="onDeleteLine(line.id)">Delete</button>
+                            </nb-list-item>
+                        </nb-list>
                     </div>
-                    <button nbButton [status]="'danger'" (click)="onDeleteLine(line.id)">Delete</button>
+                    <button nbButton [status]="'danger'" (click)="onDeleteDecodedFile(decodedFile.id)">Delete</button>
                 </nb-list-item>
             </nb-list>
         </nb-tab>

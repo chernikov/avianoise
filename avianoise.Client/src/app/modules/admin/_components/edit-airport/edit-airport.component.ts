@@ -47,6 +47,7 @@ export class EditAirportComponent implements OnDestroy {
     this.route.params.subscribe(param => {
       if(param.id) {
         this.airportService.get(param.id).pipe(takeWhile(() => this.alive)).subscribe(airport => {
+          console.log(airport);
           this.airport = airport;
           this.isEdit = true;
           this.form.setValue({

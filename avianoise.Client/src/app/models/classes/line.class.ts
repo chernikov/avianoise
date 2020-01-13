@@ -6,6 +6,7 @@ export class Line {
 	airportId : number;
 	fileId : number;
 	addedDate : string;
+	name : string;
 	level : number;
 	published : boolean;
 	points : Point[];
@@ -15,6 +16,7 @@ export class Line {
 		this.airportId = 0;
 		this.fileId = 0;
 		this.addedDate = '';
+		this.name = '';
 		this.level = 0;
 		this.published = false;
 		this.points = [];

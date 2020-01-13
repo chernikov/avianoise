@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
-import { Login } from '@classes/login.class';
-import { Token } from '@classes/token.class';
-import { BadRequestMessage } from '@classes/bad-request-message.class';
+import { Login } from '../classes/login.class';
+import { Token } from '../classes/token.class';
+import { BadRequestMessage } from '../classes/bad-request-message.class';
 
 
 @Injectable({ providedIn: "root" })
