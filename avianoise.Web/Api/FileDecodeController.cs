@@ -5,6 +5,7 @@ using avianoise.Web.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 
@@ -68,7 +69,8 @@ namespace avianoise.Web.Api
 
             if (decoder != null)
             {
-                var lines = decoder.Decode(fileEntry.Content);
+                var content = System.IO.File.ReadAllText(Path.Combine(fileEntry.FullPath));
+                var lines = decoder.Decode(content);
                 foreach (var line in lines)
                 {
                     var lineEntry = new Domain.Line()

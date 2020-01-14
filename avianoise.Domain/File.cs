@@ -25,8 +25,6 @@ namespace avianoise.Domain
         [MaxLength(10)]
         public string Extension { get; set; }
 
-        public string Content { get; set; }
-
         public bool IsDecoded { get; set; }
 
         public ICollection<Line> Lines { get; set; }
