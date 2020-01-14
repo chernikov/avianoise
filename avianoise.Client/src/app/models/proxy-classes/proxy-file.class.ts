@@ -3,5 +3,7 @@ import { ProxyLine } from './proxy-line.class';
 
 export class ProxyFile extends File {
     isSelect: boolean = false;
-    lines: ProxyLine[];
+    isDecoding: boolean = false;
+    isDeleting: boolean = false;
+    isClearing: boolean = false;
 }

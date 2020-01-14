@@ -1,55 +1,60 @@
-<div class="container" *ngIf="airport">
+<div class="main-container" *ngIf="airport">
   <div class="title">
-      {{ airport.name }}
-      <button nbButton [routerLink]="['/admin/airport/edit', airport.id]">Редагувати</button>
-    </div>
-  <agm-map [latitude]="airport.lat" [longitude]="airport.lng" [zoom]="12">
-    <agm-polygon *ngFor="let line of filteredLines" [paths]="line.points"></agm-polygon>
-    <agm-marker *ngIf="airport.lat && airport.lng" [animation]="markerCreateAnimation" [latitude]="airport.lat"
-      [longitude]="airport.lng"></agm-marker>
-  </agm-map>
-  <nb-tabset>
-    <nb-tab tabTitle="Архіви">
-      <button nbButton (click)="fileInput.click()">Select file</button>
-      <input type="file" #fileInput ng2FileSelect [uploader]="uploader" (change)="uploader.uploadAll()" />
-      <nb-list>
-        <nb-list-item *ngFor="let zip of zipList; index as i">
-          <span>{{ i + 1 }}. {{ zip.fileName }}</span>
-          <div>
-            <button nbButton (click)="onUnpack(zip.id)">Unpack</button>
-            <button class="delete-btn" nbButton [status]="'danger'" (click)="onDeleteZip(zip.id)">Видалити</button>
-          </div>
-        </nb-list-item>
-      </nb-list>
-    </nb-tab>
-    <nb-tab tabTitle="Файли">
-      <nb-list>
-        <nb-list-item *ngFor="let file of files; index as i">
-          <span>{{ i + 1 }}. {{ file.fileName }}</span>
-          <div>
-            <button nbButton (click)="onDecodeFile(file)" [disabled]="file.isDecoded">Декодувати</button>
-            <button class="delete-btn" nbButton [status]="'danger'" (click)="onDeleteFile(file.id)">Видалити</button>
-          </div>
-        </nb-list-item>
-      </nb-list>
-    </nb-tab>
-    <nb-tab tabTitle="Лінії">
-      <nb-accordion multi>
-        <nb-accordion-item #accordionItem *ngFor="let decodedFile of decodedFiles; index as i">
-          <nb-accordion-item-header>
-              <span>{{ i + 1 }}. {{ decodedFile.fileName }}</span>
-              <nb-checkbox [(ngModel)]="decodedFile.isSelect" (change)="[accordionItem.toggle(), switchFile(decodedFile)]">Відобразити на карті</nb-checkbox>
-              <button nbButton [status]="'danger'" (click)="onDeleteDecodedFile(decodedFile.id)">Видалити</button>
-            </nb-accordion-item-header>
-          <nb-accordion-item-body>
-            <div class="line-item" *ngFor="let line of decodedFile.lines">
-                <span>{{ line.id }}</span>
-                <nb-checkbox [(ngModel)]="line.isSelect" (change)="switchLine(line)">Відобразити на карті</nb-checkbox>
-                <button nbButton [status]="'danger'" (click)="onDeleteLine(line.id)">Видалити</button>
+    {{ airport.name }}
+    <button nbButton [routerLink]="['/admin/airport/edit', airport.id]">Редагувати</button>
+  </div>
+  <div class="body">
+    <agm-map [latitude]="airport.lat" [longitude]="airport.lng" [zoom]="12">
+      <agm-polygon *ngFor="let line of filteredLines" [paths]="line.points"></agm-polygon>
+      <agm-marker *ngIf="airport.lat && airport.lng" [animation]="markerCreateAnimation" [latitude]="airport.lat"
+        [longitude]="airport.lng"></agm-marker>
+    </agm-map>
+    <nb-tabset>
+      <nb-tab tabTitle="Архіви">
+        <button nbButton (click)="fileInput.click()">Вибрати архів</button>
+        <input type="file" #fileInput ng2FileSelect [uploader]="uploader" (change)="uploader.uploadAll()" accept=".rar, .zip" />
+        <nb-list>
+          <nb-list-item *ngFor="let zip of zipList; index as i">
+            <span>{{ i + 1 }}. {{ zip.fileName }}</span>
+            <div>
+              <button nbButton (click)="onUnpack(zip)" [disabled]="zip.isUnpacking" [nbSpinner]="zip.isUnpacking">Розархівувати</button>
+              <button class="delete-btn" nbButton [status]="'danger'" (click)="onDeleteZip(zip)" [disabled]="zip.isDeleting" [nbSpinner]="zip.isDeleting">Видалити</button>
             </div>
-          </nb-accordion-item-body>
-        </nb-accordion-item>
-      </nb-accordion>
-    </nb-tab>
-  </nb-tabset>
+          </nb-list-item>
+        </nb-list>
+      </nb-tab>
+      <nb-tab tabTitle="Файли">
+        <nb-list>
+          <nb-list-item *ngFor="let file of files; index as i">
+            <span>{{ i + 1 }}. {{ file.fileName }}</span>
+            <div>
+              <button nbButton (click)="onDecodeFile(file)" [disabled]="file.isDecoded || file.isDecoding" [nbSpinner]="file.isDecoding">Декодувати</button>
+              <button class="delete-btn" nbButton [status]="'danger'" (click)="onDeleteFile(file)" [disabled]="file.isDeleting" [nbSpinner]="file.isDeleting">Видалити</button>
+            </div>
+          </nb-list-item>
+        </nb-list>
+      </nb-tab>
+      <nb-tab tabTitle="Лінії">
+        <nb-accordion multi>
+          <nb-accordion-item #accordionItem *ngFor="let decodedFile of decodedFiles; index as i">
+            <nb-accordion-item-header>
+                <span>{{ i + 1 }}. {{ decodedFile.fileName }}</span>
+              </nb-accordion-item-header>
+            <nb-accordion-item-body>
+              <div class="main-line-item">
+                <nb-checkbox [(ngModel)]="decodedFile.isSelect" (change)="toggleFile(decodedFile)">Відобразити всі лінії</nb-checkbox>
+                <button nbButton [status]="'danger'" (click)="onDeleteDecodedFile(decodedFile)" [disabled]="decodedFile.isClearing" [nbSpinner]="decodedFile.isClearing">Видалити зі списку декодованих</button>
+              </div>
+              <div class="line-item" *ngFor="let line of decodedFile.lines">
+                <nb-checkbox [(ngModel)]="line.isSelect" (change)="toggleLine(line)">Відобразити</nb-checkbox>
+                <span>{{ line.name }} </span>
+                <button nbButton [status]="'danger'" (click)="onDeleteLine(line)" [disabled]="line.isDeleting" [nbSpinner]="line.isDeleting">Видалити</button>
+              </div>
+            </nb-accordion-item-body>
+  
+          </nb-accordion-item>
+        </nb-accordion>
+      </nb-tab>
+    </nb-tabset>
+  </div>
 </div>

@@ -25,6 +25,8 @@ agm-map {
 
 nb-tab {
     max-height: 400px;
+    padding: 0 10px, 0, 0 !important;
+    margin-top: 10px;
 }
 
 nb-list-item {
@@ -45,17 +47,20 @@ nb-checkbox {
     top: 2px;
 }
 
+.main-line-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+}
+
 .line-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px;
-    border-bottom: 1px solid #edf1f7;
-    &:first-child {
-        padding-top: 0;
-    }
+    border-top: 1px solid #edf1f7;
     &:last-child {
-        border-bottom: unset;
         padding-bottom: 0;
     }
 }

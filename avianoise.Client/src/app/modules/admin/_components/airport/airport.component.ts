@@ -20,6 +20,8 @@ import { ZipUnpackService } from '@services/zip-unpack.service';
 import { LineService } from '@services/line.service';
 import { ProxyLine } from 'src/app/models/proxy-classes/proxy-line.class';
 import { ProxyFile } from 'src/app/models/proxy-classes/proxy-file.class';
+import { ProxyZip } from 'src/app/models/proxy-classes/proxy-zip.class';
+import { FileClearService } from '@services/file-clear.service';
 
 @Component({
   selector: 'app-airport',
@@ -38,7 +40,7 @@ export class AirportComponent implements OnInit, OnDestroy {
   lines: ProxyLine[];
   filteredLines: ProxyLine[];
 
-  public uploader: FileUploader
+  uploader: FileUploader;
 
   constructor(
     private store: Store<fromRoot.State>,
@@ -50,7 +52,8 @@ export class AirportComponent implements OnInit, OnDestroy {
     private zipUnpackService: ZipUnpackService,
     private airportFileService: AirportFileService,
     private fileDecodeService: FileDecodeService,
-    private lineService: LineService
+    private lineService: LineService,
+    private fileClearService: FileClearService
   ) {
     this.lines = [];
     this.filteredLines = [];
@@ -64,7 +67,7 @@ export class AirportComponent implements OnInit, OnDestroy {
 
   getToken() {
     this.store.pipe(select(fromAuthState.getToken), takeWhile((() => this.alive))).subscribe(token => {
-      this.token = 'Bearer ' + token;
+      this.token =  token;
       this.createUploader();
     });
   }
@@ -98,114 +101,114 @@ export class AirportComponent implements OnInit, OnDestroy {
   }
 
   getDecodedFiles() {
-    let arr: ProxyFile[] = [];
-    this.files.filter(file => file.isDecoded).forEach(file => {
+    let decodedFilesArr: ProxyFile[] = [];
+    this.files.filter(file => file.isDecoded).forEach((file: ProxyFile) => {
       let newLinesArr: ProxyLine[] = [];
-      file.lines.forEach(line => {
-        if (file.lines && file.lines.length) {
-          let newLine: ProxyLine = {
-            ...line,
-            isSelect: false
-          };
-          newLinesArr.push(newLine);
-        }
-      });
-      let newFile: ProxyFile = {
-        ...file,
-        isSelect: false,
-        lines: newLinesArr
+      if (file.lines && file.lines.length) {
+        file.lines.forEach((line: ProxyLine) => newLinesArr.push(line));
       };
-      arr.push(newFile);
+      decodedFilesArr.push(file);
     })
-    this.decodedFiles = arr;
+    this.decodedFiles = decodedFilesArr;
   }
 
   createUploader() {
     this.uploader = new FileUploader({
       url: this.url,
-      authToken: this.token
+      authToken: 'Bearer ' + this.token
     });
     this.uploader.onCompleteAll = () => {
       this.getZips();
     }
   }
 
-  onUnpack(id: number) {
-    this.zipUnpackService.get(id).pipe(takeWhile(() => this.alive)).subscribe(files => {
+  onUnpack(zip: ProxyZip) {
+    zip.isUnpacking = true;
+    this.zipUnpackService.get(zip.id).pipe(takeWhile(() => this.alive)).subscribe(files => {
+      zip.isUnpacking = false;
       this.files = this.files.concat(files);
     });
   }
 
-  onDecodeFile(file: File) {
-    this.fileDecodeService.get(file.id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
-      this.getFiles();
+  onDecodeFile(file: ProxyFile) {
+    file.isDecoding = true;
+    this.fileDecodeService.get(file.id).pipe(takeWhile(() => this.alive)).subscribe(res => {
+      file.isDecoding = false;
       file.isDecoded = true;
+      this.getFiles();
     });
   }
 
-  switchFile(decodedFile: ProxyFile) {
-    decodedFile.lines.map(line => {
+  toggleFile(decodedFile: ProxyFile) {
+    decodedFile.lines.forEach(line => 
+    {
+      var proxyLine = line as ProxyLine;
+      proxyLine.isSelect = decodedFile.isSelect;
       if (decodedFile.isSelect) {
-        line.isSelect = true;
-        this.filteredLines.push(line);
-      } else {
-        line.isSelect = false;
-      }
+        this.filteredLines.push(proxyLine);
+      } 
     });
-    this.filterLines();
+    this.filteredLines = this.filteredLines.filter(line => line.isSelect);
   }
 
-  switchLine(line: ProxyLine) {
+  toggleLine(line: ProxyLine) {
     if (line.isSelect) {
       this.filteredLines.push(line);
     } else {
       this.filteredLines = this.filteredLines.filter(item => item.id != line.id);
     }
-    this.checkFileSelect();
+    this.checkFileSelected();
   }
 
-  filterLines() {
-    this.filteredLines = this.filteredLines.filter(line => line.isSelect);
+  checkFileSelected() {
+    this.decodedFiles.forEach(file => {
+      file.isSelect = file.lines.some((line : ProxyLine) => line.isSelect);
+    });
   }
 
-  checkFileSelect() {
-    this.decodedFiles.map(file => {
-      if (file.lines.some(line => line.isSelect)) {
-        file.isSelect = true;
-      } else {
-        file.isSelect = false;
-      }
-    })
+  clearMap() 
+  {
+    this.filteredLines = [];
+    this.decodedFiles.forEach(file => { file.isSelect = false; });
   }
 
-  clearMap() {
-    this.filteredLines.map(line => line.isSelect = false);
-    this.filterLines();
-    this.checkFileSelect();
-  }
-
-  onDeleteZip(id: number) {
-    this.zipService.delete(id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
+  onDeleteZip(zip: ProxyZip) {
+    zip.isDeleting = true;
+    this.zipService.delete(zip.id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
       this.getZips();
     });
   }
 
-  onDeleteFile(id: number) {
-    this.fileService.delete(id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
+  onDeleteFile(file: ProxyFile) {
+    file.isDeleting = true;
+    this.fileService.delete(file.id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
       this.getFiles();
     });
   }
 
-  onDeleteDecodedFile(id: number) {
-    this.fileService.delete(id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
-      this.getFiles();
+  onDeleteDecodedFile(file: ProxyFile) {
+    file.isClearing = true;
+    this.fileClearService.get(file.id).pipe(takeWhile(() => this.alive)).subscribe(res => {
+      file.isClearing = false;
+      this.files.forEach(file => file.id === res.id ? file.isDecoded = false : null);
+      this.decodedFiles = this.decodedFiles.filter(file => file.id != res.id);
     });
   }
 
-  onDeleteLine(id: number) {
-    this.lineService.delete(id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
-      this.getFiles();
-      this.filteredLines = this.filteredLines.filter(line => line.id != id);
+  onDeleteLine(line: ProxyLine) {
+    line.isDeleting = true;
+    this.lineService.delete(line.id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
+      this.filteredLines = this.filteredLines.filter(item => item.id != line.id);
+      this.decodedFiles.map(file => {
+        if(file.id === line.fileId) {
+          file.lines = file.lines.filter(item => item.id != line.id);
+          this.checkFileSelected();
+          if(!file.lines.length) {
+            this.decodedFiles = this.decodedFiles.filter(item => item.id != line.fileId);
+            this.files.forEach(item => item.id === file.id ? item.isDecoded = false : null);
+          }
+        }
+      });
     });
   }
 
