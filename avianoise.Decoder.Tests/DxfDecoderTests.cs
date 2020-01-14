@@ -48,5 +48,14 @@ namespace avianoise.Decoder.Tests
             var lines = sup.Decode(text);
             Assert.Pass();
         }
+
+        [Test]
+        public void Decode_TopLamaxD()
+        {
+            string text = File.ReadAllText(TestContext.CurrentContext.TestDirectory + "\\data\\TopLamaxD.dxf");
+            var sup = new DxfDecoder();
+            var lines = sup.Decode(text);
+            Assert.Pass();
+        }
     }
 }
