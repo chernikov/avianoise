@@ -4,11 +4,7 @@
     </agm-map>
     
     <form [formGroup]="form" (ngSubmit)="saveAirport()">
-        <div class="form-container">
-            <input nbInput type="text" placeholder="Latitude" [value]="airport.lat" disabled>
-            <input nbInput type="text" placeholder="Longitude" [value]=airport.lng disabled>
-            <input nbInput type="text" formControlName="name" placeholder="Назва аеропорту">
-        </div>
+        <input nbInput type="text" formControlName="name" placeholder="Назва аеропорту">
         <button nbButton [disabled]="!form.valid || !airport.lat || airport.lat == 0">
             {{ isEdit ? "Змінити аеропорт" : "Добавити аеропорт" }}
         </button>
