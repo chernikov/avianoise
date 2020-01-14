@@ -38,9 +38,16 @@ namespace avianoise.BL
             fileRepository.Delete(fileId);
         }
 
+        public void ClearLines(int fileId)
+        {
+            fileRepository.ClearLines(fileId);
+        }
+
         public File MarkDecodeFile(File fileEntry, bool isDecoded = true)
         {
             return fileRepository.MarkDecodeFile(fileEntry, isDecoded);
         }
+
+
     }
 }

@@ -33,10 +33,7 @@ namespace avianoise.DAL
             });
 
 
-        //.Include(p => p.Lines)
-        //.ThenInclude(l => l.Points)
 
-        //);
 
         public File Get(int fileId)
             => Query(context => context.Files.FirstOrDefault(p => p.Id == fileId));
@@ -63,6 +60,23 @@ namespace avianoise.DAL
                 }
             });
 
+
+        public void ClearLines(int fileId)
+
+            => Execute(context =>
+            {
+                var entry = context.Files.Find(fileId);
+
+                if (entry != null)
+                {
+                    var lines = context.Lines.Where(p => p.FileId == fileId).ToList();
+                    context.Lines.RemoveRange(lines);
+                    entry.IsDecoded = false;
+                    context.SaveChanges();
+                }
+            });
+
+
         public File MarkDecodeFile(File fileEntry, bool isDecoded)
              => Execute(context =>
              {
@@ -74,5 +88,7 @@ namespace avianoise.DAL
                  }
                  return entry;
              });
+
+
     }
 }

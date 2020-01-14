@@ -17,6 +17,10 @@ namespace avianoise.BL
 
         void Delete(int fileId);
 
+        void ClearLines(int fileId);
+
         File MarkDecodeFile(File fileEntry, bool isDecoded = true);
+
+
     }
 }
