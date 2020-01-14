@@ -1,6 +1,7 @@
 ﻿using avianoise.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using NLog.Extensions.Logging;
 
 namespace avianoise.Data
@@ -11,9 +12,10 @@ namespace avianoise.Data
 
         static AviaNoiseDbContext()
         {
-            //DbContextLoggerFactory = new LoggerFactory();
+            DbContextLoggerFactory = new LoggerFactory();
+            //DbContextLoggerFactory.AddProvider(new ConsoleLoggerProvider());
             //DbContextLoggerFactory.AddConsole();
-            //DbContextLoggerFactory.AddNLog();
+            DbContextLoggerFactory.AddNLog();
         }
 
         public AviaNoiseDbContext(DbContextOptions options) : base(options)

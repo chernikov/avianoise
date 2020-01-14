@@ -100,13 +100,12 @@ namespace avianoise.Web.Api
                 var fileIndex = filePath.LastIndexOf("/");
                 var fileName = fileIndex > -1 ? filePath.Substring(fileIndex + 1) : filePath;
                 var fileExtension = fileName.Substring(fileName.LastIndexOf("."));
-                var content = System.IO.File.ReadAllText(Path.Combine(FilesDirectory, filePath));
+
                 list.Add(new Domain.File()
                 {
                     AirportId = airportId,
                     Extension = fileExtension,
                     FileName = fileName,
-                    Content = content,
                     FullPath = Path.Combine(directory, filePath)
                 });
             }

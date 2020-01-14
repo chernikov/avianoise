@@ -17,11 +17,26 @@ namespace avianoise.DAL
 
         public List<File> GetListByAirport(int airportId, bool onlyDecoded)
             => Query(context =>
-                context.Files
-                .Include(p => p.Lines)
-                .ThenInclude(l => l.Points)
-                .Where(p => p.AirportId == airportId && (!onlyDecoded || p.IsDecoded))
-                .ToList());
+            {
+                var files = context.Files
+                     .Where(p => p.AirportId == airportId && (!onlyDecoded || p.IsDecoded)).ToList();
+
+                var lines = context.Lines
+                    .Include(l => l.Points)
+                    .Where(p => p.File.AirportId == airportId && (!onlyDecoded || p.File.IsDecoded)).ToList();
+
+                foreach (var file in files)
+                {
+                    file.Lines = lines.Where(p => p.FileId == file.Id).ToList();
+                }
+                return files;
+            });
+
+
+        //.Include(p => p.Lines)
+        //.ThenInclude(l => l.Points)
+
+        //);
 
         public File Get(int fileId)
             => Query(context => context.Files.FirstOrDefault(p => p.Id == fileId));
@@ -38,9 +53,13 @@ namespace avianoise.DAL
             => Execute(context =>
             {
                 var entry = context.Files.Find(fileId);
+
                 if (entry != null)
                 {
+                    var lines = context.Lines.Where(p => p.FileId == fileId).ToList();
+                    context.Lines.RemoveRange(lines);
                     context.Files.Remove(entry);
+                    context.SaveChanges();
                 }
             });
 

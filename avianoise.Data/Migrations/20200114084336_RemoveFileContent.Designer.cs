@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using avianoise.Data;
 
 namespace avianoise.Data.Migrations
 {
     [DbContext(typeof(AviaNoiseDbContext))]
-    partial class avianoiseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200114084336_RemoveFileContent")]
+    partial class RemoveFileContent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
