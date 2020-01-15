@@ -46,6 +46,24 @@ namespace avianoise.DAL
                return entry;
            });
 
+
+        public File UpdateTypes(File entry)
+           => Execute(context =>
+           {
+               var entity = context.Files.Find(entry.Id);
+               if (entity == null)
+               {
+                   return null;
+               }
+               entity.NoiseType = entry.NoiseType;
+               entity.TimeType = entry.TimeType;
+               context.Files.Update(entity);
+               context.SaveChanges();
+
+               var newEntry = context.Files.Find(entry.Id);
+               return newEntry;
+           });
+
         public void Delete(int fileId)
             => Execute(context =>
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using avianoise.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -26,6 +27,10 @@ namespace avianoise.Domain
         public string Extension { get; set; }
 
         public bool IsDecoded { get; set; }
+
+        public NoiseTypeEnum NoiseType { get; set; }
+
+        public TimeTypeEnum TimeType { get; set; }
 
         public ICollection<Line> Lines { get; set; }
     }

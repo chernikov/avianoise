@@ -20,6 +20,7 @@ namespace avianoise.DAL
 
         File MarkDecodeFile(File fileEntry, bool isDecoded);
 
+        File UpdateTypes(File entry);
 
     }
 }

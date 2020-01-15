@@ -21,6 +21,6 @@ namespace avianoise.BL
 
         File MarkDecodeFile(File fileEntry, bool isDecoded = true);
 
-
+        File UpdateTypes(File entry);
     }
 }

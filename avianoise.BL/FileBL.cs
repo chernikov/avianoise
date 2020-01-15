@@ -48,6 +48,9 @@ namespace avianoise.BL
             return fileRepository.MarkDecodeFile(fileEntry, isDecoded);
         }
 
-
+        public File UpdateTypes(File fileEntry)
+        {
+            return fileRepository.UpdateTypes(fileEntry);
+        }
     }
 }
