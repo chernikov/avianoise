@@ -1,4 +1,7 @@
-﻿using avianoise.BL;
+﻿using AutoMapper;
+using avianoise.BL;
+using avianoise.Domain;
+using avianoise.Web.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,10 +17,24 @@ namespace avianoise.Web.Api
     public class FileController : BaseUserController
     {
         private readonly IFileBL fileBL;
+        private readonly IMapper mapper;
 
-        public FileController(IUserBL userBL, IFileBL fileBL) : base(userBL)
+        public FileController(IUserBL userBL, IFileBL fileBL, IMapper mapper) : base(userBL)
         {
             this.fileBL = fileBL;
+            this.mapper = mapper;
+        }
+
+        [HttpPut]
+        [Authorize]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(FileDto), (int)HttpStatusCode.OK)]
+        public IActionResult Put([FromBody]FileDto file)
+        {
+            var entry = mapper.Map<File>(file);
+            var newEntry = fileBL.UpdateTypes(entry);
+            var result = mapper.Map<FileDto>(newEntry);
+            return Ok(result);
         }
 
         [Authorize]

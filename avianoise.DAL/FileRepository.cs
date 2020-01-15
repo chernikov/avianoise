@@ -38,12 +38,38 @@ namespace avianoise.DAL
         public File Get(int fileId)
             => Query(context => context.Files.FirstOrDefault(p => p.Id == fileId));
 
+
+        public File GetWithLines(int fileId)
+            => Query(context =>
+                 context.Files
+                        .Include(p => p.Lines)
+                        .ThenInclude(p => p.Points)
+                        .FirstOrDefault(p => p.Id == fileId));
+
         public File Create(File entry)
             => Execute(context =>
            {
                context.Files.Add(entry);
                context.SaveChanges();
                return entry;
+           });
+
+
+        public File UpdateTypes(File entry)
+           => Execute(context =>
+           {
+               var entity = context.Files.Find(entry.Id);
+               if (entity == null)
+               {
+                   return null;
+               }
+               entity.NoiseType = entry.NoiseType;
+               entity.TimeType = entry.TimeType;
+               context.Files.Update(entity);
+               context.SaveChanges();
+
+               var newEntry = context.Files.Find(entry.Id);
+               return newEntry;
            });
 
         public void Delete(int fileId)

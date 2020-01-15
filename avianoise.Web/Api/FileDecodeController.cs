@@ -29,10 +29,10 @@ namespace avianoise.Web.Api
         [HttpGet("{fileId:int}")]
         [Authorize]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(List<LineDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ExtendedFileDto), (int)HttpStatusCode.OK)]
         public IActionResult Get(int fileId, bool force = false)
         {
-            var listOfEntries = new List<Domain.Line>();
+
             var fileEntry = fileBL.Get(fileId);
 
             if (fileEntry.IsDecoded)
@@ -43,8 +43,8 @@ namespace avianoise.Web.Api
                 }
                 else
                 {
-                    var lines = lineBL.GetByFileId(fileId);
-                    return Ok(mapper.Map<List<Domain.Line>, List<LineDto>>(lines));
+                    var resultLines = lineBL.GetByFileId(fileId);
+                    return Ok(mapper.Map<List<Domain.Line>, List<LineDto>>(resultLines));
                 }
             }
 
@@ -67,36 +67,43 @@ namespace avianoise.Web.Api
             }
 
 
-            if (decoder != null)
+            if (decoder == null)
             {
-                var content = System.IO.File.ReadAllText(Path.Combine(fileEntry.FullPath));
-                var lines = decoder.Decode(content);
-                foreach (var line in lines)
-                {
-                    var lineEntry = new Domain.Line()
-                    {
-                        AirportId = fileEntry.AirportId,
-                        FileId = fileEntry.Id,
-                        Name = line.Name,
-                    };
-                    var createdLine = lineBL.Create(lineEntry);
-                    var points = line.Points.Select(p => new Domain.Point()
-                    {
-                        Number = p.Index,
-                        Lat = p.Lat,
-                        Lng = p.Lng,
-                        LineId = createdLine.Id
-                    }).ToList();
-                    lineBL.CreatePoints(points);
-                    var newLineEntry = lineBL.GetById(createdLine.Id);
-                    listOfEntries.Add(newLineEntry);
-                }
+                return BadRequest($"Decoded for file with extension {fileEntry.Extension} not found");
             }
-
+            ProcessLines(fileEntry, decoder);
             fileBL.MarkDecodeFile(fileEntry);
-
-            var result = mapper.Map<List<Domain.Line>, List<LineDto>>(listOfEntries);
+            var newFileEntry = fileBL.GetWithLines(fileEntry.Id);
+            var result = mapper.Map<ExtendedFileDto>(newFileEntry);
             return Ok(result);
+
+        }
+
+        private void ProcessLines(Domain.File fileEntry, IDecoder decoder)
+        {
+            var listOfEntries = new List<Domain.Line>();
+            var content = System.IO.File.ReadAllText(Path.Combine(fileEntry.FullPath));
+            var lines = decoder.Decode(content);
+            foreach (var line in lines)
+            {
+                var lineEntry = new Domain.Line()
+                {
+                    AirportId = fileEntry.AirportId,
+                    FileId = fileEntry.Id,
+                    Name = line.Name,
+                };
+                var createdLine = lineBL.Create(lineEntry);
+                var points = line.Points.Select(p => new Domain.Point()
+                {
+                    Number = p.Index,
+                    Lat = p.Lat,
+                    Lng = p.Lng,
+                    LineId = createdLine.Id
+                }).ToList();
+                lineBL.CreatePoints(points);
+                var newLineEntry = lineBL.GetById(createdLine.Id);
+                listOfEntries.Add(newLineEntry);
+            }
         }
     }
 }

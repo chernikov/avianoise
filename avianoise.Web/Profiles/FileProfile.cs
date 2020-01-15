@@ -15,6 +15,8 @@ namespace avianoise.Web.Profiles
         {
             CreateMap<File, FileDto>();
             CreateMap<File, ExtendedFileDto>();
+
+            CreateMap<FileDto, File>();
         }
     }
 }

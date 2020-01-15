@@ -29,9 +29,6 @@ namespace avianoise.DAL
                 return entry;
             });
 
-
-
-
         public Airport Update(Airport entry)
              => Execute(context =>
              {

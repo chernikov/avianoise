@@ -1,4 +1,5 @@
-﻿using System;
+﻿using avianoise.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +20,9 @@ namespace avianoise.Web.Dto
         public string FileName { get; set; }
 
         public string Extension { get; set; }
+
+        public NoiseTypeEnum NoiseType { get; set; }
+
+        public TimeTypeEnum TimeType { get; set; }
     }
 }
