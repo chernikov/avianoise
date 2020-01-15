@@ -1,4 +1,4 @@
-import { File } from './file.class';
+import { ExtendedFile } from './extended-file.class';
 import { Line } from './line.class';
 import { Zip } from './zip.class';
 
@@ -8,7 +8,7 @@ export class Airport {
 	name : string;
 	lat : number;
 	lng : number;
-	files : File[];
+	files : ExtendedFile[];
 	lines : Line[];
 	zips : Zip[];
 

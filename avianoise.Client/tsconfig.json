@@ -31,8 +31,14 @@
       "@classes/*": [
         "src/app/models/classes/*"
       ],
+      "@proxy-classes/*": [
+        "src/app/models/proxy-classes/*"
+      ],
       "@services/*": [
         "src/app/models/services/*"
+      ],
+      "@enums/*": [
+        "src/app/models/enums/*"
       ],
       "@shared/*": [
         "src/app/shared/*"
