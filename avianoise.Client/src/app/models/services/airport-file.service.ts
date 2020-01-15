@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
-import { File } from '../classes/file.class';
+import { ExtendedFile } from '../classes/extended-file.class';
 
 
 @Injectable({ providedIn: "root" })
@@ -21,12 +21,12 @@ export class AirportFileService
 
 	constructor(private http: HttpClient) {}
 
-	get(airportId: number, onlyDecoded: boolean) : Observable<File[]> {
-		return this.http.get<File[]>(this.apiUrl + "/" + airportId + "?onlyDecoded=" + onlyDecoded, this.options).pipe();
+	get(airportId: number,onlyDecoded: boolean) : Observable<ExtendedFile[]> {
+		return this.http.get<ExtendedFile[]>(this.apiUrl + "/" + airportId + "?onlyDecoded=" + onlyDecoded, this.options).pipe();
 	}
 
-	post(airportId: number) : Observable<File[]> {
-		return this.http.post<File[]>(this.apiUrl + "/" + airportId, this.options).pipe();
+	post(airportId: number) : Observable<ExtendedFile[]> {
+		return this.http.post<ExtendedFile[]>(this.apiUrl + "/" + airportId, this.options).pipe();
 	}
 
 }

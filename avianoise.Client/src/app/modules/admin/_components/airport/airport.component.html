@@ -5,7 +5,7 @@
   </div>
   <div class="body">
     <agm-map [latitude]="airport.lat" [longitude]="airport.lng" [zoom]="12">
-      <agm-polygon *ngFor="let line of filteredLines" [paths]="line.points"></agm-polygon>
+      <agm-polygon *ngFor="let line of lines" [paths]="line.points"></agm-polygon>
       <agm-marker *ngIf="airport.lat && airport.lng" [animation]="markerCreateAnimation" [latitude]="airport.lat"
         [longitude]="airport.lng"></agm-marker>
     </agm-map>
@@ -43,7 +43,7 @@
             <nb-accordion-item-body>
               <div class="main-line-item">
                 <nb-checkbox [(ngModel)]="decodedFile.isSelect" (change)="toggleFile(decodedFile)">Відобразити всі лінії</nb-checkbox>
-                <button nbButton [status]="'danger'" (click)="onDeleteDecodedFile(decodedFile)" [disabled]="decodedFile.isClearing" [nbSpinner]="decodedFile.isClearing">Видалити зі списку декодованих</button>
+                <button nbButton [status]="'danger'" (click)="onDeleteDecodedFile(decodedFile)" [disabled]="decodedFile.isDeleting" [nbSpinner]="decodedFile.isDeleting">Видалити зі списку декодованих</button>
               </div>
               <div class="line-item" *ngFor="let line of decodedFile.lines">
                 <nb-checkbox [(ngModel)]="line.isSelect" (change)="toggleLine(line)">Відобразити</nb-checkbox>
