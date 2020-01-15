@@ -11,6 +11,8 @@ namespace avianoise.BL
     {
         File Get(int fileId);
 
+        File GetWithLines(int fileId);
+
         List<File> GetListByAirport(int airportId, bool onlyDecoded);
 
         File Create(File entry);
@@ -22,5 +24,6 @@ namespace avianoise.BL
         File MarkDecodeFile(File fileEntry, bool isDecoded = true);
 
         File UpdateTypes(File entry);
+
     }
 }

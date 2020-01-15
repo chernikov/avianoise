@@ -38,6 +38,14 @@ namespace avianoise.DAL
         public File Get(int fileId)
             => Query(context => context.Files.FirstOrDefault(p => p.Id == fileId));
 
+
+        public File GetWithLines(int fileId)
+            => Query(context =>
+                 context.Files
+                        .Include(p => p.Lines)
+                        .ThenInclude(p => p.Points)
+                        .FirstOrDefault(p => p.Id == fileId));
+
         public File Create(File entry)
             => Execute(context =>
            {

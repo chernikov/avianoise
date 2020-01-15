@@ -12,6 +12,8 @@ namespace avianoise.DAL
         List<File> GetListByAirport(int airportId, bool onlyDecoded);
         File Get(int fileId);
 
+        File GetWithLines(int fileId);
+
         File Create(File entry);
 
         void Delete(int fileId);
@@ -21,6 +23,7 @@ namespace avianoise.DAL
         File MarkDecodeFile(File fileEntry, bool isDecoded);
 
         File UpdateTypes(File entry);
+
 
     }
 }
