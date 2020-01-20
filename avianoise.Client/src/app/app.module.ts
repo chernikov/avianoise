@@ -19,7 +19,7 @@ import { environment } from '../environments/environment';
 import { JWT_Module_Options } from './config/jwt-options.config';
 import { AuthorGuard } from './guards/author.guard';
 import { ThemeModule } from './@theme/theme.module';
-import { NbMenuModule, NbSidebarModule, NbLayoutModule } from '@nebular/theme';
+import { NbMenuModule, NbSidebarModule, NbLayoutModule, NbWindowModule } from '@nebular/theme';
 import { CoreModule } from './@core/core.module';
 
 
@@ -32,6 +32,7 @@ import { CoreModule } from './@core/core.module';
     ThemeModule.forRoot(),
     NbMenuModule.forRoot(),
     NbSidebarModule.forRoot(),
+    NbWindowModule.forRoot(),
     CoreModule.forRoot(),
     HttpClientModule,
     routes,

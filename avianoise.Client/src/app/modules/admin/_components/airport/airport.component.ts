@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { FileUploader } from 'ng2-file-upload';
 
@@ -23,6 +23,8 @@ import { ProxyExtendedFile } from '@proxy-classes/proxy-extended-file';
 import { ProxyLine } from '@proxy-classes/proxy-line.class';
 import { ProxyZip } from '@proxy-classes/proxy-zip.class';
 import { ProxyFile } from '@proxy-classes/proxy-file.class';
+import { NbWindowService, NbWindowRef } from '@nebular/theme';
+import { Line } from '@classes/line.class';
 
 @Component({
   selector: 'app-airport',
@@ -30,6 +32,8 @@ import { ProxyFile } from '@proxy-classes/proxy-file.class';
   styleUrls: ['./airport.component.scss']
 })
 export class AirportComponent implements OnInit, OnDestroy {
+  @ViewChild('editLineModal', { static: false }) editLineModal: TemplateRef<any>;
+  
   alive: boolean = true;
   airport: Airport;
   airportIsLoad: boolean;
@@ -38,9 +42,11 @@ export class AirportComponent implements OnInit, OnDestroy {
   zipList: Zip[];
   files: File[];
   decodedFiles: ProxyExtendedFile[];
-  lines: ProxyLine[];
+  linesOnMap: ProxyLine[];
 
+  modalWindowRef: NbWindowRef;
   uploader: FileUploader;
+  lineIsSaving: boolean;
 
   constructor(
     private store: Store<fromRoot.State>,
@@ -53,9 +59,10 @@ export class AirportComponent implements OnInit, OnDestroy {
     private airportFileService: AirportFileService,
     private fileDecodeService: FileDecodeService,
     private lineService: LineService,
-    private fileClearService: FileClearService
+    private fileClearService: FileClearService,
+    private windowService: NbWindowService
   ) {
-    this.lines = [];
+    this.linesOnMap = [];
     this.airportIsLoad = false;
   }
 
@@ -144,31 +151,56 @@ export class AirportComponent implements OnInit, OnDestroy {
       var proxyLine = line as ProxyLine;
       proxyLine.isSelect = decodedFile.isSelect;
       if (decodedFile.isSelect) {
-        this.lines.push(proxyLine);
+        this.linesOnMap.push(proxyLine);
       } 
     });
-    this.lines = this.lines.filter(line => line.isSelect);
+    this.linesOnMap = this.linesOnMap.filter(line => line.isSelect);
   }
 
   toggleLine(line: ProxyLine) {
     if (line.isSelect) {
-      this.lines.push(line);
+      this.linesOnMap.push(line);
     } else {
-      this.lines = this.lines.filter(item => item.id != line.id);
+      this.linesOnMap = this.linesOnMap.filter(item => item.id != line.id);
     }
     this.checkFileSelected();
+  }
+
+  onEditLine(line: ProxyLine) {
+    line.isEditing = true;
+    let file = this.decodedFiles.find(p => p.id === line.fileId);
+    file.isEditing = true;
+    let editedLine = {...line};
+    this.modalWindowRef = this.windowService.open(
+      this.editLineModal, { title: line.name, windowClass: 'edit-line-modal' , context: editedLine }
+    );
+    this.modalWindowRef.onClose.pipe(takeWhile(() => this.alive)).subscribe(_ => {
+      line.isEditing = false;
+      if(file.lines.every((item: ProxyLine) => !item.isEditing)) {
+        file.isEditing = false;
+      }
+    });
+  }
+
+  onSaveLine(line: Line) {
+    this.lineIsSaving = true;
+    let clearLine = {...line};
+    clearLine.points = [];
+    this.lineService.put(clearLine).pipe(takeWhile(() => this.alive)).subscribe(res => {
+      let file = this.decodedFiles.find(p => p.id == res.fileId);
+      let line = file.lines.find(p => p.id === res.id);
+      line.name = res.name;
+      line.level = res.level;
+      line.published = res.published;
+      this.lineIsSaving = false;
+      this.modalWindowRef.close();
+    });
   }
 
   checkFileSelected() {
     this.decodedFiles.forEach(file => {
       file.isSelect = file.lines.some((line : ProxyLine) => line.isSelect);
     });
-  }
-
-  clearMap() 
-  {
-    this.lines = [];
-    this.decodedFiles.forEach(file => { file.isSelect = false; });
   }
 
   onDeleteZip(zip: ProxyZip) {
@@ -194,7 +226,7 @@ export class AirportComponent implements OnInit, OnDestroy {
       file.isDeleting = false;
       this.files.forEach(file => file.id === res.id ? file.isDecoded = false : null);
       this.decodedFiles = this.decodedFiles.filter(file => file.id != res.id);
-      this.lines = this.lines.filter(line => line.fileId != file.id);
+      this.linesOnMap = this.linesOnMap.filter(line => line.fileId != file.id);
     });
   }
 
@@ -202,7 +234,7 @@ export class AirportComponent implements OnInit, OnDestroy {
     line.isDeleting = true;
     this.lineService.delete(line.id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
       line.isDeleting = false;
-      this.lines = this.lines.filter(item => item.id != line.id);
+      this.linesOnMap = this.linesOnMap.filter(item => item.id != line.id);
       this.decodedFiles.map(file => {
         if(file.id === line.fileId) {
           file.lines = file.lines.filter(item => item.id != line.id);
