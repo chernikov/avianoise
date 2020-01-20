@@ -5,11 +5,12 @@ import { LoginComponent } from './containers/login.component';
 import { RouterModule } from '@angular/router';
 import { router } from './index.router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NbButtonModule, NbInputModule, NbLayoutModule } from '@nebular/theme';
+import { NbButtonModule, NbInputModule, NbLayoutModule, NbSpinnerModule } from '@nebular/theme';
 
 @NgModule({
   declarations: [LoginComponent],
   imports: [
+    NbSpinnerModule,
     NbLayoutModule,
     NbButtonModule,
     NbInputModule,
