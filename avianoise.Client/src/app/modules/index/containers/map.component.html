@@ -1,0 +1,9 @@
+<nb-layout>
+    <nb-layout-column>
+        <div class="container">
+            <nb-checkbox [(ngModel)]="isKadastrLayer" (change)="toggle(isKadastrLayer)">Кадастрова карта</nb-checkbox>
+            <div #gmap class="map">
+            </div>
+        </div>
+    </nb-layout-column>
+</nb-layout>
