@@ -21,6 +21,7 @@ import { AuthorGuard } from './guards/author.guard';
 import { ThemeModule } from './@theme/theme.module';
 import { NbMenuModule, NbSidebarModule, NbLayoutModule } from '@nebular/theme';
 import { CoreModule } from './@core/core.module';
+import { AgmCoreModule } from '@agm/core';
 
 
 
@@ -47,7 +48,8 @@ import { CoreModule } from './@core/core.module';
       logOnly: environment.production
     }),
     EffectsModule.forRoot([AuthEffects, AirportsEffects]),
-    JwtModule.forRoot(JWT_Module_Options)
+    JwtModule.forRoot(JWT_Module_Options),
+   
   ],
   providers: [
     AuthorGuard

@@ -5,18 +5,20 @@ import { LoginComponent } from './containers/login.component';
 import { RouterModule } from '@angular/router';
 import { router } from './index.router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NbButtonModule, NbInputModule, NbLayoutModule } from '@nebular/theme';
+import { NbButtonModule, NbInputModule, NbLayoutModule, NbCheckboxModule } from '@nebular/theme';
+import { MapComponent } from './containers/map.component';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, MapComponent],
   imports: [
     NbLayoutModule,
     NbButtonModule,
     NbInputModule,
+    NbCheckboxModule,
     CommonModule,
     RouterModule.forChild(router),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class IndexModule { }
