@@ -4,6 +4,7 @@ using NUnit.Framework;
 
 namespace avianoise.SL.Tests
 {
+    [TestFixture]
     public class GoogleMapSLTests
     {
         private IOptions<GoogleMapOptions> options;
