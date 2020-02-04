@@ -23,6 +23,8 @@ namespace avianoise.Web.Dto
 
         public NoiseTypeEnum NoiseType { get; set; }
 
+        public DayNightTypeEnum DayNightType { get; set; }
+
         public TimeTypeEnum TimeType { get; set; }
     }
 }

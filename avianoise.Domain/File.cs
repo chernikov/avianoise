@@ -32,6 +32,8 @@ namespace avianoise.Domain
 
         public TimeTypeEnum TimeType { get; set; }
 
+        public DayNightTypeEnum DayNightType { get; set; }
+
         public ICollection<Line> Lines { get; set; }
     }
 }
