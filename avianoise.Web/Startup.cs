@@ -2,6 +2,8 @@
 using avianoise.BL;
 using avianoise.DAL;
 using avianoise.Data;
+using avianoise.SL;
+using avianoise.SL.Options;
 using avianoise.Web.Helpers;
 using avianoise.Web.Middlewares;
 using avianoise.Web.Services;
@@ -55,7 +57,7 @@ namespace avianoise.Web
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
-
+            services.Configure<GoogleMapOptions>(Configuration.GetSection("GoogleMap"));
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
@@ -84,6 +86,7 @@ namespace avianoise.Web
             services.AddScoped<IIdentityService, IdentityService>();
 
             RegisterBL(services);
+            RegisterSL(services);
             RegisterRepositories(services);
             RegisterAutomapper(services);
             CreatFolderStatic();
@@ -127,6 +130,24 @@ namespace avianoise.Web
             var types = assembly.GetTypes();
             var blInterfaces = assembly.GetTypes()
                 .Where(p => p.GetInterface(typeof(IBaseBL).Name) != null && p.IsInterface && p.IsPublic).ToList();
+
+            foreach (var _interface in blInterfaces)
+            {
+                var type = assembly.GetTypes().FirstOrDefault(p => p.GetInterface(_interface.Name) != null && p.IsPublic);
+                if (type != null)
+                {
+                    services.AddScoped(_interface, type);
+                }
+            }
+        }
+
+        private void RegisterSL(IServiceCollection services)
+        {
+            var assembly = Assembly.GetAssembly(typeof(IBaseSL));
+
+            var types = assembly.GetTypes();
+            var blInterfaces = assembly.GetTypes()
+                .Where(p => p.GetInterface(typeof(IBaseSL).Name) != null && p.IsInterface && p.IsPublic).ToList();
 
             foreach (var _interface in blInterfaces)
             {
