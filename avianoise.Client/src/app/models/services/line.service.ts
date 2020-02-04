@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
+import { ExtendedLine } from '../classes/extended-line.class';
 import { Line } from '../classes/line.class';
 
 
@@ -21,8 +22,8 @@ export class LineService
 
 	constructor(private http: HttpClient) {}
 
-	get(lineId: number) : Observable<Line> {
-		return this.http.get<Line>(this.apiUrl + "/" + lineId, this.options).pipe();
+	get(lineId: number) : Observable<ExtendedLine> {
+		return this.http.get<ExtendedLine>(this.apiUrl + "/" + lineId, this.options).pipe();
 	}
 
 	delete(lineId: number) : Observable<null> {

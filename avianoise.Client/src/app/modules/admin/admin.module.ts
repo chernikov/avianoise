@@ -11,8 +11,8 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { SharedModule } from '../shared/shared.module';
 
 import { ThemeModule } from 'src/app/@theme/theme.module';
+import { NbMenuModule, NbButtonModule, NbCardModule, NbListModule, NbInputModule, NbTabsetModule, NbCheckboxModule, NbLayoutModule, NbAccordionModule, NbSpinnerModule, NbToggleModule, NbWindowModule } from '@nebular/theme';
 
-import { NbMenuModule, NbButtonModule, NbCardModule, NbListModule, NbInputModule, NbTabsetModule, NbCheckboxModule, NbLayoutModule, NbAccordionModule, NbSpinnerModule } from '@nebular/theme';
 
 
 @NgModule({
@@ -20,7 +20,9 @@ import { NbMenuModule, NbButtonModule, NbCardModule, NbListModule, NbInputModule
     imports: [
         SharedModule,
         ThemeModule,
+        NbWindowModule.forChild(),
         NbLayoutModule,
+        NbToggleModule,
         NbAccordionModule,
         NbMenuModule,
         NbTabsetModule,

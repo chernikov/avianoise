@@ -6,7 +6,6 @@ import * as fromAirportsActions from '@state/airports/airports.actions';
 import * as fromAirportsState from '@state/airports/airports.state';
 
 import { Airport } from '@classes/airport.class';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-airport-list',
@@ -18,8 +17,7 @@ export class AirportListComponent {
   test: any;
 
   constructor(
-    private store: Store<fromRoot.State>,
-    private router: Router
+    private store: Store<fromRoot.State>
   ) {
     this.airports = [];
     

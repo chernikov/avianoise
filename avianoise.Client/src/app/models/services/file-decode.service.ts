@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
-import { Line } from '../classes/line.class';
+import { ExtendedFile } from '../classes/extended-file.class';
 
 
 @Injectable({ providedIn: "root" })
@@ -21,8 +21,8 @@ export class FileDecodeService
 
 	constructor(private http: HttpClient) {}
 
-	get(fileId: number) : Observable<Line[]> {
-		return this.http.get<Line[]>(this.apiUrl + "/" + fileId, this.options).pipe();
+	get(fileId: number,force: boolean) : Observable<ExtendedFile> {
+		return this.http.get<ExtendedFile>(this.apiUrl + "/" + fileId + "?force=" + force, this.options).pipe();
 	}
 
 }

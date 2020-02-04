@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
+import { File } from '../classes/file.class';
+
 
 @Injectable({ providedIn: "root" })
 export class FileService
@@ -18,6 +20,10 @@ export class FileService
 	};
 
 	constructor(private http: HttpClient) {}
+
+	put(body : File) : Observable<File> {
+		return this.http.put<File>(this.apiUrl, body, this.options).pipe();
+	}
 
 	delete(fileId: number) : Observable<null> {
 		return this.http.delete<null>(this.apiUrl + "/" + fileId, this.options).pipe();

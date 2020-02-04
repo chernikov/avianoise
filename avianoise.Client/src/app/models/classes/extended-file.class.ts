@@ -1,8 +1,10 @@
+import { Line } from './line.class';
 import { NoiseTypeEnum } from '../enums/noise-type-enum.enum';
 import { TimeTypeEnum } from '../enums/time-type-enum.enum';
 
 
-export class File {
+export class ExtendedFile {
+	lines : Line[];
 	id : number;
 	airportId : number;
 	isDecoded : boolean;
@@ -13,6 +15,7 @@ export class File {
 	timeType : TimeTypeEnum;
 
 	constructor() {
+		this.lines = [];
 		this.id = 0;
 		this.airportId = 0;
 		this.isDecoded = false;

@@ -11,6 +11,7 @@ import { MapComponent } from './containers/map.component';
 @NgModule({
   declarations: [LoginComponent, MapComponent],
   imports: [
+    NbSpinnerModule,
     NbLayoutModule,
     NbButtonModule,
     NbInputModule,

@@ -64,3 +64,10 @@ nb-checkbox {
         padding-bottom: 0;
     }
 }
+
+.not-published {
+    color: red;
+    &.is-published {
+        color: green;
+    }
+}

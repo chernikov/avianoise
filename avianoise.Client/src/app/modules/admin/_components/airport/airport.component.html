@@ -5,7 +5,7 @@
   </div>
   <div class="body">
     <agm-map [latitude]="airport.lat" [longitude]="airport.lng" [zoom]="12">
-      <agm-polygon *ngFor="let line of filteredLines" [paths]="line.points"></agm-polygon>
+      <agm-polygon *ngFor="let line of linesOnMap" [paths]="line.points"></agm-polygon>
       <agm-marker *ngIf="airport.lat && airport.lng" [animation]="markerCreateAnimation" [latitude]="airport.lat"
         [longitude]="airport.lng"></agm-marker>
     </agm-map>
@@ -42,13 +42,20 @@
               </nb-accordion-item-header>
             <nb-accordion-item-body>
               <div class="main-line-item">
-                <nb-checkbox [(ngModel)]="decodedFile.isSelect" (change)="toggleFile(decodedFile)">Відобразити всі лінії</nb-checkbox>
-                <button nbButton [status]="'danger'" (click)="onDeleteDecodedFile(decodedFile)" [disabled]="decodedFile.isClearing" [nbSpinner]="decodedFile.isClearing">Видалити зі списку декодованих</button>
+                <div>
+                  <nb-checkbox [(ngModel)]="decodedFile.isSelect" (change)="toggleFile(decodedFile)">Відобразити всі лінії</nb-checkbox>
+                </div>
+                <button nbButton [status]="'danger'" (click)="onDeleteDecodedFile(decodedFile)" [disabled]="decodedFile.isDeleting || decodedFile.isEditing" [nbSpinner]="decodedFile.isDeleting">Видалити зі списку декодованих</button>
               </div>
               <div class="line-item" *ngFor="let line of decodedFile.lines">
-                <nb-checkbox [(ngModel)]="line.isSelect" (change)="toggleLine(line)">Відобразити</nb-checkbox>
-                <span>{{ line.name }} </span>
-                <button nbButton [status]="'danger'" (click)="onDeleteLine(line)" [disabled]="line.isDeleting" [nbSpinner]="line.isDeleting">Видалити</button>
+                  <nb-checkbox [(ngModel)]="line.isSelect" (change)="toggleLine(line)">Відобразити</nb-checkbox>
+                  <span>{{ line.name }} </span>
+                  <span class="not-published" [class.is-published]="line.published">{{ line.published ? 'Опубліковано' : 'Не опубліковано' }}</span>
+                  <span>Рівень шуму: {{ line.level }}дБ</span>
+                  <div>
+                    <button class="mr-3" nbButton (click)="onEditLine(line)" [disabled]="line.isDeleting">Редагувати</button>
+                    <button nbButton [status]="'danger'" (click)="onDeleteLine(line)" [disabled]="line.isDeleting || line.isEditing" [nbSpinner]="line.isDeleting">Видалити</button>
+                  </div>
               </div>
             </nb-accordion-item-body>
   
@@ -58,3 +65,23 @@
     </nb-tabset>
   </div>
 </div>
+
+<ng-template #editLineModal let-line>
+  <nb-list class="mb-3">
+    <nb-list-item>
+      <span class="mr-3">Назва лінії</span>
+      <input nbInput type="text" [(ngModel)]="line.name">
+    </nb-list-item>
+    <nb-list-item>
+      <span class="mr-3">Опублікувати</span>
+      <nb-toggle [(ngModel)]="line.published"></nb-toggle>
+    </nb-list-item>
+    <nb-list-item>
+      <span class="mr-3">Рівень шуму</span>
+      <input nbInput type="number" [(ngModel)]="line.level">
+    </nb-list-item>
+  </nb-list>
+  <div class="d-flex justify-content-center">
+    <button nbButton (click)="onSaveLine(line)" [disabled]="lineIsSaving" [nbSpinner]="lineIsSaving">Зберегти</button>
+  </div>
+</ng-template>
