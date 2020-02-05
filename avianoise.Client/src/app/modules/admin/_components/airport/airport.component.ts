@@ -25,6 +25,7 @@ import { ProxyZip } from '@proxy-classes/proxy-zip.class';
 import { ProxyFile } from '@proxy-classes/proxy-file.class';
 import { NbWindowService, NbWindowRef } from '@nebular/theme';
 import { Line } from '@classes/line.class';
+import { ExtendedFile } from '@classes/extended-file.class';
 
 @Component({
   selector: 'app-airport',
@@ -33,6 +34,7 @@ import { Line } from '@classes/line.class';
 })
 export class AirportComponent implements OnInit, OnDestroy {
   @ViewChild('editLineModal', { static: false }) editLineModal: TemplateRef<any>;
+  @ViewChild('editFileModal', { static: false }) editFileModal: TemplateRef<any>;
   
   alive: boolean = true;
   airport: Airport;
@@ -47,6 +49,7 @@ export class AirportComponent implements OnInit, OnDestroy {
   modalWindowRef: NbWindowRef;
   uploader: FileUploader;
   lineIsSaving: boolean;
+  fileIsSaving: boolean;
 
   constructor(
     private store: Store<fromRoot.State>,
@@ -145,6 +148,46 @@ export class AirportComponent implements OnInit, OnDestroy {
     });
   }
 
+  onEditFile(file: ProxyFile) {
+    console.log(file);
+    file.isEditing = true;
+    let editedFile = {...file};
+    this.modalWindowRef = this.windowService.open(
+      this.editFileModal, { title: file.fileName, context: editedFile }
+    );
+    this.modalWindowRef.onClose.pipe(takeWhile(() => this.alive)).subscribe(_ => {
+      file.isEditing = false;
+    });
+
+    /* line.isEditing = true;
+    let file = this.decodedFiles.find(p => p.id === line.fileId);
+    file.isEditing = true;
+    let editedLine = {...line};
+    this.modalWindowRef = this.windowService.open(
+      this.editLineModal, { title: line.name, windowClass: 'edit-line-modal' , context: editedLine }
+    );
+    this.modalWindowRef.onClose.pipe(takeWhile(() => this.alive)).subscribe(_ => {
+      line.isEditing = false;
+      if(file.lines.every((item: ProxyLine) => !item.isEditing)) {
+        file.isEditing = false;
+      }
+    }); */
+  }
+
+  onSaveFile(file: ExtendedFile) {
+    this.fileIsSaving = true;
+    let clearFile = {...file};
+    clearFile.lines = [];
+    console.log(clearFile, 'clear file');
+    this.fileService.put(clearFile).pipe(takeWhile(() => this.alive)).subscribe(res => {
+      let file = this.decodedFiles.find(f => f.id == res.id);
+      file.noiseType = res.noiseType;
+      file.dayNightType = res.dayNightType;
+      this.modalWindowRef.close();
+      this.fileIsSaving = false;
+    });
+  }
+
   toggleFile(decodedFile: ProxyExtendedFile) {
     decodedFile.lines.forEach(line => 
     {
@@ -199,7 +242,7 @@ export class AirportComponent implements OnInit, OnDestroy {
 
   checkFileSelected() {
     this.decodedFiles.forEach(file => {
-      file.isSelect = file.lines.some((line : ProxyLine) => line.isSelect);
+      file.isSelect = file.lines.every((line : ProxyLine) => line.isSelect);
     });
   }
 
