@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
-import { ExtendedFile } from '../classes/extended-file.class';
+import { Address } from '../classes/address.class';
 
 
 @Injectable({ providedIn: "root" })
-export class FileDecodeService
+export class GeoCodingService
 {
-	private apiUrl:string = 'api/file/decode';
+	private apiUrl:string = 'api/geocoding';
 
 	private headers = new HttpHeaders({
 		"content-type": "application/json",
@@ -21,8 +21,8 @@ export class FileDecodeService
 
 	constructor(private http: HttpClient) {}
 
-	get(fileId: number,force: boolean) : Observable<ExtendedFile> {
-		return this.http.get<ExtendedFile>(this.apiUrl + "/" + fileId + "?" + "force=" + force, this.options).pipe();
+	post(body : Address) : Observable<Address> {
+		return this.http.post<Address>(this.apiUrl, body, this.options).pipe();
 	}
 
 }
