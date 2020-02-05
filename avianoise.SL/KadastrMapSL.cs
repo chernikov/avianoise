@@ -17,6 +17,8 @@ namespace avianoise.SL
 
         private readonly string getAreaByNumberTemplate = "https://map.land.gov.ua/kadastrova-karta/find-Parcel?cadnum={0}&activeArchLayer=0";
 
+        private readonly string getInfoByNumberTemplate = "https://map.land.gov.ua/kadastrova-karta/get-parcel-Info?koatuu={0}&zone={1}&quartal={2}&parcel={3}";
+
         private readonly string HtmlKadastrRegexTemplate = "<strong>(?<number>.*?)</strong>";
 
         private const int Extent = 6378137;
@@ -111,13 +113,24 @@ namespace avianoise.SL
             return location;
         }
 
-
-
         public KadastrInfo GetInfoByNumber(KadastrNumber number)
         {
-            throw new NotImplementedException();
+            var getInfoUrl = string.Format(getInfoByNumberTemplate, number.Koatuu, number.Zone, number.Kvartal, number.Parcel);
+            string result;
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36");
+                var responseTask = client.GetStringAsync(getInfoUrl);
+                result = responseTask.Result;
+            }
+            var objResult = JsonConvert.DeserializeObject<KadastrResult<KadastrInfo>>(result);
+            if (objResult.Status && objResult.Data.Count > 0)
+            {
+                var data = objResult.Data[0];
+                return data;
+            }
+            return null;
         }
-
 
 
         private Location XyToLocation(Point point)

@@ -19,6 +19,8 @@ namespace avianoise.SL.Tests
 
         public string PrompryladKadastr = "2610100000:06:003:0227";
 
+        public string NowhereKadastr = "9999900000:06:003:0227";
+
         [Test]
         public void GetNumberByCurrentXyz()
         {
@@ -57,12 +59,29 @@ namespace avianoise.SL.Tests
             Assert.Less(Math.Abs(location.Lng - PrompryladLocation.Lng), 0.001);
         }
 
+        [Test]
+        public void GetInfoByPrompryladKadastrNumber()
+        {
+            var su = GetKadastrMapSL();
+            var info = su.GetInfoByNumber(KadastrNumber.Parse(PrompryladKadastr));
+            Assert.IsNotNull(info);
+        }
+
+
+        [Test]
+        public void GetInfoByNowhereKadastrNumber()
+        {
+            var su = GetKadastrMapSL();
+            var info = su.GetInfoByNumber(KadastrNumber.Parse(NowhereKadastr));
+            Assert.IsNull(info);
+        }
+
 
         [Test]
         public void GetAreaByNowhereKadastrNumber()
         {
             var su = GetKadastrMapSL();
-            var area = su.GetAreaByNumber(KadastrNumber.Parse("9999900000:06:003:0227"));
+            var area = su.GetAreaByNumber(KadastrNumber.Parse(NowhereKadastr));
             Assert.IsNull(area);
         }
 
