@@ -63,12 +63,15 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   xyzToBounds(x: number, y: number, z: number): number[] {
+    console.log(x, y, z);
+    debugger;
     var tileSize = (this.EXTENT[1] * 2) / Math.pow(2, z);
     var minx = this.EXTENT[0] + x * tileSize;
     var maxx = this.EXTENT[0] + (x + 1) * tileSize;
     // remember y origin starts at top
     var miny = this.EXTENT[1] - (y + 1) * tileSize;
     var maxy = this.EXTENT[1] - y * tileSize;
+    console.log([minx, miny, maxx, maxy]);
     return [minx, miny, maxx, maxy];
   }
 
