@@ -8,7 +8,7 @@ namespace avianoise.SL.Results
 {
     public class KadastrResult<T>
     {
-        public string Status { get; set; }
+        public bool Status { get; set; }
 
         public List<T> Data { get; set; }
     }

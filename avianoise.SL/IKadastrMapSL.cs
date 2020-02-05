@@ -15,6 +15,8 @@ namespace avianoise.SL
 
         KadastrInfo GetInfoByNumber(KadastrNumber number);
 
-        XyArea GetAreaByNumber(KadastrNumber number);
+        XyAreaD GetAreaByNumber(KadastrNumber number);
+
+        Location GetLocationByNumber(KadastrNumber number);
     }
 }
