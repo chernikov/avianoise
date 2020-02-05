@@ -22,7 +22,7 @@ export class AirportFileService
 	constructor(private http: HttpClient) {}
 
 	get(airportId: number,onlyDecoded: boolean) : Observable<ExtendedFile[]> {
-		return this.http.get<ExtendedFile[]>(this.apiUrl + "/" + airportId + "?onlyDecoded=" + onlyDecoded, this.options).pipe();
+		return this.http.get<ExtendedFile[]>(this.apiUrl + "/" + airportId + "?" + "onlyDecoded=" + onlyDecoded, this.options).pipe();
 	}
 
 	post(airportId: number) : Observable<ExtendedFile[]> {
