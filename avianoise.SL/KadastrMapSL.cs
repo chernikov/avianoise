@@ -21,7 +21,7 @@ namespace avianoise.SL
 
         private readonly string HtmlKadastrRegexTemplate = "<strong>(?<number>.*?)</strong>";
 
-        private const int Extent = 6378137;
+
 
         public KadastrNumber GetNumberByXyz(double x, double y, int zoom)
         {
@@ -72,12 +72,9 @@ namespace avianoise.SL
 
         public KadastrNumber GetNumberByLatLng(double lat, double lng)
         {
-            var zoom = 16;
-            var tilePoint = WorldToTilePos(lat, lng, zoom);
-            var tileSize = (Math.PI * Extent * 2) / Math.Pow(2, zoom);
-            var y = -1 * Math.PI * Extent + ((tilePoint.X) * tileSize);
-            var x = Math.PI * Extent - ((tilePoint.Y) * tileSize);
-            return GetNumberByXyz(x, y, zoom);
+            var location = new Location() { Lat = lat, Lng = lng };
+            var point = GeoLatLngHelper.LocationToXy(location);
+            return GetNumberByXyz(point.X, point.Y, GeoLatLngHelper.Zoom);
         }
 
         public XyAreaD GetAreaByNumber(KadastrNumber number)
@@ -107,9 +104,8 @@ namespace avianoise.SL
             {
                 return null;
             }
-
             var point = area.GetCenter();
-            var location = XyToLocation(point);
+            var location = GeoLatLngHelper.XyToLocation(point);
             return location;
         }
 
@@ -132,57 +128,6 @@ namespace avianoise.SL
             return null;
         }
 
-
-        private Location XyToLocation(Point point)
-        {
-            var zoom = 16;
-            var tileSize = (Math.PI * Extent * 2) / Math.Pow(2, zoom);
-            var tileX = (point.Y + Math.PI * Extent) / tileSize;
-            var tileY = -1 * (point.X - Math.PI * Extent) / tileSize;
-
-            var location = TileToWorldPos(tileY, tileX, zoom);
-            return new Location()
-            {
-                Lng = -location.X,
-                Lat = -location.Y,
-            };
-        }
-
-
-        /// <summary>
-        /// ref https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#C.23
-        /// </summary>
-        /// <param name="lat"></param>
-        /// <param name="lng"></param>
-        /// <param name="zoom"></param>
-        /// <returns></returns>
-        private Point WorldToTilePos(double lat, double lng, int zoom)
-        {
-            var p = new Point
-            {
-                X = (float)((lng + 180.0) / 360.0 * (1 << zoom)),
-                Y = (float)((1.0 - Math.Log(Math.Tan(lat * Math.PI / 180.0) + 1.0 / Math.Cos(lat * Math.PI / 180.0)) / Math.PI) / 2.0 * (1 << zoom))
-            };
-            return p;
-        }
-
-        /// <summary>
-        /// ref https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#C.23
-        /// </summary>
-        /// <param name="tileX"></param>
-        /// <param name="tileY"></param>
-        /// <param name="zoom"></param>
-        /// <returns></returns>
-        private Point TileToWorldPos(double tileX, double tileY, int zoom)
-        {
-            Point p = new Point();
-            double n = Math.PI - ((2.0 * Math.PI * tileY) / Math.Pow(2.0, zoom));
-
-            p.X = (float)((tileX / Math.Pow(2.0, zoom) * 360.0) - 180.0);
-            p.Y = (float)(180.0 / Math.PI * Math.Atan(Math.Sinh(n)));
-
-            return p;
-        }
 
     }
 }
