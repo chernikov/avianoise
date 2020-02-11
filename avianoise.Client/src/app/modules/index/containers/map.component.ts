@@ -1,6 +1,8 @@
 /// <reference types="@types/googlemaps" />
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 
+import { IfSlideAnimation } from '@animations';
+
 import { AgmCoreModule, AgmMap, GoogleMapsAPIWrapper } from '@agm/core';
 import { GoogleMap } from '@agm/core/services/google-maps-types';
 
@@ -8,6 +10,9 @@ import { GoogleMap } from '@agm/core/services/google-maps-types';
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
+  animations: [
+    IfSlideAnimation
+  ]
 })
 export class MapComponent implements OnInit, AfterViewInit {
 
@@ -25,6 +30,9 @@ export class MapComponent implements OnInit, AfterViewInit {
   lng: number = 32;
   zoom: number = 7;
   landcover: google.maps.ImageMapType;
+
+  menuIsOpen: boolean;
+  listItemIsOpen: number;
 
   constructor() { }
 
@@ -59,6 +67,18 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.map.overlayMapTypes.push(this.landcover);
     } else {
       this.map.overlayMapTypes.pop();
+    }
+  }
+
+  toggleSidebar() {
+    this.menuIsOpen = !this.menuIsOpen;
+  }
+
+  toggleListItem(number: number) {
+    if(this.listItemIsOpen === number) {
+      this.listItemIsOpen = null;
+    } else {
+      this.listItemIsOpen = number;
     }
   }
 

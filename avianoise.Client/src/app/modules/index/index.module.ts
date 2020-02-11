@@ -5,7 +5,7 @@ import { LoginComponent } from './containers/login.component';
 import { RouterModule } from '@angular/router';
 import { router } from './index.router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NbSpinnerModule, NbButtonModule, NbInputModule, NbLayoutModule, NbCheckboxModule } from '@nebular/theme';
+import { NbSpinnerModule, NbButtonModule, NbInputModule, NbLayoutModule, NbCheckboxModule, NbSidebarModule, NbIconModule } from '@nebular/theme';
 import { MapComponent } from './containers/map.component';
 
 @NgModule({
