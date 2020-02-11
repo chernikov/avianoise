@@ -45,7 +45,10 @@
       ],
       "@state/*": [
         "src/app/state/*"
-      ]
+      ],
+      "@animations": [
+        "src/app/app.animation.ts"
+      ],
     }
   }
 }
