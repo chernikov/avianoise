@@ -29,13 +29,13 @@ namespace avianoise.Web.Api
 
         [HttpGet]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(List<LineDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<NoiseLineDto>), (int)HttpStatusCode.OK)]
         public IActionResult Get(double lat, double lng)
         {
             var airports = airportBL.GetPublished();
             var airport = GeoHelper.GetNearestAirport(airports, lat, lng);
             var lines = GeoHelper.GetNoiseLines(airport, lat, lng);
-            var result = mapper.Map<List<LineDto>>(lines);
+            var result = mapper.Map<List<NoiseLineDto>>(lines);
             return Ok(result);
         }
     }

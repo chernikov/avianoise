@@ -13,8 +13,23 @@ namespace avianoise.Web.Helpers
     {
         public static Airport GetNearestAirport(List<Airport> airports, double lat, double lng)
         {
-            //TODO: find nearest 
-            return airports[0];
+            Airport nearest = null;
+            double nearDistance = double.MaxValue;
+            foreach (var airport in airports)
+            {
+                var distance = GetDistance(lat, lng, airport.Lat, airport.Lng);
+                if (nearest == null || distance < nearDistance)
+                {
+                    nearDistance = distance;
+                    nearest = airport;
+                }
+            }
+            return nearest;
+        }
+
+        private static double GetDistance(double lat, double lng, double lat2, double lng2)
+        {
+            return Math.Sqrt(Math.Pow((lat2 - lat), 2) + Math.Pow((lng2 - lng), 2));
         }
 
         public static List<Line> GetNoiseLines(Airport airport, double lat, double lng)
