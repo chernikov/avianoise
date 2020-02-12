@@ -29,6 +29,11 @@ namespace avianoise.BL
             return airportRepository.GetList();
         }
 
+        public List<Airport> GetPublished()
+        {
+            return airportRepository.GetPublished();
+        }
+
         public Airport Create(Airport entry)
         {
             return airportRepository.Create(entry);
@@ -43,5 +48,7 @@ namespace avianoise.BL
         {
             airportRepository.Delete(airportId);
         }
+
+       
     }
 }
