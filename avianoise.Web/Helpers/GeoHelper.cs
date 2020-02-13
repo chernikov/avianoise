@@ -34,12 +34,12 @@ namespace avianoise.Web.Helpers
 
         public static List<Line> GetNoiseLines(Airport airport, double lat, double lng)
         {
-            var point = new GeoPoint(lat, lng);
+            var point = new PointF((float)lng, (float)lat);
 
             var totalLines = new List<Line>();
             foreach (var line in airport.Lines)
             {
-                var points = line.Points.Select(p => new GeoPoint(p.Lat, p.Lng)).ToList();
+                var points = line.Points.OrderBy(p => p.Number).Select(p => new PointF((float)p.Lng, (float)p.Lat)).ToList();
                 if (IsInPolygon(points, point))
                 {
                     totalLines.Add(line);
@@ -53,40 +53,23 @@ namespace avianoise.Web.Helpers
             return list;
         }
 
-        public static bool IsInPolygon(List<GeoPoint> poly, GeoPoint p)
-        {
-            GeoPoint p1, p2;
-            bool inside = false;
-            var length = poly.Count;
-            if (length < 3)
-            {
-                return inside;
-            }
-            var oldPoint = new GeoPoint(poly[length - 1].Lat, poly[length - 1].Lng);
-            for (int i = 0; i < length; i++)
-            {
-                var newPoint = new GeoPoint(poly[i].Lat, poly[i].Lng);
-                if (newPoint.Lat > oldPoint.Lat)
-                {
-                    p1 = oldPoint;
-                    p2 = newPoint;
-                }
-                else
-                {
-                    p1 = newPoint;
-                    p2 = oldPoint;
-                }
 
-                if ((newPoint.Lat < p.Lat) == (p.Lat <= oldPoint.Lat)
-                    && (p.Lng - (long)p1.Lng) * (p2.Lat - p1.Lat)
-                    < (p2.Lng - (long)p1.Lng) * (p.Lat - p1.Lat))
+        public static bool IsInPolygon(List<PointF> polygon, PointF point)
+        {
+            bool isInside = false;
+            var length = polygon.Count();
+            for (int i = 0, j = length - 1; i < length; j = i++)
+            {
+                if ((polygon[i].Y > point.Y) != (polygon[j].Y > point.Y) &&
+                (point.X < (polygon[j].X - polygon[i].X)
+                        * (point.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) + polygon[i].X))
                 {
-                    inside = !inside;
+                    isInside = !isInside;
                 }
-                oldPoint = newPoint;
             }
-            return inside;
+            return isInside;
         }
+
 
         private static void FilterNoiseType(List<Line> source, List<Line> dest, NoiseTypeEnum noiseType, DayNightTypeEnum dayNightType)
         {
