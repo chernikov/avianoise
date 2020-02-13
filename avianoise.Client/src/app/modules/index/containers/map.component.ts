@@ -84,12 +84,12 @@ export class MapComponent implements OnInit, AfterViewInit {
       let test = res;
       test.forEach(file => {
         file.lines.forEach(line => {
-          let polygon = new google.maps.Polygon({
+          new google.maps.Polygon({
             paths: line.points,
             clickable: false,
-            fillColor: 'red'
+            fillColor: 'red',
+            map: this.map
           });
-          polygon.setMap(this.map);
         })
       })
     });

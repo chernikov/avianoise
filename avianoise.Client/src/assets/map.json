@@ -52,11 +52,29 @@
     ]
   },
   {
+    "featureType": "administrative.country",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#3661d0"
+      }
+    ]
+  },
+  {
     "featureType": "administrative.land_parcel",
     "elementType": "labels.text.fill",
     "stylers": [
       {
         "color": "#bdbdbd"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.province",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#3661d0"
       }
     ]
   },
@@ -97,35 +115,8 @@
     ]
   },
   {
-    "featureType": "poi.government",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#e5ecfd"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.medical",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#e5ecfd"
-      }
-    ]
-  },
-  {
     "featureType": "poi.park",
     "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#e5ecfd"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "geometry.fill",
     "stylers": [
       {
         "color": "#e5ecfd"
@@ -137,25 +128,7 @@
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#20ecd2"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.school",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#e5ecfd"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.sports_complex",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#e5ecfd"
+        "visibility": "off"
       }
     ]
   },
@@ -276,19 +249,40 @@
   },
   {
     "featureType": "transit.station.airport",
-    "elementType": "labels.text.fill",
+    "elementType": "labels.text",
     "stylers": [
       {
         "color": "#3661d0"
+      },
+      {
+        "visibility": "on"
+      },
+      {
+        "weight": 1
       }
     ]
   },
   {
-    "featureType": "transit.station.bus",
-    "elementType": "geometry.fill",
+    "featureType": "transit.station.airport",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#000000"
+      },
+      {
+        "weight": 3
+      }
+    ]
+  },
+  {
+    "featureType": "transit.station.airport",
+    "elementType": "labels.text.stroke",
     "stylers": [
       {
         "color": "#ffffff"
+      },
+      {
+        "weight": 5
       }
     ]
   },
