@@ -2,6 +2,8 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 
 import { IfSlideAnimation } from '@animations';
+import { AirportPublishedService } from '@services/airport-published.service';
+import { NoiseLevelService } from '@services/noise-level.service';
 
 @Component({
   selector: 'app-map',
@@ -35,7 +37,10 @@ export class MapComponent implements OnInit, AfterViewInit {
   selectedLayer: number = 1;
   layerIsChanged: boolean;
 
-  constructor() { }
+  constructor(
+    private airportPublishedService: AirportPublishedService,
+    private noiseLevelService: NoiseLevelService
+  ) { }
 
   ngOnInit() {
     let _this = this;
@@ -66,6 +71,22 @@ export class MapComponent implements OnInit, AfterViewInit {
       tileSize: tileSize
     });
     this.addControlesForMap();
+    this.getAirports();
+  }
+
+  getAirports() {
+    this.airportPublishedService.get().subscribe(res => {
+      let test = res;
+      test.forEach(file => {
+        file.lines.forEach(line => {
+          let polygon = new google.maps.Polygon({
+            paths: line.points,
+            clickable: false
+          });
+          polygon.setMap(this.map);
+        })
+      })
+    });
   }
 
   changeMapLayer() {
@@ -81,6 +102,16 @@ export class MapComponent implements OnInit, AfterViewInit {
         icon: 'assets/images/white-marker.svg'
       });
     } else { this.marker.setPosition(location); }
+    this.getLocationNoise();
+  }
+
+  getLocationNoise() {
+    let lat = this.marker.getPosition().lat();
+    let lng = this.marker.getPosition().lng();
+    console.log('lat', lat, 'lng', lng);
+    this.noiseLevelService.get(lat, lng).subscribe(res => {
+      console.log(res);
+    });
   }
 
   addControlesForMap() {
