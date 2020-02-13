@@ -49,6 +49,8 @@
       "@animations": [
         "src/app/app.animation.ts"
       ],
-    }
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   }
 }
