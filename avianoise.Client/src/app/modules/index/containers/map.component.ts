@@ -5,6 +5,8 @@ import { IfSlideAnimation } from '@animations';
 import { AirportPublishedService } from '@services/airport-published.service';
 import { NoiseLevelService } from '@services/noise-level.service';
 
+import mapStylesJson from '../../../../assets/map.json';
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -48,9 +50,12 @@ export class MapComponent implements OnInit, AfterViewInit {
       center: new google.maps.LatLng(this.lat, this.lng),
       zoom: this.zoom,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      disableDefaultUI: true
+      disableDefaultUI: true,
+      styles: []
     };
+    mapProp.styles = mapStylesJson;
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+    
     this.map.addListener('click', function (event) {
       if (_this.setLocationActive) {
         _this.placeMarker(event.latLng, _this.map);
@@ -70,7 +75,7 @@ export class MapComponent implements OnInit, AfterViewInit {
       opacity: 1.0,
       tileSize: tileSize
     });
-    this.addControlesForMap();
+    this.addControlsForMap();
     this.getAirports();
   }
 
@@ -81,7 +86,8 @@ export class MapComponent implements OnInit, AfterViewInit {
         file.lines.forEach(line => {
           let polygon = new google.maps.Polygon({
             paths: line.points,
-            clickable: false
+            clickable: false,
+            fillColor: 'red'
           });
           polygon.setMap(this.map);
         })
@@ -114,7 +120,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  addControlesForMap() {
+  addControlsForMap() {
     this.createNoiseLevelInfoButton();
     this.createBottomRightButtons();
     this.createSetLocationButton();
