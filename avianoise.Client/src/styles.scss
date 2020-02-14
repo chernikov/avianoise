@@ -19,18 +19,6 @@ body {
   box-sizing: border-box;
 }
 
-button {
-  background-color: rgba(0, 0, 0, .2) !important;
-  width: 200px;
-  transition: .5s;
-
-  &.primary {
-    background-color: $primary !important;
-    cursor: pointer;
-    color: #fff;
-  }
-}
-
 .noise-control-wrap {
   cursor: pointer;
   margin-top: 25px;
