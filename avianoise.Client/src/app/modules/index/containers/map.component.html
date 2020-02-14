@@ -116,6 +116,23 @@
           <span>Зворотній зв'язок</span>
         </div>
       </div>
+      <div class="noise-info-wrap" *ngIf="showLocationInfo">
+        <div class="noise-info-container">
+          <div class="coords">
+            <img src="assets/images/white-marker-small.svg">
+            {{markerCoords.lat}}, {{markerCoords.lng}}
+          </div>
+          <div *ngFor="let item of noiseInfo" class="item">
+            <div class="top">
+              <img src="{{ item.src }}">
+              <span>{{ item.value }}</span>
+            </div>
+            <div class="bottom">
+              {{ item.text }}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </nb-layout-column>
 </nb-layout>

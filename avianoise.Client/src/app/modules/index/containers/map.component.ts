@@ -8,6 +8,52 @@ import { NoiseLevelService } from '@services/noise-level.service';
 import mapStylesJson from '../../../../assets/map.json';
 import { Airport } from '@classes/airport.class.js';
 
+export interface IMarkerCoords {
+  lat: string;
+  lng: string;
+}
+
+export interface INoiseInfo {
+  value: string;
+  src: string;
+  text: string;
+}
+
+var layersInfo = [
+  {
+    id: 1,
+    src: 'assets/images/day-equivalent.svg',
+    text: 'Денний еквівалентний',
+    textShort: 'Денний екв.',
+    dayNightType: 1,
+    noiseType: 2
+  },
+  {
+    id: 2,
+    src: 'assets/images/day-max.svg',
+    text: 'Денний максимальний',
+    textShort: 'Денний макс.',
+    dayNightType: 1,
+    noiseType: 1
+  },
+  {
+    id: 3,
+    src: 'assets/images/night-equivalent.svg',
+    text: 'Нічний еквівалентний',
+    textShort: 'Нічний екв.',
+    dayNightType: 2,
+    noiseType: 2
+  },
+  {
+    id: 4,
+    src: 'assets/images/night-max.svg',
+    text: 'Нічний максимальний',
+    textShort: 'Нічний макс.',
+    dayNightType: 2,
+    noiseType: 1
+  }
+]
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -24,6 +70,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   map: google.maps.Map;
   marker: google.maps.Marker;
+  
 
   EXTENT = [-Math.PI * 6378137, Math.PI * 6378137];
 
@@ -42,12 +89,16 @@ export class MapComponent implements OnInit, AfterViewInit {
   airports: Airport[];
   filteredAirports: Airport[];
   polygons: google.maps.Polygon[];
+  noiseInfo: INoiseInfo[];
+  markerCoords: IMarkerCoords;
+  showLocationInfo: boolean;
 
   constructor(
     private airportPublishedService: AirportPublishedService,
     private noiseLevelService: NoiseLevelService
   ) {
     this.polygons = [];
+    this.noiseInfo = [];
   }
 
   ngOnInit() {
@@ -61,7 +112,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     };
     mapProp.styles = mapStylesJson;
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-    
+
     this.map.addListener('click', function (event) {
       if (_this.setLocationActive) {
         _this.placeMarker(event.latLng, _this.map);
@@ -94,57 +145,47 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   filterAirports(type: number) {
     this.filteredAirports = [];
-    let configs = [
-      {
-        id: 1,
-        dayNightType: 1,
-        noiseType: 2
-      },
-      {
-        id: 2,
-        dayNightType: 1,
-        noiseType: 1
-      },
-      {
-        id: 3,
-        dayNightType: 2,
-        noiseType: 2
-      },
-      {
-        id: 4,
-        dayNightType: 2,
-        noiseType: 1
-      },
-    ];
-    let config = configs.find(item => item.id == type);
+    let config = layersInfo.find(item => item.id == type);
     this.airports.map(airport => {
-      let newAirport = {...airport};
-      //newAirport = newAirport.files.filter(file => file.dayNightType == config.dayNightType && file.noiseType == config.noiseType);
+      let newAirport = { ...airport };
       newAirport.files = newAirport.files.filter(file => file.dayNightType == config.dayNightType && file.noiseType == config.noiseType);
-      if(airport.files.length) {
+      if (airport.files.length) {
         this.filteredAirports.push(newAirport);
       };
     });
-    console.log(this.airports, 'this.airports');
     this.renderPolygons();
   }
 
   renderPolygons() {
-    if(this.polygons && this.polygons.length) {
+    if (this.polygons && this.polygons.length) {
       this.polygons.map(polygon => {
         polygon.setMap(null);
       });
       this.polygons = [];
     };
-    console.log(this.filteredAirports);
     this.filteredAirports.forEach(airport => {
       airport.files.forEach(file => {
         file.lines.forEach(line => {
+          let bgColor;
+          let strokeColor;
+          if(line.level >= 70 ) {
+            bgColor = '#FF3564';
+            strokeColor = '#EF364C';
+          } else if(line.level <= 50) {
+            bgColor = '#F7D897';
+            strokeColor = '#EBBD87';
+          } else {
+            bgColor = '#FC8E75';
+            strokeColor = '#EE897B';
+          }
           let polygon = new google.maps.Polygon({
             paths: line.points,
             clickable: false,
-            fillColor: 'red',
-            map: this.map
+            fillColor: bgColor,
+            map: this.map,
+            strokeColor: 'red',
+            strokeOpacity: .5,
+            strokeWeight: 1
           });
           this.polygons.push(polygon);
         });
@@ -172,10 +213,43 @@ export class MapComponent implements OnInit, AfterViewInit {
   getLocationNoise() {
     let lat = this.marker.getPosition().lat();
     let lng = this.marker.getPosition().lng();
-    console.log('lat', lat, 'lng', lng);
-    this.noiseLevelService.get(lat, lng).subscribe(res => {
-      console.log(res);
+
+    this.markerCoords = {
+      lat: lat.toString().slice(0, 10),
+      lng: lng.toString().slice(0, 10)
+    };
+    this.noiseLevelService.get(lat, lng).subscribe(noiseInfoArray => {
+      this.setNoiseLevelInfo(noiseInfoArray);
     });
+  }
+
+  setNoiseLevelInfo(noiseInfoArray) {
+    this.noiseInfo = [];
+    if(noiseInfoArray && noiseInfoArray.length) {
+      noiseInfoArray.map(item => {
+      
+        let level: string;
+        if (item.level >= 85) {
+          level = '>' + item.level;
+        } else {
+          level = item.level + '-' + (item.level + 5)
+        }
+        let layerInfo = layersInfo.find(layerInfoItem => layerInfoItem.dayNightType == item.dayNightType && layerInfoItem.noiseType == item.noiseType);
+  
+        let noiseLevelItem = {
+          value: level,
+          text: layerInfo.textShort,
+          src: layerInfo.src
+        };
+  
+        this.noiseInfo.push(noiseLevelItem);
+      });
+    }
+    if(this.noiseInfo.length) {
+      this.showLocationInfo = true;
+    } else {
+      this.showLocationInfo = false;
+    }
   }
 
   addControlsForMap() {
@@ -222,45 +296,22 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   createInfoLayer() {
-    let layersInfo = [
-      {
-        id: 1,
-        src: 'assets/images/day-equivalent.svg',
-        text: 'Денний еквівалентний'
-      },
-      {
-        id: 2,
-        src: 'assets/images/day-max.svg',
-        text: 'Денний максимальний'
-      },
-      {
-        id: 3,
-        src: 'assets/images/night-equivalent.svg',
-        text: 'Нічний еквівалентний'
-      },
-      {
-        id: 4,
-        src: 'assets/images/night-max.svg',
-        text: 'Нічний максимальний'
-      }
-    ]
-
     let selectedLayerInfo = layersInfo.find(layer => layer.id === this.selectedLayer);
 
-    if(!this.layerIsChanged) {
-  
+    if (!this.layerIsChanged) {
+
       let img = document.createElement('img');
       img.setAttribute('src', selectedLayerInfo.src);
-  
+
       let span = document.createElement('span');
       span.innerHTML = selectedLayerInfo.text;
-  
+
       let wrapDiv = document.createElement('div');
       wrapDiv.className = 'layer-info-wrap';
-  
+
       wrapDiv.appendChild(img);
       wrapDiv.appendChild(span);
-  
+
       this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(wrapDiv);
     } else {
       let img = document.querySelector('.layer-info-wrap img');
@@ -331,12 +382,12 @@ export class MapComponent implements OnInit, AfterViewInit {
     let bottom = document.createElement('div');
     bottom.className = 'scale-button-bottom';
 
-    top.addEventListener('click', function() {
+    top.addEventListener('click', function () {
       let zoom = _this.map.getZoom();
       _this.map.setZoom(zoom + 2);
     });
 
-    bottom.addEventListener('click', function() {
+    bottom.addEventListener('click', function () {
       let zoom = _this.map.getZoom();
       _this.map.setZoom(zoom - 2);
     });
