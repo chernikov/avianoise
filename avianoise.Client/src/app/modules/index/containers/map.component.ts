@@ -6,6 +6,7 @@ import { AirportPublishedService } from '@services/airport-published.service';
 import { NoiseLevelService } from '@services/noise-level.service';
 
 import mapStylesJson from '../../../../assets/map.json';
+import { Airport } from '@classes/airport.class.js';
 
 @Component({
   selector: 'app-map',
@@ -38,11 +39,16 @@ export class MapComponent implements OnInit, AfterViewInit {
   setLocationActive: boolean;
   selectedLayer: number = 1;
   layerIsChanged: boolean;
+  airports: Airport[];
+  filteredAirports: Airport[];
+  polygons: google.maps.Polygon[];
 
   constructor(
     private airportPublishedService: AirportPublishedService,
     private noiseLevelService: NoiseLevelService
-  ) { }
+  ) {
+    this.polygons = [];
+  }
 
   ngOnInit() {
     let _this = this;
@@ -80,24 +86,76 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   getAirports() {
-    this.airportPublishedService.get().subscribe(res => {
-      let test = res;
-      test.forEach(file => {
+    this.airportPublishedService.get().subscribe(airports => {
+      this.airports = airports;
+      this.filterAirports(1);
+    });
+  }
+
+  filterAirports(type: number) {
+    this.filteredAirports = [];
+    let configs = [
+      {
+        id: 1,
+        dayNightType: 1,
+        noiseType: 2
+      },
+      {
+        id: 2,
+        dayNightType: 1,
+        noiseType: 1
+      },
+      {
+        id: 3,
+        dayNightType: 2,
+        noiseType: 2
+      },
+      {
+        id: 4,
+        dayNightType: 2,
+        noiseType: 1
+      },
+    ];
+    let config = configs.find(item => item.id == type);
+    this.airports.map(airport => {
+      let newAirport = {...airport};
+      //newAirport = newAirport.files.filter(file => file.dayNightType == config.dayNightType && file.noiseType == config.noiseType);
+      newAirport.files = newAirport.files.filter(file => file.dayNightType == config.dayNightType && file.noiseType == config.noiseType);
+      if(airport.files.length) {
+        this.filteredAirports.push(newAirport);
+      };
+    });
+    console.log(this.airports, 'this.airports');
+    this.renderPolygons();
+  }
+
+  renderPolygons() {
+    if(this.polygons && this.polygons.length) {
+      this.polygons.map(polygon => {
+        polygon.setMap(null);
+      });
+      this.polygons = [];
+    };
+    console.log(this.filteredAirports);
+    this.filteredAirports.forEach(airport => {
+      airport.files.forEach(file => {
         file.lines.forEach(line => {
-          new google.maps.Polygon({
+          let polygon = new google.maps.Polygon({
             paths: line.points,
             clickable: false,
             fillColor: 'red',
             map: this.map
           });
-        })
-      })
+          this.polygons.push(polygon);
+        });
+      });
     });
   }
 
   changeMapLayer() {
     this.layerIsChanged = true;
     this.createInfoLayer();
+    this.filterAirports(this.selectedLayer);
   }
 
   placeMarker(location, map) {
@@ -324,7 +382,6 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   xyzToBounds(x: number, y: number, z: number): number[] {
     console.log(x, y, z);
-    debugger;
     var tileSize = (this.EXTENT[1] * 2) / Math.pow(2, z);
     var minx = this.EXTENT[0] + x * tileSize;
     var maxx = this.EXTENT[0] + (x + 1) * tileSize;
