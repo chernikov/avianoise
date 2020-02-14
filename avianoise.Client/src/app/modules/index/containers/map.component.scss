@@ -58,7 +58,11 @@ nb-layout-column {
   position: relative;
 }
 
-.map {
+.map-wrap {
+  position: relative;
+}
+
+.map-wrap, .map {
   flex: 1;
   height: 100%;
   width : 100%;
