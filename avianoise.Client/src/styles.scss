@@ -145,6 +145,16 @@ body {
     font-family: 'e-Ukraine';
     font-size: 15px;
   }
+  &.location-is-selected {
+    border-radius: 50%;
+    width: 50px;
+    img {
+      margin-right: 0;
+    }
+    span {
+      display: none;
+    }
+  }
 }
 
 .layer-info-wrap {

@@ -29,7 +29,7 @@
               <img src="assets/images/white-marker-small.svg">
               {{markerCoords.lat}}, {{markerCoords.lng}}
             </div>
-            <div *ngFor="let item of noiseInfo" class="item">
+            <div *ngFor="let item of noiseInfo" class="item" [class.no-data]="item.noData">
               <div class="top">
                 <img src="{{ item.src }}">
                 <span>{{ item.value }}</span>

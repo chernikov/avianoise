@@ -17,6 +17,7 @@ export interface INoiseInfo {
   value: string;
   src: string;
   text: string;
+  noData: boolean;
 }
 
 var layersInfo = [
@@ -206,7 +207,10 @@ export class MapComponent implements OnInit, AfterViewInit {
         map: map,
         icon: 'assets/images/white-marker.svg'
       });
-    } else { this.marker.setPosition(location); }
+    } else {
+      this.marker.setPosition(location);
+      this.marker.setMap(this.map);
+    }
     this.getLocationNoise();
   }
 
@@ -225,31 +229,32 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   setNoiseLevelInfo(noiseInfoArray) {
     this.noiseInfo = [];
-    if(noiseInfoArray && noiseInfoArray.length) {
-      noiseInfoArray.map(item => {
-      
+    layersInfo.map(item => {
+      let noiseLevelItem: INoiseInfo;
+      let layerInfo = noiseInfoArray.find(noiseInfoItem => noiseInfoItem.dayNightType == item.dayNightType && noiseInfoItem.noiseType == item.noiseType);
+      if(layerInfo) {
         let level: string;
-        if (item.level >= 85) {
-          level = '>' + item.level;
-        } else {
-          level = item.level + '-' + (item.level + 5)
-        }
-        let layerInfo = layersInfo.find(layerInfoItem => layerInfoItem.dayNightType == item.dayNightType && layerInfoItem.noiseType == item.noiseType);
-  
-        let noiseLevelItem = {
+        if(layerInfo.level >= 85) {
+          level = '>' + layerInfo.level;
+        } else level = layerInfo.level + '-' + (layerInfo.level + 5);
+        noiseLevelItem = {
           value: level,
-          text: layerInfo.textShort,
-          src: layerInfo.src
+          text: item.textShort,
+          src: item.src,
+          noData: false
         };
-  
-        this.noiseInfo.push(noiseLevelItem);
-      });
-    }
-    if(this.noiseInfo.length) {
-      this.showLocationInfo = true;
-    } else {
-      this.showLocationInfo = false;
-    }
+      } else {
+        noiseLevelItem = {
+          value: 'Немає даних',
+          text: item.textShort,
+          src: item.src,
+          noData: true
+        }
+      }
+      this.noiseInfo.push(noiseLevelItem);
+    });
+    this.showLocationInfo = true;
+    document.querySelector('.set-location-wrap').className = 'set-location-wrap location-is-selected';
   }
 
   addControlsForMap() {
@@ -284,6 +289,9 @@ export class MapComponent implements OnInit, AfterViewInit {
         icon.setAttribute('src', 'assets/images/left-arrow.svg');
         span.innerHTML = 'Вийти з вибору локації';
       } else {
+        document.querySelector('.set-location-wrap').className = 'set-location-wrap';
+        _this.showLocationInfo = false;
+        _this.marker.setMap(null);
         icon.setAttribute('src', 'assets/images/blue-marker.svg');
         span.innerHTML = 'Вибрати локацію';
         _this.map.setOptions({
