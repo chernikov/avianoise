@@ -58,7 +58,11 @@ nb-layout-column {
   position: relative;
 }
 
-.map {
+.map-wrap {
+  position: relative;
+}
+
+.map-wrap, .map {
   flex: 1;
   height: 100%;
   width : 100%;
@@ -276,8 +280,9 @@ nb-layout-column {
 }
 
 .noise-info-wrap {
-  width: 100%;
   position: absolute;
+  left: 50%;
+  right: 50%;
   bottom: 50px;
   display: flex;
   justify-content: center;
@@ -300,11 +305,13 @@ nb-layout-column {
       }
       .top {
         display: flex;
+        justify-content: center;
         align-items: center;
         margin-bottom: 12px;
         span {
+          white-space: pre;
           margin-left: 13px;
-          font-weight: bold;
+          font-weight: 700;
           font-size: 25px;
         }
       }
@@ -315,6 +322,17 @@ nb-layout-column {
         text-align: center;
         letter-spacing: 0.035em;
         color: #A5B7E3;
+        white-space: pre;
+      }
+      &.no-data {
+        img {
+          opacity: .4;
+        }
+        span {
+          opacity: .5;
+          font-size: 10px !important;
+          font-weight: 500 !important;
+        }
       }
     }
     .coords {
