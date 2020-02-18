@@ -84,6 +84,7 @@ namespace avianoise.Web
                     new Func<IAviaNoiseDbContext>(() => provider.GetService<IAviaNoiseDbContext>())
                 );
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             RegisterBL(services);
             RegisterSL(services);

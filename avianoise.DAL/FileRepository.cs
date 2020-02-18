@@ -32,9 +32,6 @@ namespace avianoise.DAL
                 return files;
             });
 
-
-
-
         public File Get(int fileId)
             => Query(context => context.Files.FirstOrDefault(p => p.Id == fileId));
 
@@ -53,7 +50,6 @@ namespace avianoise.DAL
                context.SaveChanges();
                return entry;
            });
-
 
         public File UpdateTypes(File entry)
            => Execute(context =>
@@ -115,7 +111,5 @@ namespace avianoise.DAL
                  }
                  return entry;
              });
-
-
     }
 }
