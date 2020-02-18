@@ -1,4 +1,6 @@
 /// <reference types="@types/googlemaps" />
+/// <reference types="@types/node" />
+
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 
 import { IfSlideAnimation } from '@animations';
@@ -7,6 +9,8 @@ import { NoiseLevelService } from '@services/noise-level.service';
 
 import mapStylesJson from '../../../../assets/map.json';
 import { Airport } from '@classes/airport.class.js';
+
+var MarkerWithLabel = require('markerwithlabel')(google.maps);
 
 export interface IMarkerCoords {
   lat: string;
@@ -20,7 +24,16 @@ export interface INoiseInfo {
   noData: boolean;
 }
 
-var layersInfo = [
+export interface ILayersInfo {
+  id: number;
+  src: string;
+  text: string;
+  textShort: string;
+  dayNightType: number;
+  noiseType: number;
+}
+
+var layersInfo: ILayersInfo[] = [
   {
     id: 1,
     src: 'assets/images/day-equivalent.svg',
@@ -90,9 +103,12 @@ export class MapComponent implements OnInit, AfterViewInit {
   airports: Airport[];
   filteredAirports: Airport[];
   polygons: google.maps.Polygon[];
+  filteredPolygons: google.maps.Polygon[];
   noiseInfo: INoiseInfo[];
   markerCoords: IMarkerCoords;
   showLocationInfo: boolean;
+  selectedLayerInfo: ILayersInfo;
+  showPolygons: boolean = false;
 
   constructor(
     private airportPublishedService: AirportPublishedService,
@@ -120,7 +136,21 @@ export class MapComponent implements OnInit, AfterViewInit {
         _this.map.setOptions({
           draggableCursor: 'pointer'
         });
-      }
+      };
+    });
+
+    this.map.addListener('bounds_changed', function() {
+      _this.map.addListener('zoom_changed', function() {
+        let zoom =_this.map.getZoom();
+
+        if(zoom > 10 && !_this.showPolygons) {
+          _this.showPolygons = true;
+          _this.filterPolygons();
+        } else if(zoom <= 10 && _this.showPolygons) {
+          _this.showPolygons = false;
+          _this.filterPolygons();
+        };
+      });
     });
 
     let tileSize = new google.maps.Size(this.tileSize, this.tileSize);
@@ -133,14 +163,35 @@ export class MapComponent implements OnInit, AfterViewInit {
       opacity: 1.0,
       tileSize: tileSize
     });
-    this.addControlsForMap();
     this.getAirports();
+    this.setInfoLayer();
   }
 
   getAirports() {
     this.airportPublishedService.get().subscribe(airports => {
       this.airports = airports;
       this.filterAirports(1);
+      this.showAirports();
+    });
+  }
+
+  showAirports() {
+    
+    this.airports.map(airport => {
+      let location = {
+        lat: airport.lat,
+        lng: airport.lng
+      }
+
+      new MarkerWithLabel({
+        position: location,
+        map: this.map,
+        icon: 'assets/images/plane-icon.svg',
+        labelContent: airport.name,
+        labelAnchor: new google.maps.Point(-15, 30),
+        labelClass: "airport-label white-shadow-text",
+        labelInBackground: false
+      });
     });
   }
 
@@ -155,6 +206,14 @@ export class MapComponent implements OnInit, AfterViewInit {
       };
     });
     this.renderPolygons();
+  }
+
+  filterPolygons() {
+    if(!this.showPolygons) {
+      this.polygons.map(item => item.setMap(null));
+    } else {
+      this.polygons.map(item => item.setMap(this.map));
+    }
   }
 
   renderPolygons() {
@@ -183,12 +242,12 @@ export class MapComponent implements OnInit, AfterViewInit {
             paths: line.points,
             clickable: false,
             fillColor: bgColor,
-            map: this.map,
             strokeColor: 'red',
             strokeOpacity: .5,
             strokeWeight: 1
           });
           this.polygons.push(polygon);
+          this.filterPolygons();
         });
       });
     });
@@ -196,7 +255,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   changeMapLayer() {
     this.layerIsChanged = true;
-    this.createInfoLayer();
+    this.setInfoLayer();
     this.filterAirports(this.selectedLayer);
   }
 
@@ -205,7 +264,14 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.marker = new google.maps.Marker({
         position: location,
         map: map,
-        icon: 'assets/images/white-marker.svg'
+        icon: {
+          url: 'assets/images/white-marker.svg',
+          anchor: {
+            x: 13,
+            y: 29,
+            equals() {return false}
+          }
+        }
       });
     } else {
       this.marker.setPosition(location);
@@ -254,168 +320,38 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.noiseInfo.push(noiseLevelItem);
     });
     this.showLocationInfo = true;
-    document.querySelector('.set-location-wrap').className = 'set-location-wrap location-is-selected';
   }
 
-  addControlsForMap() {
-    this.createNoiseLevelInfoButton();
-    this.createBottomRightButtons();
-    this.createSetLocationButton();
-    this.createInfoLayer();
-  }
+  ngAfterViewInit(): void { }
 
-  ngAfterViewInit(): void {
-
-  }
-
-  createSetLocationButton() {
-    let _this = this;
-
-    let setLocationControlDiv = document.createElement('div');
-    setLocationControlDiv.className = 'set-location-wrap';
-
-    let icon = document.createElement('img');
-    icon.setAttribute('src', 'assets/images/blue-marker.svg');
-
-    let span = document.createElement('span');
-    span.innerHTML = 'Вибрати локацію';
-
-    setLocationControlDiv.appendChild(icon);
-    setLocationControlDiv.appendChild(span);
-
-    setLocationControlDiv.addEventListener('click', function () {
-      _this.setLocationActive = !_this.setLocationActive;
-      if (_this.setLocationActive) {
-        icon.setAttribute('src', 'assets/images/left-arrow.svg');
-        span.innerHTML = 'Вийти з вибору локації';
-      } else {
-        document.querySelector('.set-location-wrap').className = 'set-location-wrap';
-        _this.showLocationInfo = false;
-        _this.marker.setMap(null);
-        icon.setAttribute('src', 'assets/images/blue-marker.svg');
-        span.innerHTML = 'Вибрати локацію';
-        _this.map.setOptions({
-          draggableCursor: 'grab'
-        });
-      }
-    });
-
-    this.map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(setLocationControlDiv);
-  }
-
-  createInfoLayer() {
-    let selectedLayerInfo = layersInfo.find(layer => layer.id === this.selectedLayer);
-
-    if (!this.layerIsChanged) {
-
-      let img = document.createElement('img');
-      img.setAttribute('src', selectedLayerInfo.src);
-
-      let span = document.createElement('span');
-      span.innerHTML = selectedLayerInfo.text;
-
-      let wrapDiv = document.createElement('div');
-      wrapDiv.className = 'layer-info-wrap';
-
-      wrapDiv.appendChild(img);
-      wrapDiv.appendChild(span);
-
-      this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(wrapDiv);
-    } else {
-      let img = document.querySelector('.layer-info-wrap img');
-      img.setAttribute('src', selectedLayerInfo.src);
-      let span = document.querySelector('.layer-info-wrap span');
-      span.innerHTML = selectedLayerInfo.text;
+  onSetLocationBtn() {
+    this.setLocationActive = !this.setLocationActive;
+    if (!this.setLocationActive) {
+      this.showLocationInfo = false;
+      this.marker.setMap(null);
+      this.map.setOptions({
+        draggableCursor: 'grab'
+      });
     }
   }
 
-  createNoiseLevelInfoButton() {
-    let _this = this;
-
-    let noiseLevelControlDiv = document.createElement('div');
-    noiseLevelControlDiv.className = 'noise-control-wrap';
-
-    let createChildDiv = function (html: string, className: string) {
-      let div = document.createElement('div');
-      div.innerHTML = html;
-      div.className = className;
-      return div;
-    }
-
-    noiseLevelControlDiv.appendChild(createChildDiv('75-85', 'hight'));
-    noiseLevelControlDiv.appendChild(createChildDiv('65-75', 'medium'));
-    noiseLevelControlDiv.appendChild(createChildDiv('50-65', 'low'));
-    noiseLevelControlDiv.appendChild(createChildDiv('info', 'info'));
-
-    noiseLevelControlDiv.addEventListener('click', function () {
-      _this.menuIsOpen = true;
-      _this.listItemIsOpen = 3;
-    });
-
-    this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(noiseLevelControlDiv);
+  setInfoLayer() {
+    this.selectedLayerInfo = layersInfo.find(layer => layer.id === this.selectedLayer);
   }
 
-  createMyLocationButton() {
-    var _this = this;
-
-    let locationButton = document.createElement('div');
-    locationButton.className = 'my-location-button'
-    let locationButtonIcon = document.createElement('img');
-    locationButtonIcon.setAttribute('src', 'assets/images/location.svg');
-
-    locationButton.appendChild(locationButtonIcon);
-    locationButton.addEventListener('click', function () {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          var pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          _this.map.setCenter(pos);
-          _this.map.setZoom(12);
-        });
-      }
-    });
-
-    return locationButton;
+  onNoiseInfo() {
+    this.menuIsOpen = true;
+    this.listItemIsOpen = 3;
   }
 
-  createScaleButton() {
-    let _this = this;
-
-    let scaleButton = document.createElement('div');
-    scaleButton.className = 'scale-button';
-    let top = document.createElement('div');
-    top.className = 'scale-button-top';
-    let bottom = document.createElement('div');
-    bottom.className = 'scale-button-bottom';
-
-    top.addEventListener('click', function () {
-      let zoom = _this.map.getZoom();
-      _this.map.setZoom(zoom + 2);
-    });
-
-    bottom.addEventListener('click', function () {
-      let zoom = _this.map.getZoom();
-      _this.map.setZoom(zoom - 2);
-    });
-
-    scaleButton.appendChild(top);
-    scaleButton.appendChild(bottom);
-
-    return scaleButton;
+  zoomIn() {
+    let zoom = this.map.getZoom();
+    this.map.setZoom(zoom + 2);
   }
 
-  createBottomRightButtons() {
-    let rightBottomButtons = document.createElement('div');
-    rightBottomButtons.className = 'right-bottom-buttons-wrap';
-    let scaleButton = this.createScaleButton();
-    let locationButton = this.createMyLocationButton();
-
-    rightBottomButtons.appendChild(scaleButton);
-    rightBottomButtons.appendChild(locationButton);
-
-    this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(rightBottomButtons);
+  zoomOut() {
+    let zoom = this.map.getZoom();
+    this.map.setZoom(zoom - 2);
   }
 
   toggleKadastr(checked: boolean) {

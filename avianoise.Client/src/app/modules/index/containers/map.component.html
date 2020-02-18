@@ -40,6 +40,27 @@
             </div>
           </div>
         </div>
+        <div class="noise-control-wrap" (click)="onNoiseInfo()">
+          <div class="hight">75-85</div>
+          <div class="medium">65-75</div>
+          <div class="low">50-65</div>
+          <div class="info">info</div>
+        </div>
+
+        <div class="layer-info-wrap">
+          <img src="{{ selectedLayerInfo.src }}">
+          <span class="white-shadow-text">{{ selectedLayerInfo.text }}</span>
+        </div>
+
+        <div class="scale-button">
+          <div class="top" (click)="zoomIn()"></div>
+          <div class="bottom" (click)="zoomOut()"></div>
+        </div>
+
+        <div class="set-location-wrap" (click)="onSetLocationBtn()" [class.location-is-selected]="showLocationInfo">
+          <img src="{{ setLocationActive ? 'assets/images/left-arrow.svg' : 'assets/images/blue-marker.svg' }}">
+          <span>{{ setLocationActive ? 'Вийти з Вибору локації' : 'Вибрати локацію' }}</span>
+        </div>
       </div>
       
       <div class="sidebar" *ngIf="menuIsOpen">
