@@ -61,6 +61,7 @@ namespace avianoise.DAL
                }
                entity.NoiseType = entry.NoiseType;
                entity.TimeType = entry.TimeType;
+               entity.DayNightType = entry.DayNightType;
                context.Files.Update(entity);
                context.SaveChanges();
 

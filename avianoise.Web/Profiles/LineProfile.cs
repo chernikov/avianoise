@@ -17,6 +17,11 @@ namespace avianoise.Web.Profiles
                 .ForMember(p => p.Points, opt => opt.MapFrom(r => r.Points.OrderBy(p => p.Number)));
             CreateMap<Line, ExtendedLineDto>()
              .ForMember(p => p.Points, opt => opt.MapFrom(r => r.Points.OrderBy(p => p.Number)));
+
+            CreateMap<Line, NoiseLineDto>()
+             .ForMember(p => p.NoiseType, opt => opt.MapFrom(r => r.File.NoiseType))
+             .ForMember(p => p.DayNightType, opt => opt.MapFrom(r => r.File.DayNightType));
+
             CreateMap<LineDto, Line>();
         }
     }

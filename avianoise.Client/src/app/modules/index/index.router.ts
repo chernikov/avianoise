@@ -4,7 +4,8 @@ import { MapComponent } from './containers/map.component';
 
 
 export const router: Routes = [
-    { path: '', component: LoginComponent },
+    { path: '', component: MapComponent },
     { path: 'login', component: LoginComponent },
     { path: 'map', component: MapComponent },
+    { path: '**', redirectTo: '', pathMatch: 'full' }
 ]

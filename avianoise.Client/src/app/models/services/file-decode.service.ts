@@ -22,7 +22,7 @@ export class FileDecodeService
 	constructor(private http: HttpClient) {}
 
 	get(fileId: number,force: boolean) : Observable<ExtendedFile> {
-		return this.http.get<ExtendedFile>(this.apiUrl + "/" + fileId + "?force=" + force, this.options).pipe();
+		return this.http.get<ExtendedFile>(this.apiUrl + "/" + fileId + "?" + "force=" + force, this.options).pipe();
 	}
 
 }

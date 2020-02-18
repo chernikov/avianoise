@@ -11,6 +11,8 @@ namespace avianoise.DAL
     {
         List<Airport> GetList();
 
+        List<Airport> GetPublished();
+
         Airport Get(int airportId);
 
         Airport Create(Airport entry);

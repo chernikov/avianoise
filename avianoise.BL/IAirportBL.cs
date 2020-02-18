@@ -18,5 +18,7 @@ namespace avianoise.BL
         Airport Update(Airport entry);
 
         void Delete(int airportId);
+
+        List<Airport> GetPublished();
     }
 }
