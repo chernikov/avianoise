@@ -20,6 +20,7 @@ namespace avianoise.DAL
                 entry.AddedDate = DateTime.Now;
                 entry.SearchLine = entry.SearchLine.Trim().ToLower();
                 context.Addresses.Add(entry);
+                context.SaveChanges();
                 return entry;
             });
 
