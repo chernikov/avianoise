@@ -55,6 +55,8 @@ namespace avianoise.Web.Api
 
                 var newFileName = Guid.NewGuid().ToString("N") + extension;
                 var directoryPath = Path.Combine("static", FilesDirectory);
+                var di = new DirectoryInfo(directoryPath);
+                if (!di.Exists) di.Create();
                 var filePath = Path.Combine(directoryPath, newFileName);
                 using (var fileStream = System.IO.File.Create(filePath))
                 {

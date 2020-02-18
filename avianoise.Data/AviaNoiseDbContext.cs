@@ -27,9 +27,15 @@ namespace avianoise.Data
 
         public DbSet<Airport> Airports { get; set; }
 
+        public DbSet<Feedback> Feedbacks { get; set; }
+
+        public DbSet<FeedbackFile> FeedbackFiles { get; set; }
+
         public DbSet<File> Files { get; set; }
 
         public DbSet<Line> Lines { get; set; }
+
+        public DbSet<LogMessage> LogMessages { get; set; }
 
         public DbSet<Point> Points { get; set; }
 
@@ -40,6 +46,7 @@ namespace avianoise.Data
         public DbSet<UserRole> UserRoles { get; set; }
 
         public DbSet<Zip> Zips { get; set; }
+
 
         //protected override void OnConfiguring(DbContextOptionsBuilder options)
         //{

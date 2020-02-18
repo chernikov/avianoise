@@ -10,9 +10,15 @@ namespace avianoise.Data
 
         DbSet<Airport> Airports { get; set; }
 
+        DbSet<Feedback> Feedbacks { get; set; }
+
         DbSet<File> Files { get; set; }
 
+        DbSet<FeedbackFile> FeedbackFiles { get; set; }
+
         DbSet<Line> Lines { get; set; }
+
+        DbSet<LogMessage> LogMessages { get; set; }
 
         DbSet<Point> Points { get; set; }
 
