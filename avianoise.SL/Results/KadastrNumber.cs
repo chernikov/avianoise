@@ -33,5 +33,25 @@ namespace avianoise.SL.Results
             };
         }
 
+        public static bool TryParse(string wholeNumber, out KadastrNumber number)
+        {
+            var parts = wholeNumber.Split(":");
+            try
+            {
+                number = new KadastrNumber()
+                {
+                    Koatuu = long.Parse(parts[0]),
+                    Zone = int.Parse(parts[1]),
+                    Kvartal = int.Parse(parts[2]),
+                    Parcel = int.Parse(parts[3]),
+                };
+                return true;
+            }
+            catch
+            {
+                number = null;
+                return false;
+            }
+        }
     }
 }
