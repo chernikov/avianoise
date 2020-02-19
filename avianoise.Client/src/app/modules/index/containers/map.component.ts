@@ -9,6 +9,7 @@ import { NoiseLevelService } from '@services/noise-level.service';
 
 import mapStylesJson from '../../../../assets/map.json';
 import { Airport } from '@classes/airport.class.js';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 var MarkerWithLabel = require('markerwithlabel')(google.maps);
 
@@ -112,7 +113,8 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   constructor(
     private airportPublishedService: AirportPublishedService,
-    private noiseLevelService: NoiseLevelService
+    private noiseLevelService: NoiseLevelService,
+    private modalService: NgxSmartModalService
   ) {
     this.polygons = [];
     this.noiseInfo = [];
@@ -396,4 +398,8 @@ export class MapComponent implements OnInit, AfterViewInit {
       + "&HEIGHT=" + this.tileSize
       + "&BBOX=" + this.xyzToBounds(coordinates.x, coordinates.y, zoom).join(",");
   };
+
+  openCallbackModal() {
+    this.modalService.getModal('callbackModal').open();
+  }
 }

@@ -7,16 +7,16 @@ export class NoiseLine {
 	airportId : number;
 	name : string;
 	level : number;
-	noiseType : NoiseTypeEnum;
-	dayNightType : DayNightTypeEnum;
+	noiseType : NoiseTypeEnum[];
+	dayNightType : DayNightTypeEnum[];
 
 	constructor() {
 		this.id = 0;
 		this.airportId = 0;
 		this.name = '';
 		this.level = 0;
-		this.noiseType = null;
-		this.dayNightType = null;
+		this.noiseType = [];
+		this.dayNightType = [];
 	}
 
 

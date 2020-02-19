@@ -19,9 +19,8 @@ import { environment } from '../environments/environment';
 import { JWT_Module_Options } from './config/jwt-options.config';
 import { AuthorGuard } from './guards/author.guard';
 import { ThemeModule } from './@theme/theme.module';
-import { NbMenuModule, NbSidebarModule, NbLayoutModule, NbWindowModule } from '@nebular/theme';
+import { NbMenuModule, NbSidebarModule, NbWindowModule } from '@nebular/theme';
 import { CoreModule } from './@core/core.module';
-import { AgmCoreModule } from '@agm/core';
 
 
 
@@ -49,8 +48,7 @@ import { AgmCoreModule } from '@agm/core';
       logOnly: environment.production
     }),
     EffectsModule.forRoot([AuthEffects, AirportsEffects]),
-    JwtModule.forRoot(JWT_Module_Options),
-   
+    JwtModule.forRoot(JWT_Module_Options)
   ],
   providers: [
     AuthorGuard
