@@ -1,0 +1,69 @@
+<ngx-smart-modal #callbackModal [customClass]="'callback-modal'" [identifier]="'callbackModal'" [closable]="false" (onAnyCloseEvent)="close()" [dismissable]="false">
+    <div class="head">
+        <span>Форма зворотнього зв'язку</span>
+        <svg width="21" height="17" viewBox="0 0 21 17" (click)="close()">
+            <rect x="2.36829" y="14.8492" width="21" height="2" transform="rotate(-45 2.36829 14.8492)" fill="#232323" />
+            <rect x="3.78247" width="21" height="2" transform="rotate(45 3.78247 0)" fill="#232323" />
+        </svg>
+    </div>
+    <div class="body">
+        <form [formGroup]="form">
+            <mat-form-field>
+                <mat-label>Ім'я</mat-label>
+                <input matInput type="text" formControlName="name" >
+                <!-- <mat-hint *ngIf="form.get('name').hasError('required') && form.get('name').touched">поле введено неправильно</mat-hint> -->
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Електронна пошта</mat-label>
+                <input matInput type="email" formControlName="email" >
+                <mat-hint *ngIf="form.get('email').hasError('email') && form.get('email').touched">поле введено неправильно</mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Повідомлення</mat-label>
+                <input matInput type="text" formControlName="message" >
+                <!-- <mat-hint *ngIf="form.get('message').hasError('required') && form.get('message').touched">поле введено неправильно</mat-hint> -->
+            </mat-form-field>
+            <div class="upload-block" (click)="fileInput.click()">
+                <img src="assets/images/upload-icon.svg">
+                Вибрати файл
+                <input type="file" #fileInput ng2FileSelect [uploader]="uploader" (change)="uploader.uploadAll()" multiple />
+            </div>
+            <div class="queue-item" *ngFor="let item of uploader.queue">
+                <div class="format">
+                    {{ item?.file?.name | fileFormat }}
+                </div>
+                <div class="info-wrap">
+                    <div class="info">
+                        <div>{{ item?.file?.name }}</div>
+                        <div class="progress-bar">
+                            <div class="line" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                        </div>
+                        <div class="progress-info">
+                            <div>
+                                {{ item?.file?.size/100 * item.progress | fileSize | number:'.2' }} MB/{{ item?.file?.size | fileSize | number:'.2' }} MB
+                            </div>
+                            <div class="status">
+                                {{ item.isSuccess ? 'Завантажено' : null}}
+                                {{ item.isUploading ? 'Завантаження...' : null }}
+                            </div>
+                        </div>
+                    </div>
+                    <img src="assets/images/remove-file-icon.svg" class="remove" (click)="removeFile(item)">
+                </div>
+            </div>
+            <div class="checkbox-block">
+                <label class="checkbox-wrap">
+                    <input type="checkbox" formControlName="privacyPolicy">
+                    <span class="checkbox"></span>
+                    <img src="assets/images/checkmark.svg">
+                </label>
+                <span>Я погоджуюсь з Політикою конфіденційності</span>
+            </div>
+
+            <button [disabled]="!form.valid || formInProgress" [class.primary]="form.valid && !formInProgress" (click)="sendForm()">
+                <img src="assets/images/send-icon.svg">
+                Надіслати
+            </button>
+        </form>
+    </div>
+</ngx-smart-modal>

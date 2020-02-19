@@ -1,0 +1,268 @@
+@import 'variables';
+
+.head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 23px 22px 25px;
+
+  & svg {
+    cursor: pointer;
+
+    path,
+    rect {
+      transition: .4s;
+    }
+
+    &:hover {
+
+      path,
+      rect {
+        fill: $primary !important;
+      }
+    }
+  }
+
+  &:after {
+    content: '';
+    height: 1px;
+    position: absolute;
+    background-color: #D5E0FB;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+.body {
+  padding: 20px 40px 30px 35px;
+}
+
+mat-form-field {
+  display: block;
+}
+
+::ng-deep .mat-form-field {
+  font-family: 'e-Ukraine' !important;
+
+  .mat-form-field-wrapper {
+    margin-bottom: 15px;
+  }
+
+  .mat-input-element {
+    padding-left: 10px;
+    color: #000;
+  }
+
+  .mat-form-field-label {
+    padding-left: 13px;
+    color: #899BCA;
+	}
+	
+	.mat-form-field-flex {
+		padding-top: 5px;
+	}
+
+  .mat-form-field-underline {
+    background-color: #D5E0FB;
+  }
+
+  .mat-form-field-ripple {
+    background-color: #D5E0FB;
+  }
+
+  .mat-form-field-hint-wrapper {
+		justify-content: center;
+		.mat-hint {
+			color: #FF7C74;
+		}
+    div {
+      flex: unset;
+    }
+  }
+}
+
+::ng-deep .mat-form-field.mat-focused {
+  .mat-form-field-label {
+    color: #899BCA;
+  }
+
+  .mat-form-field-underline {
+    background-color: #D5E0FB;
+  }
+
+  .mat-form-field-ripple {
+    background-color: #D5E0FB;
+  }
+	.mat-form-field-flex {
+		background-color: #F0F4FE;
+	}
+}
+
+::ng-deep .mat-form-field.mat-form-field-invalid {
+  .mat-input-element {
+    color: #FF7C74;
+  }
+
+  .mat-form-field-label {
+    color: #FF7C74;
+  }
+
+  .mat-form-field-ripple {
+    background-color: #FF7C74;
+  }
+}
+
+button {
+	cursor: default;
+  width: 100%;
+  height: 56px;
+	background: #D5DDE8;
+	border-radius: 49px;
+	color: #fff;
+  transition: .4s;
+  position: relative;
+  z-index: 1;
+	&.primary {
+    background: $primary;
+		cursor: pointer;
+    &:before {
+      content: "";
+      position: absolute;
+      border-radius: 49px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(237.02deg, #ECA0DC -3.11%, #1671FD 46.47%, #2AC2DA 94.35%);;
+      opacity: 0;
+      transition: opacity 0.4s;
+      z-index: -1;
+    }
+		&:hover:before {
+      opacity: 1;
+		}
+	}
+}
+
+.upload-block {
+  background: #F0F4FE;
+  border-radius: 4px;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 20px;
+  img {
+    margin-right: 5px;
+  }
+  input {
+    display: none;
+  }
+}
+
+.checkbox-wrap {
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 21px;
+  height: 21px;
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    &:checked+.checkbox {
+      background-color: $primary;;
+    }
+  }
+  .checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 3px;
+    box-shadow: 0px 2px 4px rgba(109, 120, 177, 0.28);
+    
+  }
+  img {
+    position: relative;
+  }
+}
+
+.checkbox-block {
+  margin-bottom: 20px;
+  display: flex;
+  .checkbox-wrap {
+    margin-right: 15px;
+  }
+  span {
+    font-size: 14px;
+    line-height: 164.69%;
+  }
+}
+
+.queue-item {
+  display: flex;
+  color: #899BCA;
+  font-size: 10px;
+  font-weight: 300;
+  margin-bottom: 20px;
+  .format {
+    font-size: 14px;
+    font-weight: 400;
+    width: 39px;
+    height: 38px;
+    background: #F0F4FE;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+  }
+  .info-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .info {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .progress-bar {
+      width: 100%;
+      height: 5px;
+      background: #F0F4FE;
+      border-radius: 20px;
+      .line {
+        background: $primary;
+        border-radius: 20px;
+        width: 0;
+        height: 100%;
+      }
+    }
+    .progress-info {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .status {
+        color: $primary;
+      }
+    }
+  }
+  .remove {
+    margin-left: 20px;
+    cursor: pointer;
+  }
+}
