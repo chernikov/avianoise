@@ -12,9 +12,9 @@ export class ExtendedFile {
 	fullPath : string;
 	fileName : string;
 	extension : string;
-	noiseType : NoiseTypeEnum[];
-	dayNightType : DayNightTypeEnum[];
-	timeType : TimeTypeEnum[];
+	noiseType : NoiseTypeEnum;
+	dayNightType : DayNightTypeEnum;
+	timeType : TimeTypeEnum;
 
 	constructor() {
 		this.lines = [];
@@ -24,9 +24,9 @@ export class ExtendedFile {
 		this.fullPath = '';
 		this.fileName = '';
 		this.extension = '';
-		this.noiseType = [];
-		this.dayNightType = [];
-		this.timeType = [];
+		this.noiseType = 0;
+		this.dayNightType = 0;
+		this.timeType = 0;
 	}
 
 
