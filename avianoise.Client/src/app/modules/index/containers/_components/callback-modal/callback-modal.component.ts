@@ -13,7 +13,7 @@ import { takeWhile, catchError } from 'rxjs/operators';
   styleUrls: ['./callback-modal.component.scss']
 })
 export class CallbackModalComponent implements OnInit, OnDestroy {
-  @Output() showToast = new EventEmitter<string>();
+  @Output() showToast = new EventEmitter<number>();
 
   alive: boolean = true;
   form: FormGroup;
@@ -91,9 +91,9 @@ export class CallbackModalComponent implements OnInit, OnDestroy {
         this.formInProgress = false;
         this.modalService.getModal('callbackModal').close();
         this.clearForm();
-        this.showToast.emit('1');
+        this.showToast.emit(1);
     }, err => {
-      this.showToast.emit('2');
+      this.showToast.emit(2);
       this.formInProgress = false;
     });
   }

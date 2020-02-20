@@ -6,6 +6,6 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./toast.component.scss']
 })
 export class ToastComponent {
-  @Input() type:string;
+  @Input() type:number;
   constructor() { }
 }
