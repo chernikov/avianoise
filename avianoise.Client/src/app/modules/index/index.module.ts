@@ -11,11 +11,12 @@ import { NbSpinnerModule, NbButtonModule, NbInputModule, NbLayoutModule, NbCheck
 import { MapComponent } from './containers/map.component';
 import { CallbackModalComponent } from './containers/_components/callback-modal/callback-modal.component';
 import { FileUploadModule } from 'ng2-file-upload';
-import { FileFormatPipe } from 'src/app/models/pipes/file-format.pipe';
-import { FileSizePipe } from 'src/app/models/pipes/file-size.pipe';
+import { FileFormatPipe } from '@pipes/file-format.pipe';
+import { FileSizePipe } from '@pipes/file-size.pipe';
+import { ToastComponent } from './containers/_components/toast/toast.component';
 
 @NgModule({
-  declarations: [LoginComponent, MapComponent, CallbackModalComponent, FileFormatPipe, FileSizePipe],
+  declarations: [LoginComponent, MapComponent, CallbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent],
   imports: [
     MatFormFieldModule,
     MatInputModule,

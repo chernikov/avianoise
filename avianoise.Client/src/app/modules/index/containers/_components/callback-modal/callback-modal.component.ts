@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileUploader } from 'ng2-file-upload';
 import { FeedbackFile } from '@classes/feedback-file.class';
 import { FeedbackService } from '@services/feedback.service';
 import { Feedback } from '@classes/feedback.class';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-callback-modal',
@@ -13,6 +13,7 @@ import { takeWhile } from 'rxjs/operators';
   styleUrls: ['./callback-modal.component.scss']
 })
 export class CallbackModalComponent implements OnInit, OnDestroy {
+  @Output() showToast = new EventEmitter<number>();
 
   alive: boolean = true;
   form: FormGroup;
@@ -35,17 +36,18 @@ export class CallbackModalComponent implements OnInit, OnDestroy {
 
   initForm() {
     this.form = this.formBuilder.group({
-      name: null,
-      email: [null, [Validators.required, Validators.email]],
-      message: null,
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      message: ['', Validators.required],
       privacyPolicy: [false, Validators.requiredTrue]
     });
   }
 
   createUploader() {
     this.uploader = new FileUploader({
+      headers: [{name:'Accept', value:'application/json'}],
       url: 'api/feedback-file',
-      //maxFileSize: 1000000
+      maxFileSize: 5242880
     });
 
     this.uploader.onCompleteItem = (item: any, response: any)=>  {
@@ -86,9 +88,13 @@ export class CallbackModalComponent implements OnInit, OnDestroy {
     let feedBack = this.collectFeedback();
     this.formInProgress = true;
     this.feedbackService.post(feedBack).pipe(takeWhile(() => this.alive)).subscribe(_ => {
+        this.formInProgress = false;
+        this.modalService.getModal('callbackModal').close();
+        this.clearForm();
+        this.showToast.emit(1);
+    }, err => {
+      this.showToast.emit(2);
       this.formInProgress = false;
-      this.modalService.getModal('callbackModal').close();
-      this.clearForm();
     });
   }
 
