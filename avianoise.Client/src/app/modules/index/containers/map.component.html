@@ -62,6 +62,8 @@
           <span>{{ setLocationActive ? 'Вийти з Вибору локації' : 'Вибрати локацію' }}</span>
         </div>
       </div>
+
+      <app-toast [type]="toastType" *ngIf="toastIsShowed" [@if-opacity]></app-toast>
       
       <div class="sidebar" *ngIf="menuIsOpen">
         <div class="list">
@@ -165,4 +167,4 @@
   <div class="arrow-down arrow"></div>
 </ng-template>
 
-<app-callback-modal #modal></app-callback-modal>
+<app-callback-modal #modal (showToast)="showToast($event)"></app-callback-modal>

@@ -3,7 +3,7 @@
 
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 
-import { IfSlideAnimation } from '@animations';
+import { IfSlideAnimation, IfOpacityAnimation } from '@animations';
 import { AirportPublishedService } from '@services/airport-published.service';
 import { NoiseLevelService } from '@services/noise-level.service';
 
@@ -74,7 +74,8 @@ var layersInfo: ILayersInfo[] = [
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
   animations: [
-    IfSlideAnimation
+    IfSlideAnimation,
+    IfOpacityAnimation
   ]
 })
 export class MapComponent implements OnInit, AfterViewInit {
@@ -110,6 +111,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   showLocationInfo: boolean;
   selectedLayerInfo: ILayersInfo;
   showPolygons: boolean = false;
+  toastType: number;
+  toastIsShowed: boolean;
 
   constructor(
     private airportPublishedService: AirportPublishedService,
@@ -401,5 +404,13 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   openCallbackModal() {
     this.modalService.getModal('callbackModal').open();
+  }
+
+  showToast(type: number) {
+    this.toastType = type;
+    this.toastIsShowed = true;
+    setTimeout(() => {
+        this.toastIsShowed = false;
+    }, 1500);
   }
 }

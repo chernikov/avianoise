@@ -11,17 +11,18 @@
             <mat-form-field>
                 <mat-label>Ім'я</mat-label>
                 <input matInput type="text" formControlName="name" >
-                <!-- <mat-hint *ngIf="form.get('name').hasError('required') && form.get('name').touched">поле введено неправильно</mat-hint> -->
+                <mat-hint *ngIf="form.get('name').hasError('required') && form.get('name').touched">необхідно заповнити поле</mat-hint>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Електронна пошта</mat-label>
                 <input matInput type="email" formControlName="email" >
+                <mat-hint *ngIf="form.get('email').hasError('required') && form.get('email').touched">необхідно заповнити поле</mat-hint>
                 <mat-hint *ngIf="form.get('email').hasError('email') && form.get('email').touched">поле введено неправильно</mat-hint>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Повідомлення</mat-label>
                 <input matInput type="text" formControlName="message" >
-                <!-- <mat-hint *ngIf="form.get('message').hasError('required') && form.get('message').touched">поле введено неправильно</mat-hint> -->
+                <mat-hint *ngIf="form.get('message').hasError('required') && form.get('message').touched">необхідно заповнити поле</mat-hint>
             </mat-form-field>
             <div class="upload-block" (click)="fileInput.click()">
                 <img src="assets/images/upload-icon.svg">

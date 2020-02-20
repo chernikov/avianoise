@@ -1,0 +1,19 @@
+<div class="wrapper">
+    <div class="success" *ngIf="type == 1">
+        <div class="title">
+            <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 4L5 8L12 1" stroke="#1777FA" stroke-width="2"/>
+            </svg>
+            Повідомлення надіслано успішно
+        </div>
+        <div class="line"></div>
+        <div class="subtitle">Sagittis, egestas in id sagittis quis sed pharetra fringilla bibendum</div>
+    </div>
+    <div class="error" *ngIf="type == 2">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1.21289L9 9.72353" stroke="#FD5B70" stroke-width="2"/>
+            <path d="M9 1.21289L1 9.72353" stroke="#FD5B70" stroke-width="2"/>
+        </svg>
+        Виникла помилка при відправленні повідомлення
+    </div>
+</div>

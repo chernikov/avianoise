@@ -41,6 +41,9 @@
       "@enums/*": [
         "src/app/models/enums/*"
       ],
+      "@pipes/*": [
+        "src/app/models/pipes/*"
+      ],
       "@shared/*": [
         "src/app/shared/*"
       ],
