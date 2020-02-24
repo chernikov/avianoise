@@ -26,7 +26,6 @@ namespace avianoise.Web.Api
             this.mapper = mapper;
         }
 
-
         [HttpPost]
         [Produces("application/json")]
         [ProducesResponseType(typeof(List<FeedbackFileDto>), (int)HttpStatusCode.OK)]
@@ -43,7 +42,11 @@ namespace avianoise.Web.Api
                 var newFileName = Guid.NewGuid().ToString("N") + extension;
                 var directoryPath = Path.Combine("static", FilesDirectory);
                 var di = new DirectoryInfo(directoryPath);
-                if (!di.Exists) di.Create();
+                if (!di.Exists)
+                {
+                    di.Create();
+                }
+
                 var filePath = Path.Combine(directoryPath, newFileName);
                 using (var fileStream = System.IO.File.Create(filePath))
                 {
@@ -60,6 +63,5 @@ namespace avianoise.Web.Api
             var result = mapper.Map<List<FeedbackFile>, List<FeedbackFileDto>>(list);
             return Ok(result);
         }
-
     }
 }

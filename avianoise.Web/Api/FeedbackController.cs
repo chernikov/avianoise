@@ -18,7 +18,7 @@ namespace avianoise.Web.Api
     [Route("api/feedback")]
     public class FeedbackController : BaseController
     {
-        private static int PageSize = 20;
+        private static readonly int PageSize = 20;
         private readonly IFeedbackBL feedbackBL;
         private readonly IEmailService emailService;
         private readonly IMapper mapper;
@@ -60,10 +60,31 @@ namespace avianoise.Web.Api
                 var entry = mapper.Map<Feedback>(feedback);
                 var newEntry = feedbackBL.Create(entry);
                 var result = mapper.Map<FeedbackDto>(newEntry);
-                this.emailService.SendFeedback(newEntry);
+                emailService.SendFeedback(newEntry);
                 return Ok(result);
             }
             return BadRequest();
+        }
+
+        [HttpDelete]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
+        public IActionResult Delete(int id = 0, bool all = false)
+        {
+            if (id == 0 && !all)
+            {
+                return BadRequest();
+            }
+            if (id != 0)
+            {
+                feedbackBL.Delete(id);
+
+            }
+            if (all)
+            {
+                feedbackBL.DeleteAll();
+            }
+            return Ok();
         }
     }
 }
