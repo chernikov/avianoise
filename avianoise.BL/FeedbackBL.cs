@@ -25,5 +25,15 @@ namespace avianoise.BL
         {
             return feedbackRepository.GetByPage(page, pageSize, out total);
         }
+
+        public void Delete(int id)
+        {
+            feedbackRepository.Delete(id);
+        }
+
+        public void DeleteAll()
+        {
+            feedbackRepository.DeleteAll();
+        }
     }
 }

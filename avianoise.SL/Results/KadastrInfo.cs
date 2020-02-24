@@ -29,5 +29,11 @@ namespace avianoise.SL.Results
         public string Unit_area { get; set; }
 
         public int Id_office { get; set; }
+
+        public string LinkToExtractLandParcel { get; set; }
+
+        public string LinkToExtractMonetaryValuation { get; set; }
+
+        public string LinkToOwnershipInfo { get; set; }
     }
 }

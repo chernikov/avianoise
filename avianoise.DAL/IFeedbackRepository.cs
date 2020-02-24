@@ -12,5 +12,7 @@ namespace avianoise.DAL
         Feedback Create(Feedback feedback);
 
         List<Feedback> GetByPage(int page, int pageSize, out int total);
+        void Delete(int id);
+        void DeleteAll();
     }
 }

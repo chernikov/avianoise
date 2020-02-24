@@ -26,7 +26,6 @@ namespace avianoise.Web.Api
             this.mapper = mapper;
         }
 
-
         [HttpPost]
         [Produces("application/json")]
         [ProducesResponseType(typeof(List<FeedbackFileDto>), (int)HttpStatusCode.OK)]
@@ -43,7 +42,11 @@ namespace avianoise.Web.Api
                 var newFileName = Guid.NewGuid().ToString("N") + extension;
                 var directoryPath = Path.Combine("static", FilesDirectory);
                 var di = new DirectoryInfo(directoryPath);
-                if (!di.Exists) di.Create();
+                if (!di.Exists)
+                {
+                    di.Create();
+                }
+
                 var filePath = Path.Combine(directoryPath, newFileName);
                 using (var fileStream = System.IO.File.Create(filePath))
                 {
@@ -61,5 +64,30 @@ namespace avianoise.Web.Api
             return Ok(result);
         }
 
+        [HttpDelete]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
+        public IActionResult Delete()
+        {
+            var directoryPath = Path.Combine("static", FilesDirectory);
+            var di = new DirectoryInfo(directoryPath);
+            if (!di.Exists)
+            {
+                di.Create();
+            }
+            var allDbFiles = feeedbackFileBL.GetList();
+            var files = di.GetFiles();
+
+            foreach (var file in files)
+            {
+                var any = allDbFiles.Any(p => p.FullPath.Contains(file.Name) && p.FeedbackId != null);
+                if (!any)
+                {
+                    file.Delete();
+                }
+            }
+            feeedbackFileBL.Clear();
+            return Ok();
+        }
     }
 }

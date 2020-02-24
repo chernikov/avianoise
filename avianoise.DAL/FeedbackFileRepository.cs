@@ -13,5 +13,13 @@ namespace avianoise.DAL
         public FeedbackFileRepository(Func<IAviaNoiseDbContext> getDbContext) : base(getDbContext)
         {
         }
+
+        public void Clear()
+            => Execute(context =>
+            {
+                var range = context.FeedbackFiles.Where(p => p.FeedbackId == null);
+                context.FeedbackFiles.RemoveRange(range);
+                context.SaveChanges();
+            });
     }
 }

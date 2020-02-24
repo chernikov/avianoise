@@ -13,11 +13,11 @@ namespace avianoise.SL
 {
     public class KadastrMapSL : IKadastrMapSL
     {
-        private readonly string getObjectInfoUrl = "https://map.land.gov.ua/kadastrova-karta/getobjectinfo";
+        private readonly string getObjectInfoUrl = "https://map.land.gov.ua/mapi/get-object-info";
 
-        private readonly string getAreaByNumberTemplate = "https://map.land.gov.ua/kadastrova-karta/find-Parcel?cadnum={0}&activeArchLayer=0";
+        private readonly string getAreaByNumberTemplate = "https://map.land.gov.ua/mapi/find-parcel?cadnum={0}&activeArchLayer=0";
 
-        private readonly string getInfoByNumberTemplate = "https://map.land.gov.ua/kadastrova-karta/get-parcel-Info?koatuu={0}&zone={1}&quartal={2}&parcel={3}";
+        private readonly string getInfoByNumberTemplate = "https://map.land.gov.ua/mapi/get-parcel-info?cadnum={0}";
 
         private readonly string HtmlKadastrRegexTemplate = "<strong>(?<number>.*?)</strong>";
 
@@ -41,30 +41,18 @@ namespace avianoise.SL
                 {
                     var responseTask = client.PostAsync(getObjectInfoUrl, content);
                     var response = responseTask.Result;
-                    var resultTask = response.Content.ReadAsStringAsync();
-                    result = resultTask.Result;
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return null;
+                    }
+                    result = response.Content.ReadAsStringAsync().Result;
                 }
             }
-
-            var obj = JObject.Parse(result);
-
-            if (obj["pusto"] != null && obj["pusto"].Value<int>() == 1)
+            var objResult = JsonConvert.DeserializeObject<ParcelInfo>(result);
+            if (objResult.Parcel != null && objResult.Parcel.Count > 0)
             {
-                return null;
-            }
-            if (obj["dilanka"] == null)
-            {
-                return null;
-            }
-            var htmlInfo = obj["dilanka"].Value<string>();
-
-            var regex = new Regex(HtmlKadastrRegexTemplate, RegexOptions.None);
-
-            var matches = regex.Matches(htmlInfo);
-
-            if (matches.Count > 0)
-            {
-                var number = matches[0].Groups[1].Value;
+                var data = objResult.Parcel[0];
+                var number = data.Cadnum;
                 return KadastrNumber.Parse(number);
             }
             return null;
@@ -84,14 +72,17 @@ namespace avianoise.SL
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36");
-                var resultTask = client.GetStringAsync(url);
-                result = resultTask.Result;
+                var response = client.GetAsync(url).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+                result = response.Content.ReadAsStringAsync().Result;
             }
-
             var objResult = JsonConvert.DeserializeObject<KadastrResult<XyArea>>(result);
-            if (objResult.Status && objResult.Data.Count > 0 && objResult.Data[0].St_xmax != null)
+            if (objResult.Status && objResult.Data != null && objResult.Data.St_xmax != null)
             {
-                var data = objResult.Data[0];
+                var data = objResult.Data;
                 return data;
             }
             return null;
@@ -111,18 +102,22 @@ namespace avianoise.SL
 
         public KadastrInfo GetInfoByNumber(KadastrNumber number)
         {
-            var getInfoUrl = string.Format(getInfoByNumberTemplate, number.Koatuu, number.Zone, number.Kvartal, number.Parcel);
+            var getInfoUrl = string.Format(getInfoByNumberTemplate, number);
             string result;
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36");
-                var responseTask = client.GetStringAsync(getInfoUrl);
-                result = responseTask.Result;
+                var response = client.GetAsync(getInfoUrl).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+                result = response.Content.ReadAsStringAsync().Result;
             }
-            var objResult = JsonConvert.DeserializeObject<KadastrResult<KadastrInfo>>(result);
-            if (objResult.Status && objResult.Data.Count > 0)
+            var objResult = JsonConvert.DeserializeObject<ParcelInfo>(result);
+            if (objResult.Parcel != null && objResult.Parcel.Count > 0)
             {
-                var data = objResult.Data[0];
+                var data = objResult.Parcel[0];
                 return data;
             }
             return null;
