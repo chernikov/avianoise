@@ -1,0 +1,77 @@
+nb-accordion-item-header {
+    justify-content: space-between;
+    padding-right: 70px !important;
+    .email {
+        font-weight: 300;
+        margin-left: 30px;
+    }
+}
+
+.file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border-bottom: 1px solid lightgray;
+    &:last-child {
+        border-bottom: unset;
+    }
+}
+
+.ngx-pagination {
+    margin-top: auto;
+    text-align: center;
+    .current {
+        background-color: red !important;
+    }
+}
+
+.pagination-wrapper {
+    margin-top: 50px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    .wrapper {
+        display: flex;
+        .block {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            margin: 0 3px;
+            cursor: pointer;
+            a {
+                color: #000 !important;
+            }
+            &:hover,
+            &.is-active {
+                background-color: #3366ff;
+                color: #fff;
+                a {
+                    color: #fff !important;
+                }
+            }
+            &.is-active {
+                cursor: default;
+            }
+            &.arrow {
+                font-size: 15px;
+                &:hover,
+                &.is-active {
+                    background-color: transparent;
+                    color: #3366ff;
+                }
+                &.is-disabled {
+                    opacity: .4;
+                    cursor: default;
+                    &:hover {
+                        color: #000;
+                    }
+                }
+            }
+        }
+    }
+}

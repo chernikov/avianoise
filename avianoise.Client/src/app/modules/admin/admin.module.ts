@@ -9,17 +9,21 @@ import { AirportComponent } from './_components/airport/airport.component';
 import { AirportListComponent } from './_components/airport-list/airport-list.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { SharedModule } from '../shared/shared.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { ThemeModule } from 'src/app/@theme/theme.module';
-import { NbMenuModule, NbButtonModule, NbCardModule, NbListModule, NbInputModule, NbTabsetModule, NbCheckboxModule, NbLayoutModule, NbAccordionModule, NbSpinnerModule, NbToggleModule, NbWindowModule, NbRadioModule } from '@nebular/theme';
+import { NbMenuModule, NbButtonModule, NbCardModule, NbListModule, NbInputModule, NbTabsetModule, NbCheckboxModule, NbLayoutModule, NbAccordionModule, NbSpinnerModule, NbToggleModule, NbWindowModule, NbRadioModule, NbIconModule } from '@nebular/theme';
+import { CallbacksComponent } from './_components/callbacks/callbacks.component';
+import { NumberToArrayPipe } from '@pipes/number-to-array.pipe';
 
 
 
 @NgModule({
-    declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent],
+    declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent, CallbacksComponent, NumberToArrayPipe],
     imports: [
         SharedModule,
         ThemeModule,
+        NbIconModule,
         NbWindowModule.forChild(),
         NbLayoutModule,
         NbToggleModule,
@@ -37,7 +41,7 @@ import { NbMenuModule, NbButtonModule, NbCardModule, NbListModule, NbInputModule
         FormsModule,
         ReactiveFormsModule,
         RouterModule.forChild(router),
-        
+        NgxPaginationModule,
         FileUploadModule
     ]
 })

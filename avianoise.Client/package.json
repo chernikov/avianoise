@@ -39,6 +39,7 @@
     "ionicons": "^4.6.3",
     "nebular-icons": "^1.1.0",
     "ng2-file-upload": "^1.4.0",
+    "ngx-pagination": "^5.0.0",
     "ngx-smart-modal": "^7.3.0",
     "pace-js": "^1.0.2",
     "roboto-fontface": "^0.10.0",

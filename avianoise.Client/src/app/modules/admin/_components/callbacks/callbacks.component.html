@@ -1,0 +1,36 @@
+<nb-accordion multi>
+    <nb-accordion-item *ngFor="let callback of callbackList | paginate: { itemsPerPage: pagination.perPage, currentPage: pagination.current, totalItems: totalPages*pagination.perPage}; index as i">
+        <nb-accordion-item-header>
+            <span>{{ i + 1 }}. {{ callback.name }}<span class="email">{{ callback.email }}</span></span>
+            {{ callback.addedDate | date: 'dd.MM.yyyy' }}
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+            {{ callback.message }}
+            <div class="files">
+                <div class="file" *ngFor="let file of callback.feedbackFiles">
+                    {{ file.name }}
+                    <button nbButton (click)="downloadFile(file.fullPath)">Завантажити</button>
+                </div>
+            </div>
+        </nb-accordion-item-body>
+    </nb-accordion-item>
+</nb-accordion>
+
+<pagination-template *ngIf="totalPages > 1" class="pagination-wrapper" #p="paginationApi" (pageChange)="changePage($event)">
+    <div class="wrapper">
+      <div class="block arrow" [class.is-disabled]="p.isFirstPage()">
+        <nb-icon icon="arrow-ios-back-outline" size="20" (click)="!p.isFirstPage() && p.previous()"></nb-icon>
+      </div>
+      <div class="block" *ngFor="let page of p.pages" [class.is-active]="p.getCurrent() === page.value" (click)="p.setCurrent(page.value)">
+        <a *ngIf="p.getCurrent() !== page.value">
+          <span>{{ page.label }}</span>
+        </a>
+        <div *ngIf="p.getCurrent() === page.value">
+          <span>{{ page.label }}</span>
+        </div>
+      </div>
+      <div class="block arrow" [class.is-disabled]="p.isLastPage()">
+        <nb-icon icon="arrow-ios-forward-outline" size="20" (click)="!p.isLastPage() && p.next()"></nb-icon>
+      </div>
+    </div>
+  </pagination-template>
