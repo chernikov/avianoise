@@ -1,7 +1,7 @@
 /// <reference types="@types/googlemaps" />
 /// <reference types="@types/node" />
 
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 
 import { IfSlideAnimation, IfOpacityAnimation } from '@animations';
 import { AirportPublishedService } from '@services/airport-published.service';
@@ -10,6 +10,8 @@ import { NoiseLevelService } from '@services/noise-level.service';
 import mapStylesJson from '../../../../assets/map.json';
 import { Airport } from '@classes/airport.class.js';
 import { NgxSmartModalService } from 'ngx-smart-modal';
+import { SearchService } from '@services/search.service.js';
+import { takeWhile } from 'rxjs/operators';
 
 var MarkerWithLabel = require('markerwithlabel')(google.maps);
 
@@ -79,10 +81,11 @@ var layersInfo: ILayersInfo[] = [
   ]
 })
 export class MapComponent implements OnInit, AfterViewInit {
-
+  alive: boolean = true;
   isKadastrLayer: boolean = false;
 
   @ViewChild('gmap', { static: true }) gmapElement: any;
+  @ViewChild('searchInput', { static: false }) searchInput: ElementRef;
 
   map: google.maps.Map;
   marker: google.maps.Marker;
@@ -113,11 +116,13 @@ export class MapComponent implements OnInit, AfterViewInit {
   showPolygons: boolean = false;
   toastType: number;
   toastIsShowed: boolean;
+  searchIsActive: boolean;
 
   constructor(
     private airportPublishedService: AirportPublishedService,
     private noiseLevelService: NoiseLevelService,
-    private modalService: NgxSmartModalService
+    private modalService: NgxSmartModalService,
+    private searchService: SearchService
   ) {
     this.polygons = [];
     this.noiseInfo = [];
@@ -137,7 +142,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
     this.map.addListener('click', function (event) {
       if (_this.setLocationActive) {
-        _this.placeMarker(event.latLng, _this.map);
+        _this.placeMarker(event.latLng);
         _this.map.setOptions({
           draggableCursor: 'pointer'
         });
@@ -258,17 +263,25 @@ export class MapComponent implements OnInit, AfterViewInit {
     });
   }
 
+  onSearch() {
+    this.menuIsOpen = false;
+    this.searchIsActive = true;
+    setTimeout(() => {
+      this.searchInput.nativeElement.focus();
+    }, 0);
+  }
+
   changeMapLayer() {
     this.layerIsChanged = true;
     this.setInfoLayer();
     this.filterAirports(this.selectedLayer);
   }
 
-  placeMarker(location, map) {
+  placeMarker(location) {
     if (this.marker == null) {
       this.marker = new google.maps.Marker({
         position: location,
-        map: map,
+        map: this.map,
         icon: {
           url: 'assets/images/white-marker.svg',
           anchor: {
@@ -325,6 +338,7 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.noiseInfo.push(noiseLevelItem);
     });
     this.showLocationInfo = true;
+    this.setLocationActive = true;
   }
 
   ngAfterViewInit(): void { }
@@ -368,8 +382,13 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   }
 
-  toggleSidebar() {
-    this.menuIsOpen = !this.menuIsOpen;
+  openMenu() {
+    this.menuIsOpen = true;
+  }
+
+  closeSidebar() {
+    this.menuIsOpen = false;
+    this.searchIsActive = false;
   }
 
   toggleListItem(number: number) {
@@ -378,6 +397,27 @@ export class MapComponent implements OnInit, AfterViewInit {
     } else {
       this.listItemIsOpen = number;
     }
+  }
+
+  onSelectAirport(airport: Airport) {
+    let position = new google.maps.LatLng({
+      lat: airport.lat,
+      lng: airport.lng
+    })
+    this.map.setCenter(position);
+    this.map.setZoom(13);
+  }
+
+  searchLocation(value: string) {
+    this.searchService.get(value).pipe(takeWhile(() => this.alive)).subscribe(coords => {
+      let location = new google.maps.LatLng({
+        lat: coords.lat,
+        lng: coords.lng
+      });
+      this.placeMarker(location);
+      this.map.setCenter(location);
+      this.map.setZoom(13);
+    });
   }
 
   xyzToBounds(x: number, y: number, z: number): number[] {
