@@ -9,6 +9,6 @@ namespace avianoise.DAL
 {
     public interface IFeedbackFileRepository : IGenericRepository<FeedbackFile>, IBaseRepository
     {
-
+        void Clear();
     }
 }

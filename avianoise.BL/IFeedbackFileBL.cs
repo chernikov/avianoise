@@ -10,5 +10,7 @@ namespace avianoise.BL
     public interface IFeedbackFileBL : IBaseBL
     {
         FeedbackFile Create(FeedbackFile entry);
+        List<FeedbackFile> GetList();
+        void Clear();
     }
 }

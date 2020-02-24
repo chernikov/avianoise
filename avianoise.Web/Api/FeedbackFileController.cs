@@ -63,5 +63,31 @@ namespace avianoise.Web.Api
             var result = mapper.Map<List<FeedbackFile>, List<FeedbackFileDto>>(list);
             return Ok(result);
         }
+
+        [HttpDelete]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
+        public IActionResult Delete()
+        {
+            var directoryPath = Path.Combine("static", FilesDirectory);
+            var di = new DirectoryInfo(directoryPath);
+            if (!di.Exists)
+            {
+                di.Create();
+            }
+            var allDbFiles = feeedbackFileBL.GetList();
+            var files = di.GetFiles();
+
+            foreach (var file in files)
+            {
+                var any = allDbFiles.Any(p => p.FullPath.Contains(file.Name) && p.FeedbackId != null);
+                if (!any)
+                {
+                    file.Delete();
+                }
+            }
+            feeedbackFileBL.Clear();
+            return Ok();
+        }
     }
 }
