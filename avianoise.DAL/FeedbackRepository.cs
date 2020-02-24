@@ -36,6 +36,7 @@ namespace avianoise.DAL
                 return newEntry;
             });
 
+
         public List<Feedback> GetByPage(int page, int pageSize, out int total)
         {
             using (var dbContext = getDbContext())
@@ -54,5 +55,23 @@ namespace avianoise.DAL
                     .ToList();
             }
         }
+
+        public void Delete(int id) =>
+            Execute(context =>
+            {
+                var entry = context.Feedbacks.Find(id);
+                if (entry != null)
+                {
+                    context.Feedbacks.Remove(entry);
+                    context.SaveChanges();
+                }
+            });
+
+        public void DeleteAll() =>
+            Execute(context =>
+            {
+                context.Feedbacks.RemoveRange(context.Feedbacks);
+                context.SaveChanges();
+            });
     }
 }

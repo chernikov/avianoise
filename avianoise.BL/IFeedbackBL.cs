@@ -12,5 +12,7 @@ namespace avianoise.BL
         Feedback Create(Feedback entry);
 
         List<Feedback> GetByPage(int page, int pageSize, out int total);
+        void Delete(int id);
+        void DeleteAll();
     }
 }
