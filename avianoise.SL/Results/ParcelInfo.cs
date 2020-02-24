@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace avianoise.SL.Results
 {
-    public class KadastrResult<T>
+    public class ParcelInfo
     {
-        public bool Status { get; set; }
-
-        public T Data { get; set; }
+        public List<KadastrInfo> Parcel { get; set; }
     }
 }
