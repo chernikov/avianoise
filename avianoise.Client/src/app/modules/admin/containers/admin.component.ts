@@ -21,11 +21,6 @@ export class AdminComponent {
         title: "Зворотній зв'язок",
         link: '/admin/callbacks/',
         icon: 'phone-outline'
-      },
-      {
-        title: "Новини",
-        link: '/admin/post/',
-        icon: 'phone-outline'
       }
     ]
   }
