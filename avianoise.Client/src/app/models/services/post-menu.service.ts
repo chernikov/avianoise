@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
-import { FeedbackFile } from '../classes/feedback-file.class';
+import { Post } from '../classes/post.class';
 
 
 @Injectable({ providedIn: "root" })
-export class FeedbackFileService
+export class PostMenuService
 {
-	private apiUrl:string = 'api/feedback-file';
+	private apiUrl:string = 'api/post-menu';
 
 	private headers = new HttpHeaders({
 		"content-type": "application/json",
@@ -21,12 +21,8 @@ export class FeedbackFileService
 
 	constructor(private http: HttpClient) {}
 
-	post() : Observable<FeedbackFile[]> {
-		return this.http.post<FeedbackFile[]>(this.apiUrl, this.options).pipe();
-	}
-
-	delete() : Observable<null> {
-		return this.http.delete<null>(this.apiUrl, this.options).pipe();
+	get() : Observable<Post[]> {
+		return this.http.get<Post[]>(this.apiUrl, this.options).pipe();
 	}
 
 }
