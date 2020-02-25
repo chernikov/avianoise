@@ -34,6 +34,17 @@ namespace avianoise.Web.Api
             return Ok(result);
         }
 
+
+        [HttpGet("{id:int}")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(PostDto), (int)HttpStatusCode.OK)]
+        public IActionResult Get(int id)
+        {
+            var item = postBL.Get(id);
+            var result = mapper.Map<PostDto>(item);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Produces("application/json")]
         [ProducesResponseType(typeof(PostDto), (int)HttpStatusCode.OK)]

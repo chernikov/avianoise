@@ -13,5 +13,18 @@ namespace avianoise.DAL
         public PostRepository(Func<IAviaNoiseDbContext> getDbContext) : base(getDbContext)
         {
         }
+
+        public List<Post> GetMenu()
+            => Query(context =>
+            {
+                return context.Posts.Where(p => p.IsPublished)
+                    .Select(p => new Post()
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        AddedDate = p.AddedDate,
+                        IsPublished = p.IsPublished,
+                    }).ToList();
+            });
     }
 }
