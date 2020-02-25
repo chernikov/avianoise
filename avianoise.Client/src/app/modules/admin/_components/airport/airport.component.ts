@@ -149,7 +149,6 @@ export class AirportComponent implements OnInit, OnDestroy {
   }
 
   onEditFile(file: ProxyFile) {
-    console.log(file);
     file.isEditing = true;
     let editedFile = {...file};
     this.modalWindowRef = this.windowService.open(
@@ -158,27 +157,12 @@ export class AirportComponent implements OnInit, OnDestroy {
     this.modalWindowRef.onClose.pipe(takeWhile(() => this.alive)).subscribe(_ => {
       file.isEditing = false;
     });
-
-    /* line.isEditing = true;
-    let file = this.decodedFiles.find(p => p.id === line.fileId);
-    file.isEditing = true;
-    let editedLine = {...line};
-    this.modalWindowRef = this.windowService.open(
-      this.editLineModal, { title: line.name, windowClass: 'edit-line-modal' , context: editedLine }
-    );
-    this.modalWindowRef.onClose.pipe(takeWhile(() => this.alive)).subscribe(_ => {
-      line.isEditing = false;
-      if(file.lines.every((item: ProxyLine) => !item.isEditing)) {
-        file.isEditing = false;
-      }
-    }); */
   }
 
   onSaveFile(file: ExtendedFile) {
     this.fileIsSaving = true;
     let clearFile = {...file};
     clearFile.lines = [];
-    console.log(clearFile, 'clear file');
     this.fileService.put(clearFile).pipe(takeWhile(() => this.alive)).subscribe(res => {
       let file = this.decodedFiles.find(f => f.id == res.id);
       file.noiseType = res.noiseType;

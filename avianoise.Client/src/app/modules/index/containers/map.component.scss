@@ -32,6 +32,8 @@ nb-layout-column {
   }
   .right {
     display: flex;
+    width: 370px;
+    justify-content: flex-end;
     & :last-child {
       margin-left: 30px;
     }
@@ -46,6 +48,16 @@ nb-layout-column {
         }
       }
     }
+  }
+}
+
+.search-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  &::placeholder {
+    color: rgba(0, 0, 0, .15);
+    font-size: 14px;
   }
 }
 
@@ -507,4 +519,30 @@ nb-layout-column {
     color: #1F1F1F;
     text-transform: capitalize;
   }
+}
+
+.sidebar {
+  &.search {
+    .search-container{
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+  }
+}
+
+.airports-list-title {
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  svg {
+    margin-right: 5px;
+  }
+}
+
+.airport {
+  font-size: 14px;
+  margin-top: 25px;
+  color: #B8BCDC;
+  cursor: pointer;
 }

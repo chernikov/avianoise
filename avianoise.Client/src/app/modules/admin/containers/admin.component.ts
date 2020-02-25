@@ -16,6 +16,11 @@ export class AdminComponent {
         title: 'Аеропорти',
         link: '/admin/airport/',
         icon: 'home-outline'
+      },
+      {
+        title: "Зворотній зв'язок",
+        link: '/admin/callbacks/',
+        icon: 'phone-outline'
       }
     ]
   }

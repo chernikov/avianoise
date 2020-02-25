@@ -5,7 +5,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { FeedbackFile } from '@classes/feedback-file.class';
 import { FeedbackService } from '@services/feedback.service';
 import { Feedback } from '@classes/feedback.class';
-import { takeWhile, catchError } from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-callback-modal',
