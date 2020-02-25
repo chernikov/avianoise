@@ -22,6 +22,10 @@ namespace avianoise.Data
 
         DbSet<Point> Points { get; set; }
 
+        DbSet<Post> Posts { get; set; }
+
+        DbSet<PostFile> PostFiles { get; set; }
+
         DbSet<Role> Roles { get; set; }
 
         DbSet<User> Users { get; set; }
