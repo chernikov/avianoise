@@ -1,4 +1,4 @@
-@import 'variables';
+@import 'mixins';
 
 .head {
   position: relative;
@@ -264,5 +264,13 @@ button {
   .remove {
     margin-left: 20px;
     cursor: pointer;
+  }
+}
+
+@include media-md {
+  .body {
+    height: 100%;
+    display: flex;
+    align-items: center;
   }
 }

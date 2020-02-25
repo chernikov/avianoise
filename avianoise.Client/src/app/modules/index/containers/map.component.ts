@@ -186,7 +186,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   showAirports() {
-    
     this.airports.map(airport => {
       let location = {
         lat: airport.lat,
@@ -271,7 +270,10 @@ export class MapComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 
-  changeMapLayer() {
+  changeMapLayer(index?: number) {
+    if(index) {
+      this.selectedLayer = index;
+    }
     this.layerIsChanged = true;
     this.setInfoLayer();
     this.filterAirports(this.selectedLayer);
@@ -406,6 +408,9 @@ export class MapComponent implements OnInit, AfterViewInit {
     })
     this.map.setCenter(position);
     this.map.setZoom(13);
+    if(window.innerWidth < 768 ) {
+      this.searchIsActive = false;
+    }
   }
 
   searchLocation(value: string) {
@@ -417,6 +422,9 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.placeMarker(location);
       this.map.setCenter(location);
       this.map.setZoom(13);
+      if(window.innerWidth < 768 ) {
+        this.searchIsActive = false;
+      }
     });
   }
 
