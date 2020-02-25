@@ -14,7 +14,6 @@ namespace avianoise.DAL
 
         void Remove(TEntity item);
 
-
         TEntity FindById(int id);
 
         IEnumerable<TEntity> Get();
