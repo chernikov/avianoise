@@ -13,6 +13,8 @@ namespace avianoise.BL
 
         List<Post> GetPublished();
 
+        List<Post> GetMenu();
+
         Post Get(int id);
 
         Post Create(Post entry);

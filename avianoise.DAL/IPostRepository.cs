@@ -9,6 +9,6 @@ namespace avianoise.DAL
 {
     public interface IPostRepository : IGenericRepository<Post>, IBaseRepository
     {
-
+        List<Post> GetMenu();
     }
 }

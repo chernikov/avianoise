@@ -26,6 +26,11 @@ namespace avianoise.BL
             return postRepository.Get(p => p.IsPublished).ToList();
         }
 
+        public List<Post> GetMenu()
+        {
+            return postRepository.GetMenu();
+        }
+
         public Post Get(int id)
         {
             return postRepository.FindById(id);
@@ -51,6 +56,7 @@ namespace avianoise.BL
             }
             postRepository.Remove(entry);
         }
+
 
     }
 }
