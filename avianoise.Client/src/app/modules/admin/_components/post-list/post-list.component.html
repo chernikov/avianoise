@@ -1,0 +1,19 @@
+<nb-card>
+    <nb-card-header>
+        <button nbButton routerLink="/admin/post/add">Добавити новину</button>
+    </nb-card-header>
+    <nb-card-body>
+        <nb-list>
+        <nb-list-item *ngFor="let post of posts; index as i">
+            <div>
+            <span>{{ i + 1 }}.</span>
+            <a [routerLink]="['/admin/post', post.id]"> {{ post.name }}</a>
+            </div>
+            <div>
+                <button nbButton [routerLink]="['/admin/post/edit', post.id]">Редагувати</button>
+                <button nbButton [status]="'danger'" class="del-btn" (click)="deletePost(post)">Видалити</button>
+            </div>
+        </nb-list-item>
+        </nb-list>
+    </nb-card-body>
+</nb-card>
