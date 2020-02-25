@@ -59,12 +59,30 @@ ngx-smart-modal {
     max-height: 70vh;
     overflow: hidden;
     .nsm-body {
-      overflow-y: auto;
-      overflow: -moz-scrollbars-none;
-      -ms-overflow-style: none;
-      &::-webkit-scrollbar {
-        width: 0 !important
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      .body {
+        overflow-y: auto;
+        overflow: -moz-scrollbars-none;
+        -ms-overflow-style: none;
+        &::-webkit-scrollbar {
+          width: 0 !important
+        }
       }
+    }
+  }
+}
+
+@include media-md {
+  .callback-modal {
+    width: 100%;
+    height: 100%;
+    .nsm-content {
+      max-height: unset;
+      height: 100%;
+      border-radius: unset;
     }
   }
 }
