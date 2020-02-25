@@ -1,8 +1,10 @@
 <nb-card>
     <nb-card-header>
-        Tiny MCE
+        <input nbInput type="text" placeholder="Заголовок" [(ngModel)]="title">
+        <nb-toggle [(ngModel)]="isPublished">Опублікувати</nb-toggle>
     </nb-card-header>
     <nb-card-body>
-        <quill-editor placeholder="" format="html" [modules]="editorOptions" [styles]="{height: '250px'}" [(ngModel)]="content"></quill-editor>
+        <quill-editor placeholder="" format="html" [modules]="editorOptions" [styles]="{height: '400px'}" [(ngModel)]="content"></quill-editor>
+        <button nbButton (click)="onSave()" [disabled]="formInProgress">Зберегти</button>
     </nb-card-body>
 </nb-card>
