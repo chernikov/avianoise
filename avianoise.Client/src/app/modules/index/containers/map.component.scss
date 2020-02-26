@@ -93,6 +93,7 @@ nb-layout-column {
     font-size: 32px;
     font-weight: 700;
     margin-bottom: 30px;
+    text-align: center;
   }
   .body {
     max-width: 45vw;
@@ -351,7 +352,7 @@ nb-layout-column {
   }
 }
 
-.callback {
+.feedback {
   cursor: pointer;
   display: flex;
   justify-content: center;

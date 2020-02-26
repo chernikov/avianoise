@@ -17,14 +17,14 @@ import { AirportListComponent } from './_components/airport-list/airport-list.co
 import { SharedModule } from '../shared/shared.module';
 import { ThemeModule } from 'src/app/@theme/theme.module';
 import { NbMenuModule, NbButtonModule, NbCardModule, NbListModule, NbInputModule, NbTabsetModule, NbCheckboxModule, NbLayoutModule, NbAccordionModule, NbSpinnerModule, NbToggleModule, NbWindowModule, NbRadioModule, NbIconModule } from '@nebular/theme';
-import { CallbacksComponent } from './_components/callbacks/callbacks.component';
+import { FeedbacksComponent } from './_components/feedback/feedback.component';
 
 
 import { AdminComponent } from './containers/admin.component';
 import { PostListComponent } from './_components/post-list/post-list.component';
 import { EditPostComponent } from './_components/edit-post/edit-post.component';
 @NgModule({
-    declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent, CallbacksComponent, NumberToArrayPipe, PostListComponent, EditPostComponent],
+    declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent, FeedbacksComponent, NumberToArrayPipe, PostListComponent, EditPostComponent],
     imports: [
         SharedModule,
         ThemeModule,

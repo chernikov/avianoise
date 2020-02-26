@@ -9,14 +9,14 @@ interface IPagination {
 }
 
 @Component({
-  selector: 'app-callbacks',
-  templateUrl: './callbacks.component.html',
-  styleUrls: ['./callbacks.component.scss']
+  selector: 'app-feedback',
+  templateUrl: './feedback.component.html',
+  styleUrls: ['./feedback.component.scss']
 })
-export class CallbacksComponent implements OnInit {
+export class FeedbacksComponent implements OnInit {
   alive: boolean = true;
   totalPages: number;
-  callbackList: Feedback[];
+  feedbackList: Feedback[];
   pagination: IPagination;
   constructor(
     private feedBackService: FeedbackService
@@ -28,13 +28,13 @@ export class CallbacksComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getPageOfCallbacks(1);
+    this.getPageOfFeedbacks(1);
   }
 
-  getPageOfCallbacks(page: number) {
+  getPageOfFeedbacks(page: number) {
     this.feedBackService.get(page - 1).pipe(takeWhile(() => this.alive)).subscribe(res => {
       this.totalPages = res.totalPages;
-      this.callbackList = res.items;
+      this.feedbackList = res.items;
       this.pagination.current = page;
     });
   }
@@ -46,7 +46,7 @@ export class CallbacksComponent implements OnInit {
   changePage(page: number) {
     if(this.pagination.current != page) {
       this.pagination.current = page;
-      this.getPageOfCallbacks(page);
+      this.getPageOfFeedbacks(page);
     }
   }
 }

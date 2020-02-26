@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CallbacksComponent } from './callbacks.component';
+import { FeedbackModalComponent } from './feedback-modal.component';
 
-describe('CallbacksComponent', () => {
-  let component: CallbacksComponent;
-  let fixture: ComponentFixture<CallbacksComponent>;
+describe('FeedbackModalComponent', () => {
+  let component: FeedbackModalComponent;
+  let fixture: ComponentFixture<FeedbackModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CallbacksComponent ]
+      declarations: [ FeedbackModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CallbacksComponent);
+    fixture = TestBed.createComponent(FeedbackModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

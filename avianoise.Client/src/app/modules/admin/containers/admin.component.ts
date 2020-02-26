@@ -19,7 +19,7 @@ export class AdminComponent {
       },
       {
         title: "Зворотній зв'язок",
-        link: '/admin/callbacks/',
+        link: '/admin/feedbacks/',
         icon: 'phone-outline'
       },
       {
