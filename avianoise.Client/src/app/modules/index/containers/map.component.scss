@@ -81,11 +81,49 @@ nb-layout-column {
   position: relative;
 }
 
+.post-wrap {
+  position: relative;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  .title {
+    max-width: 50vw;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+  .body {
+    max-width: 45vw;
+    padding: 20px;
+    img {
+      max-width: 100% !important;
+    }
+  }
+  .date {
+    margin-top: 25px;
+    font-size: 14px;
+    font-weight: 200;
+  }
+  .back-to-map {
+    cursor: pointer;
+    font-weight: 500;
+    transition: .4s;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    &:hover {
+      color: $primary;
+    }
+  }
+}
+
 .map-wrap {
   position: relative;
 }
 
-.map-wrap, .map {
+.map-wrap, .map, .post-wrap {
   flex: 1;
   height: 100%;
   width : 100%;
@@ -153,6 +191,21 @@ nb-layout-column {
       bottom: 0;
       left: 0;
       background: linear-gradient(94.75deg, #29C2D9 1.48%, $primary 48.23%, #ECA0DC 90.05%);
+    }
+    .post-title {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 15px;
+      transition: .4s;
+      margin-bottom: 10px;
+      &:hover {
+        color: $primary;
+      }
+      &:last-child {
+        margin-bottom: unset;
+      }
     }
   }
 }
