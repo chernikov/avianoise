@@ -12,6 +12,10 @@ import { Airport } from '@classes/airport.class.js';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { SearchService } from '@services/search.service.js';
 import { takeWhile } from 'rxjs/operators';
+import { PostMenuService } from '@services/post-menu.service.js';
+import { Post } from '@classes/post.class.js';
+import { PostService } from '@services/post.service.js';
+import { Router, ActivatedRoute } from '@angular/router';
 
 var MarkerWithLabel = require('markerwithlabel')(google.maps);
 
@@ -100,10 +104,11 @@ export class MapComponent implements OnInit, AfterViewInit {
   zoom: number = 7;
   landcover: google.maps.ImageMapType;
 
+  containerMode: number;
   menuIsOpen: boolean;
   listItemIsOpen: number;
   setLocationActive: boolean;
-  selectedLayer: number = 1;
+  selectedLayer: number;
   layerIsChanged: boolean;
   airports: Airport[];
   filteredAirports: Airport[];
@@ -117,18 +122,39 @@ export class MapComponent implements OnInit, AfterViewInit {
   toastType: number;
   toastIsShowed: boolean;
   searchIsActive: boolean;
+  postMenu: Post[];
+  post: Post;
+  selectedPost: number;
 
   constructor(
     private airportPublishedService: AirportPublishedService,
     private noiseLevelService: NoiseLevelService,
     private modalService: NgxSmartModalService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private postMenuService: PostMenuService,
+    private postService: PostService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.polygons = [];
     this.noiseInfo = [];
   }
 
   ngOnInit() {
+    this.route.params.subscribe(param => {
+      if(param.id) {
+        this.openPost(param.id);
+      } else {
+        this.containerMode = 1;
+        this.getMap();
+      }
+    });
+    this.getAirports();
+    this.selectedLayerInfo = layersInfo.find(item => item.id == 1);
+    this.getPostMenu();
+  }
+
+  getMap() {
     let _this = this;
     var mapProp = {
       center: new google.maps.LatLng(this.lat, this.lng),
@@ -173,8 +199,6 @@ export class MapComponent implements OnInit, AfterViewInit {
       opacity: 1.0,
       tileSize: tileSize
     });
-    this.getAirports();
-    this.setInfoLayer();
   }
 
   getAirports() {
@@ -182,6 +206,12 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.airports = airports;
       this.filterAirports(1);
       this.showAirports();
+    });
+  }
+
+  getPostMenu() {
+    this.postMenuService.get().pipe(takeWhile(() => this.alive)).subscribe(postMenu => {
+      this.postMenu = postMenu;
     });
   }
 
@@ -376,11 +406,13 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   toggleKadastr(checked: boolean) {
-    this.isKadastrLayer = checked;
-    if (this.isKadastrLayer) {
-      this.map.overlayMapTypes.push(this.landcover);
-    } else {
-      this.map.overlayMapTypes.pop();
+    if(this.containerMode === 1) {
+      this.isKadastrLayer = checked;
+      if (this.isKadastrLayer) {
+        this.map.overlayMapTypes.push(this.landcover);
+      } else {
+        this.map.overlayMapTypes.pop();
+      }
     }
   }
 
@@ -429,14 +461,12 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   xyzToBounds(x: number, y: number, z: number): number[] {
-    console.log(x, y, z);
     var tileSize = (this.EXTENT[1] * 2) / Math.pow(2, z);
     var minx = this.EXTENT[0] + x * tileSize;
     var maxx = this.EXTENT[0] + (x + 1) * tileSize;
     // remember y origin starts at top
     var miny = this.EXTENT[1] - (y + 1) * tileSize;
     var maxy = this.EXTENT[1] - y * tileSize;
-    console.log([minx, miny, maxx, maxy]);
     return [minx, miny, maxx, maxy];
   }
 
@@ -452,6 +482,14 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   openCallbackModal() {
     this.modalService.getModal('callbackModal').open();
+  }
+
+  openPost(id: number) {
+    this.postService.get(id).pipe(takeWhile(() => this.alive)).subscribe(post => {
+      this.post = post;
+      this.containerMode = 2;
+      this.router.navigateByUrl(`post/${id}`);
+    });
   }
 
   showToast(type: number) {
