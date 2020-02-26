@@ -237,6 +237,12 @@ export class MapComponent implements OnInit, AfterViewInit {
           _this.placeMarker(markerLocation);
           _this.map.setCenter(markerLocation);
           _this.map.setZoom(14);
+          let dayMax = airport.files.find(p => p.dayNightType === 1 && p.noiseType === 1);
+          if (dayMax) {
+            _this.changeMapLayer(2);
+          } else {
+            _this.changeMapLayer(4)
+          }
         }
       })
     });
