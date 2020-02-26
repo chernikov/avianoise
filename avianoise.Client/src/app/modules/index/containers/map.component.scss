@@ -29,6 +29,9 @@ nb-layout-column {
     font-family: 'Roboto';
     font-size: 18px;
     line-height: 21px;
+    img {
+      width : 120px;
+    }
   }
   .right {
     display: flex;
