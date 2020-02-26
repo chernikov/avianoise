@@ -1,5 +1,6 @@
 @import 'reset';
-@import 'variables';
+@import 'mixins';
 @import '../fonts/font';
 @import "~ngx-smart-modal/ngx-smart-modal";
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~quill/dist/quill.snow.css';

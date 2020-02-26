@@ -30,4 +30,8 @@ export class FeedbackService
 		return this.http.post<Feedback>(this.apiUrl, body, this.options).pipe();
 	}
 
+	delete(id: number,all: boolean) : Observable<null> {
+		return this.http.delete<null>(this.apiUrl + "?" + "id=" + id + "&" + "all=" + all, this.options).pipe();
+	}
+
 }
