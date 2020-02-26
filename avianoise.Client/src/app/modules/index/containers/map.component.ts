@@ -12,7 +12,6 @@ import { Airport } from '@classes/airport.class.js';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { SearchService } from '@services/search.service.js';
 import { takeWhile } from 'rxjs/operators';
-import { PostMenuService } from '@services/post-menu.service.js';
 import { Post } from '@classes/post.class.js';
 import { PostService } from '@services/post.service.js';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -131,7 +130,6 @@ export class MapComponent implements OnInit, AfterViewInit {
     private noiseLevelService: NoiseLevelService,
     private modalService: NgxSmartModalService,
     private searchService: SearchService,
-    private postMenuService: PostMenuService,
     private postService: PostService,
     private router: Router,
     private route: ActivatedRoute
@@ -210,7 +208,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   getPostMenu() {
-    this.postMenuService.get().pipe(takeWhile(() => this.alive)).subscribe(postMenu => {
+    this.postService.getAll(true).pipe(takeWhile(() => this.alive)).subscribe(postMenu => {
       this.postMenu = postMenu;
     });
   }

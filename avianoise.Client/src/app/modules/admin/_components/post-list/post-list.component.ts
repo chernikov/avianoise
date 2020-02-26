@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Post } from '@classes/post.class';
-import { PostMenuService } from '@services/post-menu.service';
 import { takeWhile } from 'rxjs/operators';
 import { PostService } from '@services/post.service';
 
@@ -14,7 +13,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[];
 
   constructor(
-    private postMenuService: PostMenuService,
     private postService: PostService
   ) {
     this.posts = [];
@@ -25,7 +23,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   getPosts() {
-    this.postService.getAll(true).pipe(takeWhile(() => this.alive)).subscribe(posts => {
+    this.postService.getAll(false).pipe(takeWhile(() => this.alive)).subscribe(posts => {
       this.posts = posts;
     });
   }
