@@ -216,13 +216,14 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   showAirports() {
+    let _this = this;
     this.airports.map(airport => {
       let location = {
         lat: airport.lat,
         lng: airport.lng
       }
 
-      new MarkerWithLabel({
+      let marker = new MarkerWithLabel({
         position: location,
         map: this.map,
         icon: 'assets/images/plane-icon.svg',
@@ -231,6 +232,15 @@ export class MapComponent implements OnInit, AfterViewInit {
         labelClass: "airport-label white-shadow-text",
         labelInBackground: false
       });
+      marker.addListener('click', function() {
+        if(!_this.showLocationInfo) {
+          let markerLocation = {...location};
+          markerLocation.lat = location.lat - .01;
+          _this.placeMarker(markerLocation);
+          _this.map.setCenter(markerLocation);
+          _this.map.setZoom(14);
+        }
+      })
     });
   }
 
