@@ -12,7 +12,6 @@ import { Airport } from '@classes/airport.class.js';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { SearchService } from '@services/search.service.js';
 import { takeWhile } from 'rxjs/operators';
-import { PostMenuService } from '@services/post-menu.service.js';
 import { Post } from '@classes/post.class.js';
 import { PostService } from '@services/post.service.js';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -131,7 +130,6 @@ export class MapComponent implements OnInit, AfterViewInit {
     private noiseLevelService: NoiseLevelService,
     private modalService: NgxSmartModalService,
     private searchService: SearchService,
-    private postMenuService: PostMenuService,
     private postService: PostService,
     private router: Router,
     private route: ActivatedRoute
@@ -210,19 +208,20 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   getPostMenu() {
-    this.postMenuService.get().pipe(takeWhile(() => this.alive)).subscribe(postMenu => {
+    this.postService.getAll(true).pipe(takeWhile(() => this.alive)).subscribe(postMenu => {
       this.postMenu = postMenu;
     });
   }
 
   showAirports() {
+    let _this = this;
     this.airports.map(airport => {
       let location = {
         lat: airport.lat,
         lng: airport.lng
       }
 
-      new MarkerWithLabel({
+      let marker = new MarkerWithLabel({
         position: location,
         map: this.map,
         icon: 'assets/images/plane-icon.svg',
@@ -231,6 +230,15 @@ export class MapComponent implements OnInit, AfterViewInit {
         labelClass: "airport-label white-shadow-text",
         labelInBackground: false
       });
+      marker.addListener('click', function() {
+        if(!_this.showLocationInfo) {
+          let markerLocation = {...location};
+          markerLocation.lat = location.lat - .01;
+          _this.placeMarker(markerLocation);
+          _this.map.setCenter(markerLocation);
+          _this.map.setZoom(14);
+        }
+      })
     });
   }
 
