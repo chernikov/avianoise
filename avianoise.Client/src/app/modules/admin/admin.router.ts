@@ -14,6 +14,7 @@ export const router: Routes = [
             { path: 'airport/add', component: EditAirportComponent },
             { path: 'airport', component: AirportListComponent },
             { path: 'airport/:id', component: AirportComponent },
+            { path: 'callbacks', component: CallbacksComponent },
             { path: 'post', component: PostListComponent },
             { path: 'post/add', component: EditPostComponent },
             { path: 'post/edit/:id', component: EditPostComponent }
