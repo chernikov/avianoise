@@ -29,7 +29,7 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(List<PostDto>), (int)HttpStatusCode.OK)]
         public IActionResult Get(bool isPublished = false)
         {
-            var list = isPublished ? postBL.GetPublished() : postBL.GetList();
+            var list = isPublished ? postBL.GetPublishedMenu() : postBL.GetMenu();
             var result = mapper.Map<List<PostDto>>(list);
             return Ok(result);
         }
@@ -41,6 +41,10 @@ namespace avianoise.Web.Api
         public IActionResult Get(int id)
         {
             var item = postBL.Get(id);
+            if (!item.IsPublished && !CurrentUserId.HasValue)
+            {
+                return BadRequest();
+            }
             var result = mapper.Map<PostDto>(item);
             return Ok(result);
         }

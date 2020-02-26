@@ -41,9 +41,6 @@ namespace avianoise.Data
 
         public DbSet<Post> Posts { get; set; }
 
-        public DbSet<PostFile> PostFiles { get; set; }
-
-
         public DbSet<Role> Roles { get; set; }
 
         public DbSet<User> Users { get; set; }

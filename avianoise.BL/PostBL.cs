@@ -21,9 +21,9 @@ namespace avianoise.BL
             return postRepository.Get().ToList();
         }
 
-        public List<Post> GetPublished()
+        public List<Post> GetPublishedMenu()
         {
-            return postRepository.Get(p => p.IsPublished).ToList();
+            return postRepository.GetPublishedMenu();
         }
 
         public List<Post> GetMenu()

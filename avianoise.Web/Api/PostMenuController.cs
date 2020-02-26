@@ -26,9 +26,9 @@ namespace avianoise.Web.Api
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(typeof(List<PostDto>), (int)HttpStatusCode.OK)]
-        public IActionResult Get()
+        public IActionResult Get(bool isPublished = false)
         {
-            var list = postBL.GetMenu();
+            var list = isPublished ? postBL.GetPublishedMenu() : postBL.GetMenu();
             var result = mapper.Map<List<PostDto>>(list);
             return Ok(result);
         }
