@@ -164,9 +164,8 @@
               <div class="arrow-up arrow" *ngIf="listItemIsOpen == 3; else arrowDown"></div>
             </div>
             <div class="body" *ngIf="listItemIsOpen == 3" [@if-slide]>
-              <div class="post-title" *ngFor="let post of postMenu; index as i" (click)="openPost(post.id)">
-                <span>{{ i + 1 }}. {{ post.title }}</span>
-                {{ post.addedDate | date: 'dd.MM.yyyy' }}
+              <div class="post-title" *ngFor="let post of postMenu" (click)="openPost(post.id)">
+                <span>{{ post.title }}</span>
               </div>
             </div>
           </div>
