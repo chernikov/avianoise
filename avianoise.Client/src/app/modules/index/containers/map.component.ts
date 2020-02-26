@@ -393,7 +393,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   onNoiseInfo() {
     this.menuIsOpen = true;
-    this.listItemIsOpen = 3;
+    this.listItemIsOpen = 2;
   }
 
   zoomIn() {
