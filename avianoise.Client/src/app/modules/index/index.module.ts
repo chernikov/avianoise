@@ -9,7 +9,7 @@ import { router } from './index.router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NbSpinnerModule, NbButtonModule, NbInputModule, NbLayoutModule, NbCheckboxModule } from '@nebular/theme';
 import { MapComponent } from './containers/map.component';
-import { CallbackModalComponent } from './containers/_components/callback-modal/callback-modal.component';
+import { FeedbackModalComponent } from './containers/_components/feedback-modal/feedback-modal.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { FileFormatPipe } from '@pipes/file-format.pipe';
 import { FileSizePipe } from '@pipes/file-size.pipe';
@@ -18,7 +18,7 @@ import { PostComponent } from './containers/_components/post/post.component';
 import { SanitizeHtmlPipe } from '@pipes/sanitize-html.pipe';
 
 @NgModule({
-  declarations: [LoginComponent, MapComponent, CallbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent, PostComponent, SanitizeHtmlPipe],
+  declarations: [LoginComponent, MapComponent, FeedbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent, PostComponent, SanitizeHtmlPipe],
   imports: [
     MatFormFieldModule,
     MatInputModule,

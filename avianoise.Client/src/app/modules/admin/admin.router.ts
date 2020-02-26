@@ -3,7 +3,7 @@ import { AdminComponent } from './containers/admin.component';
 import { EditAirportComponent } from './_components/edit-airport/edit-airport.component';
 import { AirportComponent } from './_components/airport/airport.component';
 import { AirportListComponent } from './_components/airport-list/airport-list.component';
-import { CallbacksComponent } from './_components/callbacks/callbacks.component';
+import { FeedbacksComponent } from './_components/feedback/feedback.component';
 import { PostListComponent } from './_components/post-list/post-list.component';
 import { EditPostComponent } from './_components/edit-post/edit-post.component';
 
@@ -14,7 +14,7 @@ export const router: Routes = [
             { path: 'airport/add', component: EditAirportComponent },
             { path: 'airport', component: AirportListComponent },
             { path: 'airport/:id', component: AirportComponent },
-            { path: 'callbacks', component: CallbacksComponent },
+            { path: 'feedbacks', component: FeedbacksComponent },
             { path: 'post', component: PostListComponent },
             { path: 'post/add', component: EditPostComponent },
             { path: 'post/edit/:id', component: EditPostComponent }

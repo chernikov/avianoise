@@ -8,11 +8,11 @@ import { Feedback } from '@classes/feedback.class';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-callback-modal',
-  templateUrl: './callback-modal.component.html',
-  styleUrls: ['./callback-modal.component.scss']
+  selector: 'app-feedback-modal',
+  templateUrl: './feedback-modal.component.html',
+  styleUrls: ['./feedback-modal.component.scss']
 })
-export class CallbackModalComponent implements OnInit, OnDestroy {
+export class FeedbackModalComponent implements OnInit, OnDestroy {
   @Output() showToast = new EventEmitter<number>();
 
   alive: boolean = true;
@@ -59,7 +59,7 @@ export class CallbackModalComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    this.modalService.getModal('callbackModal').close();
+    this.modalService.getModal('feedbackModal').close();
   }
 
   removeFile(fileObject) {
@@ -89,7 +89,7 @@ export class CallbackModalComponent implements OnInit, OnDestroy {
     this.formInProgress = true;
     this.feedbackService.post(feedBack).pipe(takeWhile(() => this.alive)).subscribe(_ => {
         this.formInProgress = false;
-        this.modalService.getModal('callbackModal').close();
+        this.modalService.getModal('feedbackModal').close();
         this.clearForm();
         this.showToast.emit(1);
     }, err => {

@@ -480,8 +480,8 @@ export class MapComponent implements OnInit, AfterViewInit {
       + "&BBOX=" + this.xyzToBounds(coordinates.x, coordinates.y, zoom).join(",");
   };
 
-  openCallbackModal() {
-    this.modalService.getModal('callbackModal').open();
+  openFeedbackModal() {
+    this.modalService.getModal('feedbackModal').open();
   }
 
   openPost(id: number) {
