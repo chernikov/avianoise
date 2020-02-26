@@ -2,6 +2,7 @@
 using avianoise.BL;
 using avianoise.Domain;
 using avianoise.Web.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,7 @@ namespace avianoise.Web.Api
         }
 
         [HttpPost]
+        [Authorize]
         [Produces("application/json")]
         [ProducesResponseType(typeof(PostDto), (int)HttpStatusCode.OK)]
         public IActionResult Post([FromBody] PostDto post)
@@ -61,6 +63,7 @@ namespace avianoise.Web.Api
         }
 
         [HttpPut]
+        [Authorize]
         [Produces("application/json")]
         [ProducesResponseType(typeof(PostDto), (int)HttpStatusCode.OK)]
         public IActionResult Put([FromBody] PostDto post)
@@ -72,6 +75,7 @@ namespace avianoise.Web.Api
         }
 
         [HttpDelete("{postId:int}")]
+        [Authorize]
         [Produces("application/json")]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
         public IActionResult Delete(int postId)
