@@ -331,7 +331,7 @@ export class MapComponent implements OnInit, AfterViewInit {
         };
       } else {
         noiseLevelItem = {
-          value: 'Немає даних',
+          value: 'Немає шумів',
           text: item.textShort,
           src: item.src,
           noData: true
