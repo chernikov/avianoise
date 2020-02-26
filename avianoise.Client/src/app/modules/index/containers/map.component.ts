@@ -266,22 +266,23 @@ export class MapComponent implements OnInit, AfterViewInit {
       airport.files.forEach(file => {
         file.lines.forEach(line => {
           let bgColor;
-          let strokeColor;
-          if(line.level >= 70 ) {
+          //let strokeColor;
+          if(line.level >= 70) {
             bgColor = '#FF3564';
-            strokeColor = '#EF364C';
+           // strokeColor = '#EF364C';
           } else if(line.level <= 50) {
             bgColor = '#F7D897';
-            strokeColor = '#EBBD87';
+           // strokeColor = '#EBBD87';
           } else {
             bgColor = '#FC8E75';
-            strokeColor = '#EE897B';
+           // strokeColor = '#EE897B';
           }
           let polygon = new google.maps.Polygon({
             paths: line.points,
             clickable: false,
             fillColor: bgColor,
             strokeColor: 'red',
+            fillOpacity: .6,
             strokeOpacity: .5,
             strokeWeight: 1
           });
