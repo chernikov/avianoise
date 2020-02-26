@@ -2,14 +2,20 @@
     <nb-accordion-item *ngFor="let feedback of feedbackList | paginate: { itemsPerPage: pagination.perPage, currentPage: pagination.current, totalItems: totalPages*pagination.perPage}; index as i">
         <nb-accordion-item-header>
             <span>{{ i + 1 }}. {{ feedback.name }}<span class="email">{{ feedback.email }}</span></span>
-            {{ feedback.addedDate | date: 'dd.MM.yyyy' }}
+            <div>
+              {{ feedback.addedDate | date: 'dd.MM.yyyy' }}
+              <button nbButton [status]="'danger'" class="del-btn" (click)="deleteFeedback(feedback)">Видалити</button>
+            </div>
+            
         </nb-accordion-item-header>
         <nb-accordion-item-body>
             {{ feedback.message }}
             <div class="files">
                 <div class="file" *ngFor="let file of feedback.feedbackFiles">
                     {{ file.name }}
-                    <button nbButton (click)="downloadFile(file.fullPath)">Завантажити</button>
+                    <a href="{{file.fullPath}}" download="{{file.name}}">
+                      <button nbButton>Завантажити</button>
+                    </a>
                 </div>
             </div>
         </nb-accordion-item-body>
