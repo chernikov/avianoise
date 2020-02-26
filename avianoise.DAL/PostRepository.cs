@@ -17,7 +17,7 @@ namespace avianoise.DAL
         public List<Post> GetMenu()
             => Query(context =>
             {
-                return context.Posts.Where(p => p.IsPublished)
+                return context.Posts
                     .Select(p => new Post()
                     {
                         Id = p.Id,
@@ -26,5 +26,18 @@ namespace avianoise.DAL
                         IsPublished = p.IsPublished,
                     }).ToList();
             });
+
+        public List<Post> GetPublishedMenu()
+             => Query(context =>
+             {
+                 return context.Posts.Where(p => p.IsPublished)
+                     .Select(p => new Post()
+                     {
+                         Id = p.Id,
+                         Title = p.Title,
+                         AddedDate = p.AddedDate,
+                         IsPublished = p.IsPublished,
+                     }).ToList();
+             });
     }
 }

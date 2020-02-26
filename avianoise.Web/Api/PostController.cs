@@ -2,6 +2,7 @@
 using avianoise.BL;
 using avianoise.Domain;
 using avianoise.Web.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(List<PostDto>), (int)HttpStatusCode.OK)]
         public IActionResult Get(bool isPublished = false)
         {
-            var list = isPublished ? postBL.GetPublished() : postBL.GetList();
+            var list = isPublished ? postBL.GetPublishedMenu() : postBL.GetMenu();
             var result = mapper.Map<List<PostDto>>(list);
             return Ok(result);
         }
@@ -41,11 +42,16 @@ namespace avianoise.Web.Api
         public IActionResult Get(int id)
         {
             var item = postBL.Get(id);
+            if (!item.IsPublished && !CurrentUserId.HasValue)
+            {
+                return BadRequest();
+            }
             var result = mapper.Map<PostDto>(item);
             return Ok(result);
         }
 
         [HttpPost]
+        [Authorize]
         [Produces("application/json")]
         [ProducesResponseType(typeof(PostDto), (int)HttpStatusCode.OK)]
         public IActionResult Post([FromBody] PostDto post)
@@ -57,6 +63,7 @@ namespace avianoise.Web.Api
         }
 
         [HttpPut]
+        [Authorize]
         [Produces("application/json")]
         [ProducesResponseType(typeof(PostDto), (int)HttpStatusCode.OK)]
         public IActionResult Put([FromBody] PostDto post)
@@ -68,6 +75,7 @@ namespace avianoise.Web.Api
         }
 
         [HttpDelete("{postId:int}")]
+        [Authorize]
         [Produces("application/json")]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
         public IActionResult Delete(int postId)
