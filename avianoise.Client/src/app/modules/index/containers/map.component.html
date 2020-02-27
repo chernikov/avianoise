@@ -71,12 +71,15 @@
       </div>
 
       <div class="post-wrap" *ngIf="containerMode == 2 && post">
+        <div class="back-to-map" [routerLink]="''">
+          <img src="assets/images/left-arrow.svg">
+          <span>Повернутися до карти</span>
+        </div>
         <div class="title">{{ post.title }}</div>
         <div class="body">
           <div [innerHTML]="post.text | sanitizeHtml"></div>
           <div class="date">{{ post.addedDate | date: 'dd.MM.yyyy' }}</div>
         </div>
-        <div class="back-to-map" [routerLink]="''">Повернутися до карти</div>
       </div>
 
       <app-toast [type]="toastType" *ngIf="toastIsShowed" [@if-opacity]></app-toast>
