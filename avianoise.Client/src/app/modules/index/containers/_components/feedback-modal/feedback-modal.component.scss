@@ -270,7 +270,14 @@ button {
 @include media-md {
   .body {
     height: 100%;
-    display: flex;
-    align-items: center;
+    form {
+      padding-bottom: 55px;
+      position: relative;
+      min-height: 100%;
+      button {
+        position: absolute;
+        bottom: 0;
+      }
+    }
   }
 }
