@@ -107,7 +107,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   menuIsOpen: boolean;
   listItemIsOpen: number;
   setLocationActive: boolean;
-  selectedLayer: number;
+  selectedLayer: number = 1;
   layerIsChanged: boolean;
   airports: Airport[];
   filteredAirports: Airport[];

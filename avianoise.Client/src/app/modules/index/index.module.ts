@@ -14,11 +14,10 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { FileFormatPipe } from '@pipes/file-format.pipe';
 import { FileSizePipe } from '@pipes/file-size.pipe';
 import { ToastComponent } from './containers/_components/toast/toast.component';
-import { PostComponent } from './containers/_components/post/post.component';
 import { SanitizeHtmlPipe } from '@pipes/sanitize-html.pipe';
 
 @NgModule({
-  declarations: [LoginComponent, MapComponent, FeedbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent, PostComponent, SanitizeHtmlPipe],
+  declarations: [LoginComponent, MapComponent, FeedbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent, SanitizeHtmlPipe],
   imports: [
     MatFormFieldModule,
     MatInputModule,
