@@ -4,25 +4,7 @@
     <div class="container">
       <div class="map-wrap" [hidden]="containerMode != 1">
         <div #gmap class="map"></div>
-        <div class="noise-info-wrap" *ngIf="showLocationInfo">
-          <div class="noise-info-container">
-            <div class="coords">
-              <img src="assets/images/white-marker-small.svg">
-              {{markerCoords.lat}}, {{markerCoords.lng}}
-            </div>
-            <div *ngFor="let item of noiseInfo; index as i" class="item-wrap">
-              <div class="item" [class.no-data]="item.noData" (click)="changeMapLayer(i + 1)">
-                <div class="top">
-                  <img src="{{ item.src }}">
-                  <span>{{ item.value }}</span>
-                </div>
-                <div class="bottom">
-                  {{ item.text }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
         <div class="noise-control-wrap" (click)="onNoiseInfo()">
           <div class="hight">75-85</div>
           <div class="medium">65-75</div>
@@ -61,6 +43,8 @@
       <app-toast [type]="toastType" *ngIf="toastIsShowed" [@if-opacity]></app-toast>
       <app-sidebar *ngIf="menuIsOpen" [selectedLayer]="selectedLayer" [listItemIsOpen]="listItemIsOpen" (toggleKadastr)="toggleKadastr($event)" (changeMapLayer)="changeMapLayer($event)" (openPost)="openPost($event)"></app-sidebar>
       <app-sidebar-search *ngIf="searchIsActive" [airports]="airports" (onSelectAirport)="onSelectAirport($event)"></app-sidebar-search>
+      <app-noise-info *ngIf="showLocationInfo" [markerCoords]="markerCoords" [noiseInfo]="noiseInfo" (changeMapLayer)="changeMapLayer($event)"></app-noise-info>
+      
     </div>
   </nb-layout-column>
 </nb-layout>
