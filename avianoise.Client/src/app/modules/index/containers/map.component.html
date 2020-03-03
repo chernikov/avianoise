@@ -83,105 +83,7 @@
       </div>
 
       <app-toast [type]="toastType" *ngIf="toastIsShowed" [@if-opacity]></app-toast>
-      
-      <div class="sidebar" *ngIf="menuIsOpen">
-        <div class="list">
-          <div class="list-item">
-            <div class="head" (click)="toggleListItem(1)">
-              Умовні позначення
-              <div class="arrow-up arrow" *ngIf="listItemIsOpen == 1; else arrowDown"></div>
-            </div>
-            <div class="body" *ngIf="listItemIsOpen == 1" [@if-slide]>
-              <div class="body-item kadastr-map">
-                <div class="row">
-                  <label class="switch">
-                    <input type="checkbox" [(ngModel)]="isKadastrLayer" (change)="toggleKadastr(isKadastrLayer)" />
-                    <span class="toggle"></span>
-                  </label>
-                  <span class="toggle-active" [class.is-active]="isKadastrLayer">
-                    <img src="assets/images/map-icon.svg">
-                    Кадастрова карта України
-                  </span>
-                </div>
-              </div>
-              <div class="body-item noise-maps">
-                <div class="title">Карти шуму</div>
-                <div class="row">
-                  <label class="radio-wrap">
-                    <input type="radio" name="noise-map" [value]="1" [(ngModel)]="selectedLayer" (change)="changeMapLayer()">
-                    <span class="radio"></span>
-                  </label>
-                  <span class="toggle-active" [class.is-active]="selectedLayer == 1">
-                    <img src="assets/images/day-equivalent.svg">
-                    Денний Еквівалентний
-                  </span>
-                </div>
-                <div class="row">
-                  <label class="radio-wrap">
-                    <input type="radio" name="noise-map" [value]="2" [(ngModel)]="selectedLayer" (change)="changeMapLayer()">
-                    <span class="radio"></span>
-                  </label>
-                  <span class="toggle-active" [class.is-active]="selectedLayer == 2">
-                    <img src="assets/images/day-max.svg">
-                    Денний Максимальний
-                  </span>
-                </div>
-                <div class="row">
-                  <label class="radio-wrap">
-                    <input type="radio" name="noise-map" [value]="3" [(ngModel)]="selectedLayer" (change)="changeMapLayer()">
-                    <span class="radio"></span>
-                  </label>
-                  <span class="toggle-active" [class.is-active]="selectedLayer == 3">
-                    <img src="assets/images/night-equivalent.svg">
-                    Нічний Еквівалентний
-                  </span>
-                </div>
-                <div class="row">
-                  <label class="radio-wrap">
-                    <input type="radio" name="noise-map" [value]="4" [(ngModel)]="selectedLayer" (change)="changeMapLayer()">
-                    <span class="radio"></span>
-                  </label>
-                  <span class="toggle-active" [class.is-active]="selectedLayer == 4">
-                    <img src="assets/images/night-max.svg">
-                    Нічний Максимальний
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="head" (click)="toggleListItem(2)">
-              Інформація про рівні шуму
-              <div class="arrow-up arrow" *ngIf="listItemIsOpen == 2; else arrowDown"></div>
-            </div>
-            <div class="body" *ngIf="listItemIsOpen == 2" [@if-slide]>
-              На мапі візуалізовані контури шуму (лінії постійного значення сумарного рівня авіаційного шуму) навколо аеропортів для денного та нічного часу.
-              <br><br>
-              Для кожного періоду доби розраховані по 2 значення рівнів шуму:<br>
-              LAекв – еквівалентний (одиниця виміру тривалого звуку)<br>
-              LAмакс – максимальний рівень звуку, що досягається під час шумової події<br>
-              Допустимі значення LAекв  та LAмакс визначаються державними будівельними та санітарними нормами. Більше про це – тут.
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="head" (click)="toggleListItem(3)">
-              Портал
-              <div class="arrow-up arrow" *ngIf="listItemIsOpen == 3; else arrowDown"></div>
-            </div>
-            <div class="body" *ngIf="listItemIsOpen == 3" [@if-slide]>
-              <div class="post-title" *ngFor="let post of postMenu" (click)="openPost(post.id)">
-                <span>{{ post.title }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="feedback" (click)="openFeedbackModal()">
-          <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11.9999 0H4.00014C2.92584 0.0143477 1.90128 0.442536 1.15137 1.19058C0.401456 1.93861 -0.0125273 2.94538 0.00028895 3.98987V13.481C0.000196075 13.5841 0.0317102 13.6849 0.0908064 13.7705C0.149902 13.8561 0.233898 13.9226 0.332065 13.9616C0.430232 14.0005 0.538114 14.0101 0.641933 13.9892C0.745752 13.9683 0.840795 13.9177 0.914922 13.844L3.04818 11.7104H11.9999C13.0742 11.696 14.0987 11.2678 14.8486 10.5198C15.5985 9.77175 16.0125 8.76498 15.9997 7.72049V3.98987C16.0125 2.94538 15.5985 1.93861 14.8486 1.19058C14.0987 0.442536 13.0742 0.0143477 11.9999 0ZM11.9999 6.99977C11.7889 6.99977 11.5827 6.93895 11.4073 6.82501C11.2319 6.71106 11.0951 6.5491 11.0144 6.35961C10.9337 6.17013 10.9126 5.96162 10.9537 5.76046C10.9949 5.5593 11.0965 5.37453 11.2456 5.2295C11.3948 5.08447 11.5849 4.9857 11.7918 4.94569C11.9987 4.90568 12.2131 4.92621 12.408 5.0047C12.6029 5.08319 12.7695 5.21611 12.8867 5.38664C13.0039 5.55718 13.0665 5.75767 13.0665 5.96277C13.0665 6.2378 12.9541 6.50157 12.7541 6.69604C12.554 6.89052 12.2827 6.99977 11.9999 6.99977ZM9.06663 5.96277C9.06663 6.16787 9.00407 6.36836 8.88687 6.5389C8.76967 6.70943 8.60308 6.84235 8.40818 6.92084C8.21328 6.99932 7.99882 7.01986 7.79191 6.97985C7.58501 6.93983 7.39495 6.84107 7.24578 6.69604C7.09661 6.55101 6.99502 6.36624 6.95387 6.16508C6.91271 5.96392 6.93383 5.75541 7.01456 5.56593C7.09529 5.37644 7.23201 5.21448 7.40741 5.10053C7.58282 4.98659 7.78904 4.92577 8 4.92577C8.28289 4.92577 8.55419 5.03502 8.75422 5.2295C8.95425 5.42397 9.06663 5.68774 9.06663 5.96277ZM4.00014 4.92577C4.2111 4.92577 4.41733 4.98659 4.59273 5.10053C4.76814 5.21448 4.90485 5.37644 4.98558 5.56593C5.06631 5.75541 5.08743 5.96392 5.04628 6.16508C5.00512 6.36624 4.90353 6.55101 4.75436 6.69604C4.60519 6.84107 4.41514 6.93983 4.20823 6.97985C4.00133 7.01986 3.78686 6.99932 3.59196 6.92084C3.39706 6.84235 3.23048 6.70943 3.11328 6.5389C2.99607 6.36836 2.93352 6.16787 2.93352 5.96277C2.93352 5.68774 3.04589 5.42397 3.24592 5.2295C3.44596 5.03502 3.71726 4.92577 4.00014 4.92577Z" fill="#9AB2F0"/>
-          </svg>
-          <span>Зворотній зв'язок</span>
-        </div>
-      </div>
+      <app-sidebar *ngIf="menuIsOpen" [selectedLayer]="selectedLayer" [listItemIsOpen]="listItemIsOpen" (toggleKadastr)="toggleKadastr($event)" (changeMapLayer)="changeMapLayer($event)" (openPost)="openPost($event)"></app-sidebar>
 
       <div class="sidebar search" *ngIf="searchIsActive">
         <div class="search-container">
@@ -199,9 +101,5 @@
     </div>
   </nb-layout-column>
 </nb-layout>
-
-<ng-template #arrowDown>
-  <div class="arrow-down arrow"></div>
-</ng-template>
 
 <app-feedback-modal (showToast)="showToast($event)"></app-feedback-modal>
