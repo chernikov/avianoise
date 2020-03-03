@@ -16,9 +16,10 @@ import { FileSizePipe } from '@pipes/file-size.pipe';
 import { ToastComponent } from './containers/_components/toast/toast.component';
 import { SanitizeHtmlPipe } from '@pipes/sanitize-html.pipe';
 import { SidebarComponent } from './containers/_components/sidebar/sidebar.component';
+import { SidebarSearchComponent } from './containers/_components/sidebar-search/sidebar-search.component';
 
 @NgModule({
-  declarations: [LoginComponent, MapComponent, FeedbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent, SanitizeHtmlPipe, SidebarComponent],
+  declarations: [LoginComponent, MapComponent, FeedbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent, SanitizeHtmlPipe, SidebarComponent, SidebarSearchComponent],
   imports: [
     MatFormFieldModule,
     MatInputModule,
