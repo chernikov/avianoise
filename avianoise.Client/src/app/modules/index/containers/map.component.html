@@ -44,7 +44,6 @@
       <app-sidebar *ngIf="menuIsOpen" [selectedLayer]="selectedLayer" [listItemIsOpen]="listItemIsOpen" (toggleKadastr)="toggleKadastr($event)" (changeMapLayer)="changeMapLayer($event)" (openPost)="openPost($event)"></app-sidebar>
       <app-sidebar-search *ngIf="searchIsActive" [airports]="airports" (onSelectAirport)="onSelectAirport($event)"></app-sidebar-search>
       <app-noise-info *ngIf="showLocationInfo" [markerCoords]="markerCoords" [noiseInfo]="noiseInfo" (changeMapLayer)="changeMapLayer($event)"></app-noise-info>
-      
     </div>
   </nb-layout-column>
 </nb-layout>
