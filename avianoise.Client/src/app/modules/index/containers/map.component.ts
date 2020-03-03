@@ -127,22 +127,14 @@ export class MapComponent implements OnInit, AfterViewInit {
     private noiseLevelService: NoiseLevelService,
     private searchService: SearchService,
     private postService: PostService,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {
     this.polygons = [];
     this.noiseInfo = [];
   }
 
   ngOnInit() {
-    this.route.params.subscribe(param => {
-      if(param.id) {
-        this.openPost(param.id);
-      } else {
-        this.containerMode = 1;
-        this.getMap();
-      }
-    });
+    this.getMap();
     this.getAirports();
     this.selectedLayerInfo = layersInfo.find(item => item.id == 1);
   }
@@ -477,6 +469,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.postService.get(id).pipe(takeWhile(() => this.alive)).subscribe(post => {
       this.post = post;
       this.containerMode = 2;
+      this.closeSidebar();
       this.router.navigateByUrl(`post/${id}`);
     });
   }

@@ -19,9 +19,10 @@ import { SidebarComponent } from './containers/_components/sidebar/sidebar.compo
 import { SidebarSearchComponent } from './containers/_components/sidebar-search/sidebar-search.component';
 import { HeaderComponent } from './containers/_components/header/header.component';
 import { NoiseInfoComponent } from './containers/_components/noise-info/noise-info.component';
+import { PostComponent } from './containers/_components/post/post.component';
 
 @NgModule({
-  declarations: [LoginComponent, MapComponent, FeedbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent, SanitizeHtmlPipe, SidebarComponent, SidebarSearchComponent, HeaderComponent, NoiseInfoComponent],
+  declarations: [LoginComponent, MapComponent, FeedbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent, SanitizeHtmlPipe, SidebarComponent, SidebarSearchComponent, HeaderComponent, NoiseInfoComponent, PostComponent],
   imports: [
     MatFormFieldModule,
     MatInputModule,
