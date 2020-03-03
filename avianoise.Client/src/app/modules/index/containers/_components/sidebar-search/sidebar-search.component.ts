@@ -12,9 +12,7 @@ export class SidebarSearchComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log(this.airports);
-  }
+  ngOnInit() { }
 
   onAirport(airport: Airport) {
     this.onSelectAirport.emit(airport);

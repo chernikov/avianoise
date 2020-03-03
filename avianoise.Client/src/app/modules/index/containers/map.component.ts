@@ -87,7 +87,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   isKadastrLayer: boolean = false;
 
   @ViewChild('gmap', { static: true }) gmapElement: any;
-  @ViewChild('searchInput', { static: false }) searchInput: ElementRef;
 
   map: google.maps.Map;
   marker: google.maps.Marker;
@@ -300,9 +299,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   onSearch() {
     this.menuIsOpen = false;
     this.searchIsActive = true;
-    setTimeout(() => {
-      this.searchInput.nativeElement.focus();
-    }, 0);
   }
 
   changeMapLayer(index?: number) {
