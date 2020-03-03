@@ -2,7 +2,7 @@
   <nb-layout-column>
     <app-header [searchIsActive]="searchIsActive" [setLocationActive]="setLocationActive" [containerMode]="containerMode" [menuIsOpen]="menuIsOpen" (openMenu)="openMenu()" (closeSidebar)="closeSidebar()" (openSearch)="onSearch()" (searchLocation)="searchLocation($event)" (closeSetLocation)="onSetLocationBtn()"></app-header>
     <div class="container">
-      <div class="map-wrap">
+      <div class="map-wrap" [hidden]="containerMode != 1">
         <div #gmap class="map"></div>
 
         <div class="noise-control-wrap" (click)="onNoiseInfo()">
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <!-- <div class="post-wrap" *ngIf="containerMode == 2 && post">
+      <div class="post-wrap" *ngIf="containerMode == 2 && post">
         <div class="back-to-map" [routerLink]="''">
           <img src="assets/images/left-arrow.svg">
           <span>Повернутися до карти</span>
@@ -38,7 +38,7 @@
           <div [innerHTML]="post.text | sanitizeHtml"></div>
           <div class="date">{{ post.addedDate | date: 'dd.MM.yyyy' }}</div>
         </div>
-      </div> -->
+      </div>
 
       <app-toast [type]="toastType" *ngIf="toastIsShowed" [@if-opacity]></app-toast>
       <app-sidebar *ngIf="menuIsOpen" [selectedLayer]="selectedLayer" [listItemIsOpen]="listItemIsOpen" (toggleKadastr)="toggleKadastr($event)" (changeMapLayer)="changeMapLayer($event)" (openPost)="openPost($event)"></app-sidebar>
