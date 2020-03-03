@@ -1,0 +1,26 @@
+<div class="header" [class.search-opened-mobile]="searchIsActive" [class.location-opened-mobile]="setLocationActive">
+  <div class="close-location-mobile" *ngIf="setLocationActive && !searchIsActive" (click)="onCloseSearch()">
+    <img src="assets/images/left-arrow-mobile.svg">
+    Вийти з вибору локації
+  </div>
+  <div class="logo"><a href="/"><img src="/assets/nomos.png"></a></div>
+  <div class="tooltip-for-set-location" *ngIf="setLocationActive">Оберіть локацію на карті</div>
+  <div class="right">
+    <svg class="search" *ngIf="!searchIsActive && containerMode == 1" width="18" height="18" viewBox="0 0 18 18" (click)="onSearch()">
+      <path
+        d="M7.69765 15.3945C9.40555 15.3941 11.0642 14.8224 12.4096 13.7704L16.6394 18L18 16.6395L13.7701 12.4099C14.8228 11.0645 15.3949 9.40549 15.3953 7.69724C15.3953 3.45318 11.9419 0 7.69765 0C3.45336 0 0 3.45318 0 7.69724C0 11.9413 3.45336 15.3945 7.69765 15.3945ZM7.69765 1.92431C10.8816 1.92431 13.4709 4.51347 13.4709 7.69724C13.4709 10.881 10.8816 13.4702 7.69765 13.4702C4.51371 13.4702 1.92441 10.881 1.92441 7.69724C1.92441 4.51347 4.51371 1.92431 7.69765 1.92431Z"
+        fill="black" />
+    </svg>
+    <input *ngIf="searchIsActive && containerMode == 1" class="search-input" #searchInput type="text"
+      placeholder="Введіть Адресу або кадастровий номер" (keyup.enter)="whenSearchLocation(searchInput.value)">
+    <svg width="25" height="16" viewBox="0 0 25 16" *ngIf="!menuIsOpen && !searchIsActive" (click)="onOpenMenu()">
+      <rect x="4" width="17" height="2" fill="#232323" />
+      <rect y="7" width="25" height="2" fill="#232323" />
+      <rect x="3" y="14" width="19" height="2" fill="#232323" />
+    </svg>
+    <svg width="21" height="17" viewBox="0 0 21 17" *ngIf="menuIsOpen || searchIsActive" (click)="onCloseSidebar()">
+      <rect x="2.36829" y="14.8492" width="21" height="2" transform="rotate(-45 2.36829 14.8492)" fill="#232323" />
+      <rect x="3.78247" width="21" height="2" transform="rotate(45 3.78247 0)" fill="#232323" />
+    </svg>
+  </div>
+</div>

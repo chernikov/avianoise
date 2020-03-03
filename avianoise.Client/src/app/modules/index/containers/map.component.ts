@@ -9,7 +9,6 @@ import { NoiseLevelService } from '@services/noise-level.service';
 
 import mapStylesJson from '../../../../assets/map.json';
 import { Airport } from '@classes/airport.class.js';
-import { NgxSmartModalService } from 'ngx-smart-modal';
 import { SearchService } from '@services/search.service.js';
 import { takeWhile } from 'rxjs/operators';
 import { Post } from '@classes/post.class.js';
@@ -88,7 +87,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   isKadastrLayer: boolean = false;
 
   @ViewChild('gmap', { static: true }) gmapElement: any;
-  @ViewChild('searchInput', { static: false }) searchInput: ElementRef;
 
   map: google.maps.Map;
   marker: google.maps.Marker;
@@ -105,7 +103,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   containerMode: number;
   menuIsOpen: boolean;
-  listItemIsOpen: number;
+  listItemIsOpen: string;
   setLocationActive: boolean;
   selectedLayer: number = 1;
   layerIsChanged: boolean;
@@ -121,14 +119,12 @@ export class MapComponent implements OnInit, AfterViewInit {
   toastType: number;
   toastIsShowed: boolean;
   searchIsActive: boolean;
-  postMenu: Post[];
   post: Post;
   selectedPost: number;
 
   constructor(
     private airportPublishedService: AirportPublishedService,
     private noiseLevelService: NoiseLevelService,
-    private modalService: NgxSmartModalService,
     private searchService: SearchService,
     private postService: PostService,
     private router: Router,
@@ -149,7 +145,6 @@ export class MapComponent implements OnInit, AfterViewInit {
     });
     this.getAirports();
     this.selectedLayerInfo = layersInfo.find(item => item.id == 1);
-    this.getPostMenu();
   }
 
   getMap() {
@@ -204,12 +199,6 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.airports = airports;
       this.filterAirports(1);
       this.showAirports();
-    });
-  }
-
-  getPostMenu() {
-    this.postService.getAll(true).pipe(takeWhile(() => this.alive)).subscribe(postMenu => {
-      this.postMenu = postMenu;
     });
   }
 
@@ -310,9 +299,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   onSearch() {
     this.menuIsOpen = false;
     this.searchIsActive = true;
-    setTimeout(() => {
-      this.searchInput.nativeElement.focus();
-    }, 0);
   }
 
   changeMapLayer(index?: number) {
@@ -407,7 +393,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   onNoiseInfo() {
     this.menuIsOpen = true;
-    this.listItemIsOpen = 2;
+    this.listItemIsOpen = 'noise-info';
   }
 
   zoomIn() {
@@ -438,14 +424,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   closeSidebar() {
     this.menuIsOpen = false;
     this.searchIsActive = false;
-  }
-
-  toggleListItem(number: number) {
-    if (this.listItemIsOpen === number) {
-      this.listItemIsOpen = null;
-    } else {
-      this.listItemIsOpen = number;
-    }
   }
 
   onSelectAirport(airport: Airport) {
@@ -494,10 +472,6 @@ export class MapComponent implements OnInit, AfterViewInit {
       + "&HEIGHT=" + this.tileSize
       + "&BBOX=" + this.xyzToBounds(coordinates.x, coordinates.y, zoom).join(",");
   };
-
-  openFeedbackModal() {
-    this.modalService.getModal('feedbackModal').open();
-  }
 
   openPost(id: number) {
     this.postService.get(id).pipe(takeWhile(() => this.alive)).subscribe(post => {

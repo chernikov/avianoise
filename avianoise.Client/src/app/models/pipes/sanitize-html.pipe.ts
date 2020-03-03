@@ -10,7 +10,7 @@ export class SanitizeHtmlPipe implements PipeTransform {
   }
 
   transform(value:string):SafeHtml {
-    let data = value.replace('<img', '<img style="max-width: 100%"');
+    let data = value.replace(/<img/g, '<img style="max-width: 100%"');
     return this._sanitizer.bypassSecurityTrustHtml(data);
   }
 }
