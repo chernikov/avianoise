@@ -1,0 +1,9 @@
+{
+	"ConnectionStrings": {
+		"DefaultConnection": "Fake Connection string"
+	},
+	"AppSettings": {
+		"Secret": "PPxp6DCDd4awxsSUzGwR23weAg44W2fBHCQ8gZhSnKwCX7HD8eTMjZCSac4ZEr4fEcqk4hEEyAkz7rMAtCkrv67ghYmQd93dqGyB"
+	},
+	"AllowedHosts": "*"
+}

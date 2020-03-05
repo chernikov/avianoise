@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace avianoise.Web.Api
 {
-    [Route("/api/post")]
+    [Route("api/post")]
     public class PostController : BaseUserController
     {
         private readonly IPostBL postBL;
@@ -29,7 +29,7 @@ namespace avianoise.Web.Api
         [ProducesResponseType(typeof(List<PostDto>), (int)HttpStatusCode.OK)]
         public IActionResult Get(bool isPublished = false)
         {
-            var list = isPublished ? postBL.GetPublished() : postBL.GetList();
+            var list = isPublished ? postBL.GetPublished() : postBL.GetTree();
             var result = mapper.Map<List<PostDto>>(list);
             return Ok(result);
         }

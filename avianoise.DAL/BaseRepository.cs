@@ -32,10 +32,7 @@ namespace avianoise.DAL
 
         protected void Execute(Action<IAviaNoiseDbContext> functor)
         {
-            using (var dbContext = getDbContext())
-            {
-                functor(dbContext);
-            }
+            functor(context);
         }
 
         protected T Query<T>(Func<IAviaNoiseDbContext, T> functor)

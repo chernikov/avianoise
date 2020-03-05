@@ -70,18 +70,5 @@ namespace avianoise.Web.Tests
             Assert.IsTrue(isInPolygon1);
             Assert.IsTrue(isInPolygon2);
         }
-
-
-        [Test]
-        public void MykolayvLineInPolyline()
-        {
-            var points = db.Points.Where(p => p.LineId == 34).OrderBy(p => p.Number).ToList();
-
-            var polyline = points.Select(p => new PointF((float)p.Lng, (float)p.Lat)).ToList();
-            var point = new PointF((float)31.9819390951763, (float)47.108412826098444);
-
-            var isInPolygon = GeoHelper.IsInPolygon(polyline, point);
-            Assert.IsTrue(isInPolygon);
-        }
     }
 }

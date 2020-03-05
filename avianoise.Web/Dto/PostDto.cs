@@ -12,10 +12,14 @@ namespace avianoise.Web.Dto
 
         public string Title { get; set; }
 
+        public int Order { get; set; }
+
         public string Text { get; set; }
 
         public bool IsPublished { get; set; }
 
         public DateTime AddedDate { get; set; }
+
+        public List<PostDto> Posts { get; set; }
     }
 }

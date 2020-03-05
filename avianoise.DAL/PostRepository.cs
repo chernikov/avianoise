@@ -21,10 +21,23 @@ namespace avianoise.DAL
                     .Select(p => new Post()
                     {
                         Id = p.Id,
+                        PostId = p.PostId,
+                        Order = p.Order,
                         Title = p.Title,
                         AddedDate = p.AddedDate,
                         IsPublished = p.IsPublished,
                     }).ToList();
             });
+
+        public void SetOrder(List<Post> list)
+             => Execute(context =>
+             {
+                 foreach (var item in list)
+                 {
+                     var entry = context.Posts.FirstOrDefault(p => p.Id == item.Id);
+                     entry.Order = item.Order;
+                 }
+                 context.SaveChanges();
+             });
     }
 }
