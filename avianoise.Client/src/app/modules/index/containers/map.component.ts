@@ -90,7 +90,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   map: google.maps.Map;
   marker: google.maps.Marker;
-  
+  airportsLabels: any[] = [];
 
   EXTENT = [-Math.PI * 6378137, Math.PI * 6378137];
 
@@ -171,7 +171,6 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.map.addListener('bounds_changed', function() {
       _this.map.addListener('zoom_changed', function() {
         let zoom =_this.map.getZoom();
-
         if(zoom > 10 && !_this.showPolygons) {
           _this.showPolygons = true;
           _this.filterPolygons();
@@ -179,6 +178,28 @@ export class MapComponent implements OnInit, AfterViewInit {
           _this.showPolygons = false;
           _this.filterPolygons();
         };
+
+        if(zoom < 4) {
+          _this.airportsLabels.forEach(marker => {
+            marker.setMap(null);
+          });
+        } else {
+          _this.airportsLabels.forEach(marker => {
+            if(!marker.getMap()) {
+              marker.setMap(_this.map);
+            }
+          });
+        }
+
+        if(zoom < 6) {
+          _this.airportsLabels.forEach(marker => {
+            marker.labelVisible = false;
+          });
+        } else {
+          _this.airportsLabels.forEach(marker => {
+            marker.labelVisible = true;
+          });
+        }
       });
     });
 
@@ -219,21 +240,24 @@ export class MapComponent implements OnInit, AfterViewInit {
         labelClass: "airport-label white-shadow-text",
         labelInBackground: false
       });
+
+      this.airportsLabels.push(marker);
+
       marker.addListener('click', function() {
-        if(!_this.showLocationInfo) {
-          let markerLocation = {...location};
-          markerLocation.lat = location.lat - .01;
-          _this.placeMarker(markerLocation);
-          _this.map.setCenter(markerLocation);
-          _this.map.setZoom(14);
-          let dayMax = airport.files.find(p => p.dayNightType === 1 && p.noiseType === 1);
-          if (dayMax) {
-            _this.changeMapLayer(2);
-          } else {
-            _this.changeMapLayer(4)
-          }
+        let markerLocation = {...location};
+        markerLocation.lat = location.lat - .01;
+        _this.placeMarker(markerLocation);
+        _this.map.setCenter(markerLocation);
+        _this.map.setZoom(14);
+        let dayMax = airport.files.find(p => p.dayNightType === 1 && p.noiseType === 1);
+        if (dayMax) {
+          _this.changeMapLayer(2);
+        } else {
+          _this.changeMapLayer(4)
         }
       })
+
+      
     });
   }
 
