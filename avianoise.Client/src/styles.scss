@@ -41,6 +41,10 @@ body {
   max-width: 150px;
 }
 
+.hide-markers {
+  display: none;
+}
+
 ngx-smart-modal {
   .overlay {
     display: flex;
