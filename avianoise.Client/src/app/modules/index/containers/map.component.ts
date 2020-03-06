@@ -191,7 +191,7 @@ export class MapComponent implements OnInit, AfterViewInit {
           });
         }
 
-        if(zoom < 6) {
+        if(zoom < 8) {
           _this.airportsLabels.forEach(marker => {
             marker.labelVisible = false;
           });
@@ -238,7 +238,8 @@ export class MapComponent implements OnInit, AfterViewInit {
         labelContent: airport.name,
         labelAnchor: new google.maps.Point(-15, 30),
         labelClass: "airport-label white-shadow-text",
-        labelInBackground: false
+        labelInBackground: false,
+        labelVisible: false
       });
 
       this.airportsLabels.push(marker);
