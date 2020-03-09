@@ -21,9 +21,9 @@ export class File {
 		this.fullPath = '';
 		this.fileName = '';
 		this.extension = '';
-		this.noiseType = 0;
-		this.dayNightType = 0;
-		this.timeType = 0;
+		this.noiseType = null;
+		this.dayNightType = null;
+		this.timeType = null;
 	}
 
 

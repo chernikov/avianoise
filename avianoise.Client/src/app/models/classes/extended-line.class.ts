@@ -3,7 +3,7 @@ import { Point } from './point.class';
 
 
 export class ExtendedLine {
-	file : File[];
+	file : File;
 	id : number;
 	airportId : number;
 	fileId : number;
@@ -14,7 +14,7 @@ export class ExtendedLine {
 	points : Point[];
 
 	constructor() {
-		this.file = [];
+		this.file = null;
 		this.id = 0;
 		this.airportId = 0;
 		this.fileId = 0;

@@ -1,0 +1,29 @@
+<div class="item-content">
+    <div class="info">
+        <span> {{ item.title }}</span>
+        <span class="info-badge" [hidden]="!item.isPublished">Опубліковано</span>
+    </div>
+    <div>
+        <button nbButton class="btn" *ngIf="!isFirst"  (click)="upPost()"> <nb-icon icon="arrow-up" pack="fa"></nb-icon></button>
+        <button nbButton class="btn" *ngIf="!isLast" (click)="downPost()"> <nb-icon icon="arrow-down" pack="fa"></nb-icon></button>
+        <button nbButton class="btn" *ngIf="item.postId" (click)="leftPost()"> <nb-icon icon="arrow-left" pack="fa"></nb-icon></button>
+        <button nbButton class="btn" *ngIf="!isFirst"  (click)="rightPost()"> <nb-icon icon="arrow-right" pack="fa"></nb-icon></button>
+        <button nbButton class="btn" [routerLink]="['/admin/post/edit', item.id]">Редагувати</button>
+        <button nbButton class="btn" [status]="'danger'"  (click)="deletePost(item)">Видалити</button>
+    </div>
+</div>
+<div class="sub-items" *ngIf="item.posts && item.posts.length">
+    <nb-list>
+        <nb-list-item *ngFor="let subItem of item.posts; let i = index">
+            <app-post-item [item]="subItem" [isFirst]="i === 0" [isLast]="i === item.posts.length - 1"
+            
+            (update)='update.emit(null)'
+            (down)="down.emit($event)"
+            (up)="up.emit($event)"
+            (left)="left.emit($event)"
+            (right)="right.emit($event)"
+
+            ></app-post-item>
+        </nb-list-item>
+    </nb-list>
+</div>

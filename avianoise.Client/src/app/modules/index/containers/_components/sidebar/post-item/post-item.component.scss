@@ -1,0 +1,25 @@
+@import 'mixins';
+
+.post-title {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 15px;
+  transition: .4s;
+  margin-top: 10px;
+  margin-bottom: 5px;
+
+  &:hover {
+    color: $primary;
+  }
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+}
+
+.sub-items {
+    margin-left : 10px;
+}
