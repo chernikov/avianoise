@@ -16,7 +16,7 @@ namespace avianoise.DAL
         }
 
         public Feedback Create(Feedback feedback) =>
-            Execute(context =>
+            Query(context =>
             {
                 var newEntry = new Feedback()
                 {
@@ -39,25 +39,22 @@ namespace avianoise.DAL
 
         public List<Feedback> GetByPage(int page, int pageSize, out int total)
         {
-            using (var dbContext = getDbContext())
+            total = this.context.Feedbacks.Count();
+            if (total % pageSize == 0)
             {
-                total = dbContext.Feedbacks.Count();
-                if (total % pageSize == 0)
-                {
-                    total = total / pageSize;
-                }
-                else
-                {
-                    total = total / pageSize + 1;
-                }
-                return dbContext.Feedbacks.OrderByDescending(p => p.AddedDate).Skip(pageSize * page).Take(pageSize)
-                    .Include(p => p.FeedbackFiles)
-                    .ToList();
+                total = total / pageSize;
             }
+            else
+            {
+                total = total / pageSize + 1;
+            }
+            return this.context.Feedbacks.OrderByDescending(p => p.AddedDate).Skip(pageSize * page).Take(pageSize)
+                .Include(p => p.FeedbackFiles)
+                .ToList();
         }
 
         public void Delete(int id) =>
-            Execute(context =>
+            Query(context =>
             {
                 var entry = context.Feedbacks.Find(id);
                 if (entry != null)
@@ -68,7 +65,7 @@ namespace avianoise.DAL
             });
 
         public void DeleteAll() =>
-            Execute(context =>
+            Query(context =>
             {
                 context.Feedbacks.RemoveRange(context.Feedbacks);
                 context.SaveChanges();

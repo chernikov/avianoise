@@ -79,7 +79,7 @@ namespace avianoise.Web
 
             Console.WriteLine($"Connection string {configurationSection.Value}");
             services.AddDbContext<AviaNoiseDbContext>(options => options.UseSqlServer(configurationSection.Value));
-            services.AddTransient<IAviaNoiseDbContext, AviaNoiseDbContext>();
+            services.AddScoped<IAviaNoiseDbContext, AviaNoiseDbContext>();
             services.AddScoped(provider =>
                     new Func<IAviaNoiseDbContext>(() => provider.GetService<IAviaNoiseDbContext>())
                 );

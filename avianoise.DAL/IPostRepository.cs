@@ -12,5 +12,9 @@ namespace avianoise.DAL
         List<Post> GetMenu();
 
         List<Post> GetPublishedMenu();
+
+        void SetOrder(List<Post> list);
+
+
     }
 }

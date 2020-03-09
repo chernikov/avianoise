@@ -15,7 +15,7 @@ namespace avianoise.DAL
         }
 
         public User Create(User userEntry)
-            => Execute(context =>
+            => Query(context =>
             {
                 context.Users.Add(userEntry);
                 context.SaveChanges();

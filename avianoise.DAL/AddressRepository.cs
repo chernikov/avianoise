@@ -15,7 +15,7 @@ namespace avianoise.DAL
         }
 
         public Address Create(Address entry)
-            => Execute(context =>
+            => Query(context =>
             {
                 entry.AddedDate = DateTime.Now;
                 entry.SearchLine = entry.SearchLine.Trim().ToLower();

@@ -39,7 +39,7 @@ namespace avianoise.DAL
                     .ToList());
 
         public Line Create(Line entry) =>
-          Execute(context =>
+          Query(context =>
           {
               entry.AddedDate = DateTime.Now;
               context.Lines.Add(entry);
@@ -48,7 +48,7 @@ namespace avianoise.DAL
           });
 
         public Line Update(Line entry) =>
-            Execute(context =>
+            Query(context =>
             {
                 var savedEntry = context.Lines.Find(entry.Id);
                 if (savedEntry != null)
@@ -64,7 +64,7 @@ namespace avianoise.DAL
             });
 
         public void Delete(int lineId) =>
-            Execute(context =>
+            Query(context =>
             {
                 var savedEntry = context.Lines.Find(lineId);
                 if (savedEntry != null)
@@ -74,8 +74,8 @@ namespace avianoise.DAL
                 }
             });
 
-        public void CreatePoints(List<Point> points) =>
-            Execute(context =>
+        public void CreatePoints(List<Point> points)
+            => Query(context =>
             {
                 foreach (var point in points)
                 {
@@ -85,14 +85,11 @@ namespace avianoise.DAL
             });
 
         public void DeleteLinesByFileId(int fileId)
-             =>
-            Execute(context =>
+             => Query(context =>
             {
                 var forRemove = context.Lines.Where(p => p.FileId == fileId);
                 context.Lines.RemoveRange(forRemove);
                 context.SaveChanges();
             });
-
-
     }
 }

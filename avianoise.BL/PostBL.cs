@@ -21,14 +21,48 @@ namespace avianoise.BL
             return postRepository.Get().ToList();
         }
 
+        public List<Post> GetTree()
+        {
+            var list = postRepository.Get().ToList();
+            return CreateTree(list);
+        }
+
+       
+
         public List<Post> GetPublishedMenu()
         {
-            return postRepository.GetPublishedMenu();
+            var list = postRepository.GetPublishedMenu();
+            return CreateTree(list);
         }
 
         public List<Post> GetMenu()
         {
-            return postRepository.GetMenu();
+            var list = postRepository.GetMenu();
+            return CreateTree(list);
+        }
+
+        
+        private List<Post> CreateTree(List<Post> list)
+        {
+            var tree = new List<Post>();
+
+            foreach (var item in list)
+            {
+                if (item.PostId.HasValue)
+                {
+                    var parent = list.FirstOrDefault(p => p.Id == item.PostId);
+                    if (parent.Posts == null)
+                    {
+                        parent.Posts = new List<Post>();
+                    }
+                    parent.Posts.Add(item);
+                }
+                else
+                {
+                    tree.Add(item);
+                }
+            }
+            return tree;
         }
 
         public Post Get(int id)
@@ -57,6 +91,16 @@ namespace avianoise.BL
             postRepository.Remove(entry);
         }
 
-
+        public void SetOrder(List<Post> list)
+        {
+            foreach (var item in list)
+            {
+                if (item.Posts != null && item.Posts.Count > 0)
+                {
+                    SetOrder(item.Posts);
+                }
+            }
+            postRepository.SetOrder(list);
+        }
     }
 }

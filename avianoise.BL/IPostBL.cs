@@ -11,6 +11,7 @@ namespace avianoise.BL
     {
         List<Post> GetList();
 
+        List<Post> GetTree();
         List<Post> GetPublishedMenu();
 
         List<Post> GetMenu();
@@ -22,5 +23,7 @@ namespace avianoise.BL
         Post Update(Post entry);
 
         void Remove(int postId);
+
+        void SetOrder(List<Post> list);
     }
 }

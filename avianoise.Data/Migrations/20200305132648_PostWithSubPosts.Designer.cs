@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using avianoise.Data;
 
 namespace avianoise.Data.Migrations
 {
     [DbContext(typeof(AviaNoiseDbContext))]
-    partial class avianoiseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200305132648_PostWithSubPosts")]
+    partial class PostWithSubPosts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,6 +267,24 @@ namespace avianoise.Data.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("avianoise.Domain.PostFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FullPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PostFiles");
                 });
 
             modelBuilder.Entity("avianoise.Domain.Role", b =>

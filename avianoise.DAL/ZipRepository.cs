@@ -23,8 +23,9 @@ namespace avianoise.DAL
             => Query(context =>
             context.Zips.FirstOrDefault(p => p.Id == zipId));
 
+
         public Zip Create(Zip zip)
-            => Execute(context =>
+            => Query(context =>
             {
                 context.Zips.Add(zip);
                 context.SaveChanges();
@@ -32,7 +33,7 @@ namespace avianoise.DAL
             });
 
         public void Delete(int zipId)
-            => Execute(context =>
+            => Query(context =>
             {
                 var entry = context.Zips.Find(zipId);
                 if (entry != null)
