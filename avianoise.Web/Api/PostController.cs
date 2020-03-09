@@ -32,9 +32,23 @@ namespace avianoise.Web.Api
         {
             var list = isPublished ? postBL.GetPublishedMenu() : postBL.GetMenu();
             var result = mapper.Map<List<PostDto>>(list);
+            OrderAll(ref result);
             return Ok(result);
         }
 
+        private void OrderAll(ref List<PostDto> list)
+        {
+            foreach (var item in list)
+            {
+                if (item.Posts != null && item.Posts.Count > 1)
+                {
+                    var subList = item.Posts;
+                    OrderAll(ref subList);
+                    item.Posts = subList;
+                }
+            }
+            list = list.OrderBy(p => p.Order).ToList();
+        }
 
         [HttpGet("{id:int}")]
         [Produces("application/json")]

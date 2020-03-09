@@ -14,22 +14,22 @@ namespace avianoise.DAL
         {
         }
 
-        public IEnumerable<TEntity> Get()
+        public virtual IEnumerable<TEntity> Get()
             => QueryDbContext(context =>
             {
                 var _dbSet = context.Set<TEntity>();
                 return _dbSet.AsNoTracking().ToList();
             });
 
-        public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
+        public virtual IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
              => QueryDbContext(context =>
              {
                  var _dbSet = context.Set<TEntity>();
                  return _dbSet.AsNoTracking().Where(predicate).ToList();
              });
 
-        public TEntity Create(TEntity item)
-            => ExecuteDbContext(dbContext =>
+        public virtual TEntity Create(TEntity item)
+            => QueryDbContext(dbContext =>
             {
                 var _dbSet = dbContext.Set<TEntity>();
                 _dbSet.Add(item);
@@ -37,8 +37,8 @@ namespace avianoise.DAL
                 return item;
             });
 
-        public void Remove(TEntity item)
-            => ExecuteDbContext(context =>
+        public virtual void Remove(TEntity item)
+            => QueryDbContext(context =>
             {
                 var _dbSet = context.Set<TEntity>();
                 _dbSet.Remove(item);
@@ -46,8 +46,8 @@ namespace avianoise.DAL
             });
 
 
-        public TEntity Update(TEntity item)
-            => ExecuteDbContext(context =>
+        public virtual TEntity Update(TEntity item)
+            => QueryDbContext(context =>
             {
                 var _dbSet = context.Set<TEntity>();
                 _dbSet.Update(item);
@@ -55,7 +55,7 @@ namespace avianoise.DAL
                 return item;
             });
 
-        public TEntity FindById(int id) =>
+        public virtual TEntity FindById(int id) =>
             QueryDbContext(context =>
             {
                 var _dbSet = context.Set<TEntity>();

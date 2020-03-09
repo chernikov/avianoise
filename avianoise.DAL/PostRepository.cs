@@ -45,7 +45,7 @@ namespace avianoise.DAL
              });
 
         public void SetOrder(List<Post> list)
-             => Execute(context =>
+             => Query(context =>
              {
                  foreach (var item in list)
                  {
@@ -54,5 +54,19 @@ namespace avianoise.DAL
                  }
                  context.SaveChanges();
              });
+
+
+        public override Post Update(Post item) =>
+            Query(context =>
+            {
+                var entry = context.Posts.Find(item.Id);
+
+                entry.IsPublished = item.IsPublished;
+                entry.Text = item.Text;
+                entry.Title = item.Title;
+                entry.PostId = item.PostId;
+                context.SaveChanges();
+                return entry;
+            });
     }
 }

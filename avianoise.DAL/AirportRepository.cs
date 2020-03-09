@@ -42,7 +42,7 @@ namespace avianoise.DAL
 
 
         public Airport Create(Airport entry)
-            => Execute(context =>
+            => Query(context =>
             {
                 context.Airports.Add(entry);
                 context.SaveChanges();
@@ -50,7 +50,7 @@ namespace avianoise.DAL
             });
 
         public Airport Update(Airport entry)
-             => Execute(context =>
+             => Query(context =>
              {
                  context.Airports.Update(entry);
                  context.SaveChanges();
@@ -58,7 +58,7 @@ namespace avianoise.DAL
              });
 
         public void Delete(int airportId)
-            => Execute(context =>
+            => Query(context =>
             {
                 var entry = context.Airports.Find(airportId);
                 if (entry != null)

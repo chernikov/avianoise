@@ -9,12 +9,12 @@ namespace avianoise.DAL
 
         private readonly Lazy<IAviaNoiseDbContext> lazyContext;
 
-        private IAviaNoiseDbContext context => lazyContext.Value;
+        protected IAviaNoiseDbContext context => lazyContext.Value;
 
-        private DbContext dbContext => lazyContext.Value as DbContext;
+        protected DbContext dbContext => lazyContext.Value as DbContext;
 
 
-        protected readonly Func<IAviaNoiseDbContext> getDbContext;
+        private readonly Func<IAviaNoiseDbContext> getDbContext;
 
         public BaseRepository(Func<IAviaNoiseDbContext> getDbContext)
         {
@@ -22,15 +22,7 @@ namespace avianoise.DAL
             lazyContext = new Lazy<IAviaNoiseDbContext>(() => getDbContext());
         }
 
-        protected T Execute<T>(Func<IAviaNoiseDbContext, T> functor)
-        {
-            using (var dbContext = getDbContext())
-            {
-                return functor(dbContext);
-            }
-        }
-
-        protected void Execute(Action<IAviaNoiseDbContext> functor)
+        protected void Query(Action<IAviaNoiseDbContext> functor)
         {
             functor(context);
         }
@@ -45,20 +37,10 @@ namespace avianoise.DAL
             return functor(dbContext);
         }
 
-        protected T ExecuteDbContext<T>(Func<DbContext, T> functor)
-        {
-            using (var dbContext = getDbContext() as DbContext)
-            {
-                return functor(dbContext);
-            }
-        }
 
-        protected void ExecuteDbContext(Action<DbContext> functor)
+        protected void QueryDbContext(Action<DbContext> functor)
         {
-            using (var dbContext = getDbContext() as DbContext)
-            {
-                functor(dbContext);
-            }
+            functor(dbContext);
         }
     }
 }

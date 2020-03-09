@@ -44,7 +44,7 @@ namespace avianoise.DAL
                         .FirstOrDefault(p => p.Id == fileId));
 
         public File Create(File entry)
-            => Execute(context =>
+            => Query(context =>
            {
                context.Files.Add(entry);
                context.SaveChanges();
@@ -52,7 +52,7 @@ namespace avianoise.DAL
            });
 
         public File UpdateTypes(File entry)
-           => Execute(context =>
+           => Query(context =>
            {
                var entity = context.Files.Find(entry.Id);
                if (entity == null)
@@ -70,7 +70,7 @@ namespace avianoise.DAL
            });
 
         public void Delete(int fileId)
-            => Execute(context =>
+            => Query(context =>
             {
                 var entry = context.Files.Find(fileId);
 
@@ -85,8 +85,7 @@ namespace avianoise.DAL
 
 
         public void ClearLines(int fileId)
-
-            => Execute(context =>
+            => Query(context =>
             {
                 var entry = context.Files.Find(fileId);
 
@@ -101,7 +100,7 @@ namespace avianoise.DAL
 
 
         public File MarkDecodeFile(File fileEntry, bool isDecoded)
-             => Execute(context =>
+             => Query(context =>
              {
                  var entry = context.Files.Find(fileEntry.Id);
                  if (entry != null)

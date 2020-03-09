@@ -15,7 +15,7 @@ namespace avianoise.DAL
         }
 
         public void Clear()
-            => Execute(context =>
+            => Query(context =>
             {
                 var range = context.FeedbackFiles.Where(p => p.FeedbackId == null);
                 context.FeedbackFiles.RemoveRange(range);

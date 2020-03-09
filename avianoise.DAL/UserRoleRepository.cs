@@ -14,9 +14,8 @@ namespace avianoise.DAL
         {
         }
 
-        public void Create(int userId, int roleId)
-        {
-            Execute(context =>
+        public void Create(int userId, int roleId) =>
+            Query(context =>
             {
                 var userRole = new UserRole()
                 {
@@ -27,7 +26,7 @@ namespace avianoise.DAL
                 context.SaveChanges();
                 return userRole;
             });
-        }
+
 
         public User GetUserByEmail(string email)
              => Query(context => context.Users.FirstOrDefault(p => string.Compare(p.Email, email, true) == 0));
