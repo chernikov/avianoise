@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Post } from '@classes/post.class';
 import { takeWhile } from 'rxjs/operators';
 import { PostService } from '@services/post.service';
+import { PostOrderService } from '@services/post-order.service';
 
 @Component({
   selector: 'app-post-list',
@@ -10,10 +11,12 @@ import { PostService } from '@services/post.service';
 })
 export class PostListComponent implements OnInit, OnDestroy {
   alive: boolean = true;
+
   posts: Post[];
 
   constructor(
-    private postService: PostService
+    private postService: PostService,
+    private postOrderService : PostOrderService
   ) {
     this.posts = [];
   }
@@ -28,10 +31,76 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
   }
 
-  deletePost(post: Post) {
-    this.postService.delete(post.id).pipe(takeWhile(() => this.alive)).subscribe(_ => {
-      this.posts = this.posts.filter(item => item != post);
+ 
+  updateAll() {
+    this.getPosts();
+  }
+
+  downItem(event : Post) {
+    var sublings = this.findSublings(this.posts, event.id);
+    sublings.sort((a, b) =>  a.order - b.order);
+    var next = sublings.find(p => p.order > event.order);
+    var order = next.order;
+    next.order = event.order;
+    event.order = order;
+    this.updateOrder(sublings);
+  }
+
+  upItem(event : Post) {
+    var sublings = this.findSublings(this.posts, event.id);
+    sublings.sort((a, b) =>  a.order - b.order);
+    var prev = sublings.find(p => p.order < event.order);
+    var order = prev.order;
+    prev.order = event.order;
+    event.order = order;
+    this.updateOrder(sublings);
+  }
+  
+
+  leftItem(event : Post) {
+    debugger;
+    var sublings = this.findSublings(this.posts, event.postId);
+
+    if (sublings && sublings.length) {
+      event.postId = sublings[0].postId;
+    } else {
+      event.postId = null;
+    }
+    this.postService.put(event).pipe(takeWhile(() => this.alive)).subscribe(p =>  this.updateAll());
+  }
+
+  rightItem(event : Post) {
+    var sublings = this.findSublings(this.posts, event.id);
+    sublings.sort((a, b) =>  b.order - a.order);
+    var prev = sublings.find(p => p.order < event.order);
+    event.postId = prev.id;
+    this.postService.put(event).pipe(takeWhile(() => this.alive)).subscribe(p =>  this.updateAll());
+  }
+
+  
+  findSublings(list : Post[], id: number) : Post[] 
+  {
+    var item = list.find(p => p.id == id);
+    if (item) {
+      return list;
+    }
+    let sublings = null;
+    list.forEach(element => {
+      if (element.posts && element.posts.length && this.findSublings(element.posts, id)) {
+        sublings =  this.findSublings(element.posts, id);
+      }
     });
+    return sublings;
+  }
+
+  updateOrder(sublings : Post[]) {
+    sublings.sort((a, b) =>  a.order - b.order);
+    let i = 1;
+    sublings.forEach(element => {
+      element.order = i;
+      i++; 
+    });
+    this.postOrderService.post(this.posts).pipe(takeWhile(() => this.alive)).subscribe(p =>  this.updateAll());
   }
 
   ngOnDestroy() {

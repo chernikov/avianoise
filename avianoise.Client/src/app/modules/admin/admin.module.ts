@@ -23,8 +23,9 @@ import { FeedbacksComponent } from './_components/feedback/feedback.component';
 import { AdminComponent } from './containers/admin.component';
 import { PostListComponent } from './_components/post-list/post-list.component';
 import { EditPostComponent } from './_components/edit-post/edit-post.component';
+import { PostItemComponent } from './_components/post-item/post-item.component';
 @NgModule({
-    declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent, FeedbacksComponent, NumberToArrayPipe, PostListComponent, EditPostComponent],
+    declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent, FeedbacksComponent, NumberToArrayPipe, PostListComponent, EditPostComponent, PostItemComponent],
     imports: [
         SharedModule,
         ThemeModule,

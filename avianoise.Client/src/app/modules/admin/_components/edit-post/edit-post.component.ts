@@ -79,19 +79,24 @@ export class EditPostComponent implements OnInit, OnDestroy {
     
   }
 
-  collectData() {
+  collectData() : Post {
     let data: Post = {
       id: null,
+      order : 0,
+      postId : null,
       text: this.content,
       title: this.title,
       addedDate: null,
-      isPublished: this.isPublished
+      isPublished: this.isPublished,
+      posts : null
     }
     if(this.post) {
       data.addedDate = this.post.addedDate;
       data.id = this.post.id;
+      data.postId = this.post.postId;
+      data.order = this.post.order;
     }
-    return data
+    return data;
   }
 
   ngOnDestroy() {

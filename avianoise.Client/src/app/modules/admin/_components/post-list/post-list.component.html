@@ -4,18 +4,15 @@
     </nb-card-header>
     <nb-card-body>
         <nb-list>
-            <nb-list-item *ngFor="let post of posts; index as i">
-                <div class="info">
-                    <span>{{ i + 1 }}. </span>
-                    <div> {{ post.title }}</div>
-                    <div>{{ post.addedDate | date: 'dd.MM.yyyy' }}</div>
-                    <div>{{ post.isPublished ? 'Опубліковано' : 'Неопубліковано' }}</div>
-                </div>
-                <div>
-                    <button nbButton [routerLink]="['/admin/post/edit', post.id]">Редагувати</button>
-                    <button nbButton [status]="'danger'" class="del-btn"
-                        (click)="deletePost(post)">Видалити</button>
-                </div>
+            <nb-list-item *ngFor="let item of posts; let i = index">
+                <app-post-item [item]="item" [isFirst]="i === 0" [isLast]="i === posts.length - 1"
+                (update)="updateAll()"
+                (down)="downItem($event)"
+                (up)="upItem($event)"
+                (left)="leftItem($event)"
+                (right)="rightItem($event)"
+            
+                 ></app-post-item>
             </nb-list-item>
         </nb-list>
     </nb-card-body>
