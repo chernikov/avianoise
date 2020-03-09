@@ -14,16 +14,16 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { FileFormatPipe } from '@pipes/file-format.pipe';
 import { FileSizePipe } from '@pipes/file-size.pipe';
 import { ToastComponent } from './containers/_components/toast/toast.component';
-import { SanitizeHtmlPipe } from '@pipes/sanitize-html.pipe';
 import { SidebarComponent } from './containers/_components/sidebar/sidebar.component';
 import { SidebarSearchComponent } from './containers/_components/sidebar-search/sidebar-search.component';
 import { HeaderComponent } from './containers/_components/header/header.component';
 import { NoiseInfoComponent } from './containers/_components/noise-info/noise-info.component';
 import { PostItemComponent } from './containers/_components/sidebar/post-item/post-item.component';
+import { QuillModule } from 'ngx-quill';
 
 
 @NgModule({
-  declarations: [LoginComponent, MapComponent, FeedbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent, SanitizeHtmlPipe, SidebarComponent,
+  declarations: [LoginComponent, MapComponent, FeedbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent, SidebarComponent,
      SidebarSearchComponent, HeaderComponent, NoiseInfoComponent, 
     PostItemComponent],
   imports: [
@@ -39,7 +39,8 @@ import { PostItemComponent } from './containers/_components/sidebar/post-item/po
     FormsModule,
     ReactiveFormsModule,
     NgxSmartModalModule.forRoot(),
-    FileUploadModule
+    FileUploadModule,
+    QuillModule.forRoot()
   ]
 })
 export class IndexModule { }
