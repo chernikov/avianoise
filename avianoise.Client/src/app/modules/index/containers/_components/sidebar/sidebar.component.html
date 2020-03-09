@@ -89,8 +89,8 @@
         <div class="arrow-up arrow" *ngIf="listItemIsOpen == 'posts'; else arrowDown"></div>
       </div>
       <div class="body" *ngIf="listItemIsOpen == 'posts'" [@if-slide]>
-        <div class="post-title" *ngFor="let post of postMenu" (click)="onOpenPost(post.id)">
-          <span>{{ post.title }}</span>
+        <div *ngFor="let post of postMenu">
+          <app-post-item [item]="post" (open)="onOpenPost($event)"></app-post-item>
         </div>
       </div>
     </div>
