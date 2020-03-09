@@ -1,15 +1,19 @@
 <nb-layout>
   <nb-layout-column>
-    <div class="header">
-      <div class="logo">NOMOS</div>
-      <div *ngIf="setLocationActive">Оберіть локацію на карті</div>
+    <div class="header" [class.search-opened-mobile]="searchIsActive" [class.location-opened-mobile]="setLocationActive">
+      <div class="close-location-mobile" *ngIf="setLocationActive && !searchIsActive" (click)="onSetLocationBtn()">
+        <img src="assets/images/left-arrow-mobile.svg">
+        Вийти з вибору локації
+      </div>
+      <div class="logo"><a href="/"><img src="/assets/nomos.png"></a></div>
+      <div class="tooltip-for-set-location" *ngIf="setLocationActive">Оберіть локацію на карті</div>
       <div class="right">
-        <svg *ngIf="!searchIsActive" width="18" height="18" viewBox="0 0 18 18" (click)="onSearch()">
+        <svg class="search" *ngIf="!searchIsActive && containerMode == 1" width="18" height="18" viewBox="0 0 18 18" (click)="onSearch()">
           <path
             d="M7.69765 15.3945C9.40555 15.3941 11.0642 14.8224 12.4096 13.7704L16.6394 18L18 16.6395L13.7701 12.4099C14.8228 11.0645 15.3949 9.40549 15.3953 7.69724C15.3953 3.45318 11.9419 0 7.69765 0C3.45336 0 0 3.45318 0 7.69724C0 11.9413 3.45336 15.3945 7.69765 15.3945ZM7.69765 1.92431C10.8816 1.92431 13.4709 4.51347 13.4709 7.69724C13.4709 10.881 10.8816 13.4702 7.69765 13.4702C4.51371 13.4702 1.92441 10.881 1.92441 7.69724C1.92441 4.51347 4.51371 1.92431 7.69765 1.92431Z"
             fill="black" />
         </svg>
-        <input *ngIf="searchIsActive" class="search-input" #searchInput type="text" placeholder="Введіть Адресу або кадастровий номер" (keyup.enter)="searchLocation(searchInput.value)">
+        <input *ngIf="searchIsActive && containerMode == 1" class="search-input" #searchInput type="text" placeholder="Введіть Адресу або кадастровий номер" (keyup.enter)="searchLocation(searchInput.value)">
         <svg width="25" height="16" viewBox="0 0 25 16" *ngIf="!menuIsOpen && !searchIsActive" (click)="openMenu()">
           <rect x="4" width="17" height="2" fill="#232323"/>
           <rect y="7" width="25" height="2" fill="#232323"/>
@@ -22,7 +26,7 @@
       </div>
     </div>
     <div class="container">
-      <div class="map-wrap">
+      <div class="map-wrap" [hidden]="containerMode != 1">
         <div #gmap class="map"></div>
         <div class="noise-info-wrap" *ngIf="showLocationInfo">
           <div class="noise-info-container">
@@ -30,13 +34,15 @@
               <img src="assets/images/white-marker-small.svg">
               {{markerCoords.lat}}, {{markerCoords.lng}}
             </div>
-            <div *ngFor="let item of noiseInfo" class="item" [class.no-data]="item.noData">
-              <div class="top">
-                <img src="{{ item.src }}">
-                <span>{{ item.value }}</span>
-              </div>
-              <div class="bottom">
-                {{ item.text }}
+            <div *ngFor="let item of noiseInfo; index as i" class="item-wrap">
+              <div class="item" [class.no-data]="item.noData" (click)="changeMapLayer(i + 1)">
+                <div class="top">
+                  <img src="{{ item.src }}">
+                  <span>{{ item.value }}</span>
+                </div>
+                <div class="bottom">
+                  {{ item.text }}
+                </div>
               </div>
             </div>
           </div>
@@ -48,7 +54,7 @@
           <div class="info">info</div>
         </div>
 
-        <div class="layer-info-wrap">
+        <div class="layer-info-wrap" *ngIf="selectedLayerInfo">
           <img src="{{ selectedLayerInfo.src }}">
           <span class="white-shadow-text">{{ selectedLayerInfo.text }}</span>
         </div>
@@ -58,10 +64,19 @@
           <div class="bottom" (click)="zoomOut()"></div>
         </div>
 
-        <div class="set-location-wrap" (click)="onSetLocationBtn()" [class.location-is-selected]="showLocationInfo">
+        <div class="set-location-wrap" (click)="onSetLocationBtn()" [class.location-is-selected]="showLocationInfo" [class.hide-in-mobile]="setLocationActive">
           <img src="{{ setLocationActive ? 'assets/images/left-arrow.svg' : 'assets/images/blue-marker.svg' }}">
           <span>{{ setLocationActive ? 'Вийти з Вибору локації' : 'Вибрати локацію' }}</span>
         </div>
+      </div>
+
+      <div class="post-wrap" *ngIf="containerMode == 2 && post">
+        <div class="title">{{ post.title }}</div>
+        <div class="body">
+          <div [innerHTML]="post.text | sanitizeHtml"></div>
+          <div class="date">{{ post.addedDate | date: 'dd.MM.yyyy' }}</div>
+        </div>
+        <div class="back-to-map" [routerLink]="''">Повернутися до карти</div>
       </div>
 
       <app-toast [type]="toastType" *ngIf="toastIsShowed" [@if-opacity]></app-toast>
@@ -133,23 +148,26 @@
           </div>
           <div class="list-item">
             <div class="head" (click)="toggleListItem(2)">
-              Портал
+              Інформація про рівні шуму
               <div class="arrow-up arrow" *ngIf="listItemIsOpen == 2; else arrowDown"></div>
             </div>
             <div class="body" *ngIf="listItemIsOpen == 2" [@if-slide]>
-              some content
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="head" (click)="toggleListItem(3)">
-              Інформація про рівні шуму
-              <div class="arrow-up arrow" *ngIf="listItemIsOpen == 3; else arrowDown"></div>
-            </div>
-            <div class="body" *ngIf="listItemIsOpen == 3" [@if-slide]>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, inventore. Distinctio sunt at
               possimus consectetur molestias architecto autem vel quam voluptatem, libero, ipsum qui necessitatibus
               ratione tempora. Explicabo nisi reprehenderit reiciendis odit doloremque laboriosam maxime fuga impedit
               consequatur debitis aliquam dolorum nam quis, minus illum ab quibusdam mollitia ratione vero.
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="head" (click)="toggleListItem(3)">
+              Портал
+              <div class="arrow-up arrow" *ngIf="listItemIsOpen == 3; else arrowDown"></div>
+            </div>
+            <div class="body" *ngIf="listItemIsOpen == 3" [@if-slide]>
+              <div class="post-title" *ngFor="let post of postMenu; index as i" (click)="openPost(post.id)">
+                <span>{{ i + 1 }}. {{ post.title }}</span>
+                {{ post.addedDate | date: 'dd.MM.yyyy' }}
+              </div>
             </div>
           </div>
         </div>
@@ -182,4 +200,4 @@
   <div class="arrow-down arrow"></div>
 </ng-template>
 
-<app-callback-modal #modal (showToast)="showToast($event)"></app-callback-modal>
+<app-callback-modal (showToast)="showToast($event)"></app-callback-modal>

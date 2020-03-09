@@ -12,8 +12,7 @@ namespace avianoise.BL
         List<Post> GetList();
 
         List<Post> GetTree();
-
-        List<Post> GetPublished();
+        List<Post> GetPublishedMenu();
 
         List<Post> GetMenu();
 

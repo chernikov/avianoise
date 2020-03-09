@@ -12,6 +12,10 @@ import { Airport } from '@classes/airport.class.js';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { SearchService } from '@services/search.service.js';
 import { takeWhile } from 'rxjs/operators';
+import { PostMenuService } from '@services/post-menu.service.js';
+import { Post } from '@classes/post.class.js';
+import { PostService } from '@services/post.service.js';
+import { Router, ActivatedRoute } from '@angular/router';
 
 var MarkerWithLabel = require('markerwithlabel')(google.maps);
 
@@ -100,10 +104,11 @@ export class MapComponent implements OnInit, AfterViewInit {
   zoom: number = 7;
   landcover: google.maps.ImageMapType;
 
+  containerMode: number;
   menuIsOpen: boolean;
   listItemIsOpen: number;
   setLocationActive: boolean;
-  selectedLayer: number = 1;
+  selectedLayer: number;
   layerIsChanged: boolean;
   airports: Airport[];
   filteredAirports: Airport[];
@@ -117,18 +122,39 @@ export class MapComponent implements OnInit, AfterViewInit {
   toastType: number;
   toastIsShowed: boolean;
   searchIsActive: boolean;
+  postMenu: Post[];
+  post: Post;
+  selectedPost: number;
 
   constructor(
     private airportPublishedService: AirportPublishedService,
     private noiseLevelService: NoiseLevelService,
     private modalService: NgxSmartModalService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private postMenuService: PostMenuService,
+    private postService: PostService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.polygons = [];
     this.noiseInfo = [];
   }
 
   ngOnInit() {
+    this.route.params.subscribe(param => {
+      if(param.id) {
+        this.openPost(param.id);
+      } else {
+        this.containerMode = 1;
+        this.getMap();
+      }
+    });
+    this.getAirports();
+    this.selectedLayerInfo = layersInfo.find(item => item.id == 1);
+    this.getPostMenu();
+  }
+
+  getMap() {
     let _this = this;
     var mapProp = {
       center: new google.maps.LatLng(this.lat, this.lng),
@@ -173,8 +199,6 @@ export class MapComponent implements OnInit, AfterViewInit {
       opacity: 1.0,
       tileSize: tileSize
     });
-    this.getAirports();
-    this.setInfoLayer();
   }
 
   getAirports() {
@@ -185,8 +209,13 @@ export class MapComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getPostMenu() {
+    this.postMenuService.get().pipe(takeWhile(() => this.alive)).subscribe(postMenu => {
+      this.postMenu = postMenu;
+    });
+  }
+
   showAirports() {
-    
     this.airports.map(airport => {
       let location = {
         lat: airport.lat,
@@ -237,22 +266,23 @@ export class MapComponent implements OnInit, AfterViewInit {
       airport.files.forEach(file => {
         file.lines.forEach(line => {
           let bgColor;
-          let strokeColor;
-          if(line.level >= 70 ) {
+          //let strokeColor;
+          if(line.level >= 70) {
             bgColor = '#FF3564';
-            strokeColor = '#EF364C';
+           // strokeColor = '#EF364C';
           } else if(line.level <= 50) {
             bgColor = '#F7D897';
-            strokeColor = '#EBBD87';
+           // strokeColor = '#EBBD87';
           } else {
             bgColor = '#FC8E75';
-            strokeColor = '#EE897B';
+           // strokeColor = '#EE897B';
           }
           let polygon = new google.maps.Polygon({
             paths: line.points,
             clickable: false,
             fillColor: bgColor,
             strokeColor: 'red',
+            fillOpacity: .6,
             strokeOpacity: .5,
             strokeWeight: 1
           });
@@ -271,7 +301,10 @@ export class MapComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 
-  changeMapLayer() {
+  changeMapLayer(index?: number) {
+    if(index) {
+      this.selectedLayer = index;
+    }
     this.layerIsChanged = true;
     this.setInfoLayer();
     this.filterAirports(this.selectedLayer);
@@ -329,7 +362,7 @@ export class MapComponent implements OnInit, AfterViewInit {
         };
       } else {
         noiseLevelItem = {
-          value: 'Немає даних',
+          value: 'Немає шумів',
           text: item.textShort,
           src: item.src,
           noData: true
@@ -360,7 +393,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   onNoiseInfo() {
     this.menuIsOpen = true;
-    this.listItemIsOpen = 3;
+    this.listItemIsOpen = 2;
   }
 
   zoomIn() {
@@ -374,11 +407,13 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   toggleKadastr(checked: boolean) {
-    this.isKadastrLayer = checked;
-    if (this.isKadastrLayer) {
-      this.map.overlayMapTypes.push(this.landcover);
-    } else {
-      this.map.overlayMapTypes.pop();
+    if(this.containerMode === 1) {
+      this.isKadastrLayer = checked;
+      if (this.isKadastrLayer) {
+        this.map.overlayMapTypes.push(this.landcover);
+      } else {
+        this.map.overlayMapTypes.pop();
+      }
     }
   }
 
@@ -406,6 +441,9 @@ export class MapComponent implements OnInit, AfterViewInit {
     })
     this.map.setCenter(position);
     this.map.setZoom(13);
+    if(window.innerWidth < 768 ) {
+      this.searchIsActive = false;
+    }
   }
 
   searchLocation(value: string) {
@@ -417,18 +455,19 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.placeMarker(location);
       this.map.setCenter(location);
       this.map.setZoom(13);
+      if(window.innerWidth < 768 ) {
+        this.searchIsActive = false;
+      }
     });
   }
 
   xyzToBounds(x: number, y: number, z: number): number[] {
-    console.log(x, y, z);
     var tileSize = (this.EXTENT[1] * 2) / Math.pow(2, z);
     var minx = this.EXTENT[0] + x * tileSize;
     var maxx = this.EXTENT[0] + (x + 1) * tileSize;
     // remember y origin starts at top
     var miny = this.EXTENT[1] - (y + 1) * tileSize;
     var maxy = this.EXTENT[1] - y * tileSize;
-    console.log([minx, miny, maxx, maxy]);
     return [minx, miny, maxx, maxy];
   }
 
@@ -444,6 +483,14 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   openCallbackModal() {
     this.modalService.getModal('callbackModal').open();
+  }
+
+  openPost(id: number) {
+    this.postService.get(id).pipe(takeWhile(() => this.alive)).subscribe(post => {
+      this.post = post;
+      this.containerMode = 2;
+      this.router.navigateByUrl(`post/${id}`);
+    });
   }
 
   showToast(type: number) {

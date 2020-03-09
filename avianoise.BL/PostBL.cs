@@ -27,9 +27,11 @@ namespace avianoise.BL
             return CreateTree(list);
         }
 
-        public List<Post> GetPublished()
+       
+
+        public List<Post> GetPublishedMenu()
         {
-            var list = postRepository.Get(p => p.IsPublished).ToList();
+            var list = postRepository.GetPublishedMenu();
             return CreateTree(list);
         }
 
@@ -39,6 +41,7 @@ namespace avianoise.BL
             return CreateTree(list);
         }
 
+        
         private List<Post> CreateTree(List<Post> list)
         {
             var tree = new List<Post>();

@@ -7,5 +7,6 @@ export const router: Routes = [
     { path: '', component: MapComponent },
     { path: 'login', component: LoginComponent },
     { path: 'map', component: MapComponent },
+    { path: 'post/:id', component: MapComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' }
 ]

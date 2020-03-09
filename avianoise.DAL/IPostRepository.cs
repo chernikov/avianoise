@@ -10,6 +10,11 @@ namespace avianoise.DAL
     public interface IPostRepository : IGenericRepository<Post>, IBaseRepository
     {
         List<Post> GetMenu();
+
+        List<Post> GetPublishedMenu();
+
         void SetOrder(List<Post> list);
+
+        
     }
 }
