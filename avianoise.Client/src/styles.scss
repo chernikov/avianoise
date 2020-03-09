@@ -5,6 +5,25 @@ body {
   height: 100%;
 }
 
+.post-wrap {
+  img {
+    max-width: 100%;
+  }
+}
+.ql-container {
+  height: unset;
+  .ql-editor {
+    padding: 0;
+    height: unset;
+    tab-size: unset;
+    text-align: unset;
+    white-space: unset;
+    word-wrap: unset;
+    line-height: unset;
+  }
+}
+
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
