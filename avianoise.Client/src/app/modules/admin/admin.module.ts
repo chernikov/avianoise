@@ -4,7 +4,9 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberToArrayPipe } from '@pipes/number-to-array.pipe';
 
-import { QuillModule } from 'ngx-quill';
+import { QuillConfig, QuillModule } from "ngx-quill";
+import * as Quill from "quill";
+import QuillBetterTable from "quill-better-table";
 
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -24,6 +26,36 @@ import { AdminComponent } from './containers/admin.component';
 import { PostListComponent } from './_components/post-list/post-list.component';
 import { EditPostComponent } from './_components/edit-post/edit-post.component';
 import { PostItemComponent } from './_components/post-item/post-item.component';
+
+Quill.register(
+    {
+        "modules/better-table": QuillBetterTable
+    },
+    true
+);
+  
+  const quillConfig: QuillConfig = {
+    modules: {
+        table: false, // disable table module
+        "better-table": {
+            operationMenu: {
+            items: {
+                unmergeCells: {
+                text: "Another unmerge cells name"
+                }
+            },
+            color: {
+                colors: ["#fff", "red", "rgb(0, 0, 0)"], // colors in operationMenu
+                text: "Background Colors" // subtitle
+            }
+            }
+        },
+        keyboard: {
+            bindings: QuillBetterTable.keyboardBindings
+        }
+    }
+};
+
 @NgModule({
     declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent, FeedbacksComponent, NumberToArrayPipe, PostListComponent, EditPostComponent, PostItemComponent],
     imports: [
@@ -49,7 +81,7 @@ import { PostItemComponent } from './_components/post-item/post-item.component';
         FileUploadModule,
         NbWindowModule.forChild(),
         RouterModule.forChild(router),
-        QuillModule.forRoot()
+        QuillModule.forRoot(quillConfig)
     ]
 })
 export class AdminModule { }

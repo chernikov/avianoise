@@ -1,13 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import * as QuillNamespace from 'quill';
-let Quill: any = QuillNamespace;
-import ImageResize from 'quill-image-resize-module';
+
 import { PostService } from '@services/post.service';
 import { Post } from '@classes/post.class';
 import { takeWhile } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-Quill.register('modules/imageResize', ImageResize);
+//Quill.register('modules/imageResize', ImageResize);
+
+interface Quill {
+  getModule(moduleName: string);
+}
+
+interface BetterTableModule {
+  insertTable(rows: number, columns: number): void;
+}
 
 @Component({
   selector: 'app-edit-post',
@@ -17,6 +23,7 @@ Quill.register('modules/imageResize', ImageResize);
 export class EditPostComponent implements OnInit, OnDestroy {
   alive: boolean = true;
 
+  public quill: Quill;
   post: Post;
   content: string = "";
   title: string = "";
@@ -34,8 +41,7 @@ export class EditPostComponent implements OnInit, OnDestroy {
         [{ 'align': [] }],
         ['link', 'image']
       ]
-    },
-    imageResize: true
+    }
   };
 
   constructor(
@@ -60,6 +66,20 @@ export class EditPostComponent implements OnInit, OnDestroy {
         });
       }
     })
+  }
+
+  private get tableModule(): BetterTableModule {
+    return this.quill.getModule("better-table");
+  }
+
+  public editorCreated(event: Quill): void {
+    this.quill = event;
+    // Example on how to add new table to editor
+    this.addNewtable();
+  }
+
+  private addNewtable(): void {
+    this.tableModule.insertTable(3, 3);
   }
 
   onSave() {
