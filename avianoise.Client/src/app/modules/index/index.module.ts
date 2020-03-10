@@ -19,7 +19,6 @@ import { SidebarSearchComponent } from './containers/_components/sidebar-search/
 import { HeaderComponent } from './containers/_components/header/header.component';
 import { NoiseInfoComponent } from './containers/_components/noise-info/noise-info.component';
 import { PostItemComponent } from './containers/_components/sidebar/post-item/post-item.component';
-import { QuillModule } from 'ngx-quill';
 
 
 @NgModule({
@@ -39,8 +38,7 @@ import { QuillModule } from 'ngx-quill';
     FormsModule,
     ReactiveFormsModule,
     NgxSmartModalModule.forRoot(),
-    FileUploadModule,
-    QuillModule.forRoot()
+    FileUploadModule
   ]
 })
 export class IndexModule { }

@@ -40,7 +40,6 @@
             ],
             "scripts": [
               "node_modules/pace-js/pace.min.js",
-              "node_modules/quill/dist/quill.min.js"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

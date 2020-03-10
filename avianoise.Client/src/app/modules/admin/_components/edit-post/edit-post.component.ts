@@ -1,13 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import * as QuillNamespace from 'quill';
-let Quill: any = QuillNamespace;
-import ImageResize from 'quill-image-resize-module';
 import { PostService } from '@services/post.service';
 import { Post } from '@classes/post.class';
 import { takeWhile } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-Quill.register('modules/imageResize', ImageResize);
+
 
 @Component({
   selector: 'app-edit-post',
@@ -22,21 +19,6 @@ export class EditPostComponent implements OnInit, OnDestroy {
   title: string = "";
   isPublished: boolean = false;
   formInProgress: boolean;
-
-  editorOptions = {
-    toolbar: {
-      container: [
-        [{ 'size': ['small', false, 'large', 'huge'] }],
-        ['bold', 'italic', 'underline', 'strike'],
-        [{ 'header': 1 }, { 'header': 2 }],
-        [{ 'color': [] }, { 'background': [] }],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        [{ 'align': [] }],
-        ['link', 'image']
-      ]
-    },
-    imageResize: true
-  };
 
   constructor(
     private postService: PostService,

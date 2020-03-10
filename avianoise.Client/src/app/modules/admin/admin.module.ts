@@ -4,8 +4,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberToArrayPipe } from '@pipes/number-to-array.pipe';
 
-import { QuillModule } from 'ngx-quill';
-
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxPaginationModule } from 'ngx-pagination';
 
@@ -48,8 +46,7 @@ import { PostItemComponent } from './_components/post-item/post-item.component';
         NgxPaginationModule,
         FileUploadModule,
         NbWindowModule.forChild(),
-        RouterModule.forChild(router),
-        QuillModule.forRoot()
+        RouterModule.forChild(router)
     ]
 })
 export class AdminModule { }
