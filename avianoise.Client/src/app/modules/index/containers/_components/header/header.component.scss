@@ -78,11 +78,8 @@
 @include media-md {
   .header {
     padding-right: 25px;
+    padding-left: 20px;
     height: 60px;
-
-    .logo {
-      margin-left: 20px;
-    }
 
     &.search-opened-mobile {
       .logo {
@@ -120,7 +117,7 @@
 
 @include media-xs {
   .header {
-    height: 60px;
+    padding-left: 10px;
 
     &.location-opened-mobile {
       .close-location-mobile {
