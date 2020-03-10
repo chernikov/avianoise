@@ -36,7 +36,8 @@
         <div class="title">{{ post.title }}</div>
         <div class="body">
           <!-- <div class="ql-editor text" [innerHTML]="post.text"></div> -->
-          <quill-view-html [content]="post.text"></quill-view-html>
+
+          <p [innerHTML]="post.text"></p>
           <div class="date">{{ post.addedDate | date: 'dd.MM.yyyy' }}</div>
         </div>
       </div>
