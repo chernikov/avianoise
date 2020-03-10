@@ -5,6 +5,10 @@ import { Post } from '@classes/post.class';
 import { takeWhile } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+import * as Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
+
 
 @Component({
   selector: 'app-edit-post',
@@ -12,6 +16,14 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./edit-post.component.scss']
 })
 export class EditPostComponent implements OnInit, OnDestroy {
+
+  Editor = ClassicEditor;
+
+  config = {
+    // removePlugins : ["CKFinderUploadAdapter"],
+    // plugins: [ Base64UploadAdapter ]
+  }
+
   alive: boolean = true;
 
   post: Post;
@@ -30,6 +42,34 @@ export class EditPostComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getPost();
   }
+
+  onReady(editor) 
+  {
+     debugger;
+    // console.log(editor);
+    // console.log(this.Editor.builtinPlugins.map(p => p.pluginName));
+
+    
+     let repository = editor.plugins.get('FileRepository');
+     repository.createUploadAdapter = (loader) => {
+      console.log(btoa(loader.file));
+      return new Base64UploadAdapter(loader); 
+     };
+
+
+    // // module.clear();
+    // // module.createUploadAdapter = (loader) => {
+    // //     console.log(btoa(loader.file));
+    // //     return new Base64UploadAdapter(loader); // UploadAdapter(loader);
+    // // };
+    // // tslint:disable-next-line:max-line-length
+    // // Only useful source: https://stackoverflow.com/questions/52052514/upload-adapter-is-not-defined-issue-with-image-uploading-in-ckeditor5-angular/55237874#55237874
+    // editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+    //   console.log(btoa(loader.file));
+    //   return new Base64UploadAdapter(loader); // UploadAdapter(loader);
+    // };
+  }
+
 
   getPost() {
     this.route.params.subscribe(param => {
