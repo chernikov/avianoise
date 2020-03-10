@@ -4,9 +4,7 @@
         <nb-toggle [(ngModel)]="isPublished">Опублікувати</nb-toggle>
     </nb-card-header>
     <nb-card-body>
-        <ckeditor [editor]="Editor" [config]="config" [(ngModel)]="content" (ready)="onReady($event)"></ckeditor>
-
-        <textarea [(ngModel)]="content"></textarea>
+        <ckeditor [editor]="Editor" [(ngModel)]="content" (ready)="onReady($event)"></ckeditor>
         <button nbButton (click)="onSave()" [disabled]="formInProgress">Зберегти</button>
     </nb-card-body>
 </nb-card>
