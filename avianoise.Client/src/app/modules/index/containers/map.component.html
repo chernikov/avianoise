@@ -38,12 +38,27 @@
           <!-- <div class="ql-editor text" [innerHTML]="post.text"></div> -->
 
           <p [innerHTML]="post.text"></p>
-          <div class="date">{{ post.addedDate | date: 'dd.MM.yyyy' }}</div>
+        </div>
+      </div>
+
+      <div class="post-wrap" *ngIf="containerMode == 3 && practice">
+        <div class="back-to-map" [routerLink]="''">
+          <img src="assets/images/left-arrow.svg">
+          <span>Повернутися до карти</span>
+        </div>
+        <div class="title">{{ practice.title }}</div>
+        <div class="body">
+          <!-- <div class="ql-editor text" [innerHTML]="post.text"></div> -->
+
+          <p [innerHTML]="practice.text"></p>
+          <div class="date">{{ practice.addedDate | date: 'dd.MM.yyyy' }}</div>
         </div>
       </div>
 
       <app-toast [type]="toastType" *ngIf="toastIsShowed" [@if-opacity]></app-toast>
-      <app-sidebar *ngIf="menuIsOpen" [selectedLayer]="selectedLayer" [listItemIsOpen]="listItemIsOpen" (toggleKadastr)="toggleKadastr($event)" (changeMapLayer)="changeMapLayer($event)" (openPost)="openPost($event)"></app-sidebar>
+      <app-sidebar *ngIf="menuIsOpen" [selectedLayer]="selectedLayer" [listItemIsOpen]="listItemIsOpen" (toggleKadastr)="toggleKadastr($event)" (changeMapLayer)="changeMapLayer($event)" 
+      (openPost)="openPost($event)" (openPractice)="openPractice($event)"
+      ></app-sidebar>
       <app-sidebar-search *ngIf="searchIsActive" [airports]="airports" (onSelectAirport)="onSelectAirport($event)"></app-sidebar-search>
       <app-noise-info *ngIf="showLocationInfo" [markerCoords]="markerCoords" [noiseInfo]="noiseInfo" (changeMapLayer)="changeMapLayer($event)"></app-noise-info>
     </div>

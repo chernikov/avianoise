@@ -1,0 +1,10 @@
+<nb-card>
+    <nb-card-header>
+        <input nbInput type="text" placeholder="Заголовок" [(ngModel)]="title">
+        <nb-toggle [(ngModel)]="isPublished">Опублікувати</nb-toggle>
+    </nb-card-header>
+    <nb-card-body>
+        <ckeditor [editor]="Editor" [(ngModel)]="content"></ckeditor>
+        <button nbButton (click)="onSave()" [disabled]="formInProgress">Зберегти</button>
+    </nb-card-body>
+</nb-card>

@@ -68,7 +68,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   
 
   leftItem(event : Post) {
-    debugger;
     var sublings = this.findSublings(this.posts, event.postId);
     if (sublings && sublings.length) {
       event.postId = sublings[0].postId;

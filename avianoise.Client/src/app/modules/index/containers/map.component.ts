@@ -14,6 +14,8 @@ import { takeWhile } from 'rxjs/operators';
 import { Post } from '@classes/post.class.js';
 import { PostService } from '@services/post.service.js';
 import { Router, ActivatedRoute } from '@angular/router';
+import { PracticeService } from '@services/practice.service';
+import { Practice } from '@classes/practice.class';
 
 var MarkerWithLabel = require('markerwithlabel')(google.maps);
 
@@ -120,13 +122,14 @@ export class MapComponent implements OnInit, AfterViewInit {
   toastIsShowed: boolean;
   searchIsActive: boolean;
   post: Post;
-  selectedPost: number;
+  practice: Practice;
 
   constructor(
     private airportPublishedService: AirportPublishedService,
     private noiseLevelService: NoiseLevelService,
     private searchService: SearchService,
     private postService: PostService,
+    private practiceService: PracticeService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -138,7 +141,11 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe(param => {
       if(param.id) {
         this.openPost(param.id);
-      } else {
+      } 
+      if(param.practiceId) {
+        this.openPractice(param.practiceId);
+      } 
+      else {
         this.containerMode = 1;
         this.getMap();
       }
@@ -503,6 +510,15 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.post = post;
       this.containerMode = 2;
       this.router.navigateByUrl(`post/${id}`);
+    });
+  }
+
+
+  openPractice(id:number) {
+    this.practiceService.get(id).pipe(takeWhile(() => this.alive)).subscribe(practice => {
+      this.practice = practice;
+      this.containerMode = 3;
+      this.router.navigateByUrl(`practice/${id}`);
     });
   }
 

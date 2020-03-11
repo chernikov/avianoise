@@ -6,6 +6,8 @@ import { AirportListComponent } from './_components/airport-list/airport-list.co
 import { FeedbacksComponent } from './_components/feedback/feedback.component';
 import { PostListComponent } from './_components/post-list/post-list.component';
 import { EditPostComponent } from './_components/edit-post/edit-post.component';
+import { PracticeListComponent } from './_components/practice-list/practice-list.component';
+import { EditPracticeComponent } from './_components/edit-practice/edit-practice.component';
 
 export const router: Routes = [
     { path: '', component: AdminComponent , children: 
@@ -17,7 +19,10 @@ export const router: Routes = [
             { path: 'feedbacks', component: FeedbacksComponent },
             { path: 'post', component: PostListComponent },
             { path: 'post/add', component: EditPostComponent },
-            { path: 'post/edit/:id', component: EditPostComponent }
+            { path: 'post/edit/:id', component: EditPostComponent },
+            { path: 'practice', component: PracticeListComponent },
+            { path: 'practice/add', component: EditPracticeComponent },
+            { path: 'practice/edit/:id', component: EditPracticeComponent }
         ] 
     },
 ]
