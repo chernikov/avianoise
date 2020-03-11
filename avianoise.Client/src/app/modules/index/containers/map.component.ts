@@ -141,13 +141,9 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe(param => {
       if(param.id) {
         this.openPost(param.id);
-        this.menuIsOpen = true;
-        this.listItemIsOpen = 'posts';
       } 
       if(param.practiceId) {
         this.openPractice(param.practiceId);
-        this.menuIsOpen = true;
-        this.listItemIsOpen = 'practices';
       } 
       else {
         this.containerMode = 1;
@@ -514,6 +510,11 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.post = post;
       this.containerMode = 2;
       this.router.navigateByUrl(`post/${id}`);
+      this.menuIsOpen = false;
+        if(window.innerWidth > 768 ) {
+          this.menuIsOpen = true;
+          this.listItemIsOpen = 'posts';
+      }
     });
   }
 
@@ -523,6 +524,11 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.practice = practice;
       this.containerMode = 3;
       this.router.navigateByUrl(`practice/${id}`);
+      this.menuIsOpen = false;
+        if(window.innerWidth > 768 ) {
+          this.menuIsOpen = true;
+          this.listItemIsOpen = 'practices';
+      }
     });
   }
 
