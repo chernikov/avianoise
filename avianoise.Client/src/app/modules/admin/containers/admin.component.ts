@@ -23,7 +23,7 @@ export class AdminComponent {
         icon: 'phone-outline'
       },
       {
-        title: "Новини",
+        title: "Тексти",
         link: '/admin/post/',
         icon: 'book-open-outline'
       }

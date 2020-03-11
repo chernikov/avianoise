@@ -4,7 +4,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
     selector: 'app-post-item',
     template: `  
-            <div class="post-title" (click)="open.emit(item.id)">
+            <div class="post-title" (click)="openItem()">
                 <span>{{ item.title }}</span>
             </div>
             <div *ngIf="item && item.posts && item.posts.length" class="sub-items">
@@ -18,5 +18,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
     @Output('open') open : EventEmitter<number> = new EventEmitter<number>();
 
+    openItem() {
+      debugger;
+      if (!this.item.posts || !this.item.posts.length) {
+        this.open.emit(this.item.id);
+      }
+    }
   }
   
