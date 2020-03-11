@@ -80,7 +80,7 @@
         LAекв – еквівалентний (одиниця виміру тривалого звуку)<br><br>
         LAмакс – максимальний рівень звуку, що досягається під час шумової події<br><br>
         Допустимі значення LAекв та LAмакс визначаються державними будівельними та санітарними нормами. Більше про це –
-        тут.
+        <a href="/post/3">тут</a>.
       </div>
     </div>
     <div class="list-item">
@@ -91,6 +91,17 @@
       <div class="body" *ngIf="listItemIsOpen == 'posts'" [@if-slide]>
         <div *ngFor="let post of postMenu">
           <app-post-item [item]="post" (open)="onOpenPost($event)"></app-post-item>
+        </div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="head" (click)="toggleListItem('practices')">
+        Кращі практики 
+        <div class="arrow-up arrow" *ngIf="listItemIsOpen == 'practices'; else arrowDown"></div>
+      </div>
+      <div class="body" *ngIf="listItemIsOpen == 'practices'" [@if-slide]>
+        <div *ngFor="let practice of practiceMenu">
+          <app-practice-item [item]="practice" (open)="onOpenPractice($event)"></app-practice-item>
         </div>
       </div>
     </div>

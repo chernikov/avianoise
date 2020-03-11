@@ -1,0 +1,21 @@
+<nb-card>
+    <nb-card-header>
+        <button nbButton routerLink="/admin/practice/add">Добавити практику</button>
+        <div class="divider"></div>
+        <button nbButton (click)="updateAllOrder(practices)">Впорядкувати все</button>
+    </nb-card-header>
+    <nb-card-body>
+        <nb-list>
+            <nb-list-item *ngFor="let item of practices; let i = index">
+                <app-practice-item [item]="item" [isFirst]="i === 0" [isLast]="i === practices.length - 1"
+                (update)="updateAll()"
+                (down)="downItem($event)"
+                (up)="upItem($event)"
+                (left)="leftItem($event)"
+                (right)="rightItem($event)"
+            
+                 ></app-practice-item>
+            </nb-list-item>
+        </nb-list>
+    </nb-card-body>
+</nb-card>

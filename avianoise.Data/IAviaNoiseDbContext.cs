@@ -24,6 +24,8 @@ namespace avianoise.Data
 
         DbSet<Post> Posts { get; set; }
 
+        DbSet<Practice> Practices { get; set; }
+
         DbSet<Role> Roles { get; set; }
 
         DbSet<User> Users { get; set; }

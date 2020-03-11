@@ -19,7 +19,6 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
     @Output('open') open : EventEmitter<number> = new EventEmitter<number>();
 
     openItem() {
-      debugger;
       if (!this.item.posts || !this.item.posts.length) {
         this.open.emit(this.item.id);
       }

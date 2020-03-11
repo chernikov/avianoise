@@ -1,0 +1,29 @@
+<div class="item-content">
+    <div class="info">
+        <span>{{item.order}} {{ item.title }}</span>
+        <span class="info-badge" [hidden]="!item.isPublished">Опубліковано</span>
+    </div>
+    <div>
+        <button nbButton class="btn" *ngIf="!isFirst"  (click)="upPractice()"> <nb-icon icon="arrow-up" pack="fa"></nb-icon></button>
+        <button nbButton class="btn" *ngIf="!isLast" (click)="downPractice()"> <nb-icon icon="arrow-down" pack="fa"></nb-icon></button>
+        <button nbButton class="btn" *ngIf="item.practiceId" (click)="leftPractice()"> <nb-icon icon="arrow-left" pack="fa"></nb-icon></button>
+        <button nbButton class="btn" *ngIf="!isFirst"  (click)="rightPractice()"> <nb-icon icon="arrow-right" pack="fa"></nb-icon></button>
+        <button nbButton class="btn" [routerLink]="['/admin/practice/edit', item.id]">Редагувати</button>
+        <button nbButton class="btn" [status]="'danger'"  (click)="deletePractice(item)">Видалити</button>
+    </div>
+</div>
+<div class="sub-items" *ngIf="item.practices && item.practices.length">
+    <nb-list>
+        <nb-list-item *ngFor="let subItem of item.practices; let i = index">
+            <app-practice-item [item]="subItem" [isFirst]="i === 0" [isLast]="i === item.practices.length - 1"
+            
+            (update)='update.emit(null)'
+            (down)="down.emit($event)"
+            (up)="up.emit($event)"
+            (left)="left.emit($event)"
+            (right)="right.emit($event)"
+
+            ></app-practice-item>
+        </nb-list-item>
+    </nb-list>
+</div>

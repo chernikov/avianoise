@@ -19,12 +19,13 @@ import { SidebarSearchComponent } from './containers/_components/sidebar-search/
 import { HeaderComponent } from './containers/_components/header/header.component';
 import { NoiseInfoComponent } from './containers/_components/noise-info/noise-info.component';
 import { PostItemComponent } from './containers/_components/sidebar/post-item/post-item.component';
+import { PracticeItemComponent } from './containers/_components/sidebar/practice-item/practice-item.component';
 
 
 @NgModule({
   declarations: [LoginComponent, MapComponent, FeedbackModalComponent, FileFormatPipe, FileSizePipe, ToastComponent, SidebarComponent,
      SidebarSearchComponent, HeaderComponent, NoiseInfoComponent, 
-    PostItemComponent],
+    PostItemComponent, PracticeItemComponent],
   imports: [
     MatFormFieldModule,
     MatInputModule,

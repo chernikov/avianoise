@@ -4,6 +4,8 @@ import { IfSlideAnimation } from '@animations';
 import { takeWhile } from 'rxjs/operators';
 import { PostService } from '@services/post.service';
 import { Post } from '@classes/post.class';
+import { Practice } from '@classes/practice.class';
+import { PracticeService } from '@services/practice.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,26 +19,39 @@ export class SidebarComponent implements OnInit, OnDestroy {
   @Output() toggleKadastr = new EventEmitter();
   @Output() changeMapLayer = new EventEmitter();
   @Output() openPost = new EventEmitter();
+  @Output() openPractice = new EventEmitter();
   @Input() listItemIsOpen: string;
   @Input() selectedLayer: number;
 
   alive: boolean = true;
   postMenu: Post[];
+  practiceMenu: Practice[];
+
   menuIsOpen: boolean;
+
+
   isKadastrLayer: boolean;
 
   constructor(
     private postService: PostService,
+    private practiceService : PracticeService,
     private modalService: NgxSmartModalService
   ) { }
 
   ngOnInit() {
     this.getPostMenu();
+    this.getPracticeMenu();
   }
 
   getPostMenu() {
     this.postService.getAll(true).pipe(takeWhile(() => this.alive)).subscribe(postMenu => {
       this.postMenu = postMenu;
+    });
+  }
+
+  getPracticeMenu() {
+    this.practiceService.getAll(true).pipe(takeWhile(() => this.alive)).subscribe(practiceMenu => {
+      this.practiceMenu = practiceMenu;
     });
   }
 
@@ -68,6 +83,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
   onOpenPost(id: number) {
     this.openPost.emit(id);
   }
+
+  onOpenPractice(id: number) {
+    this.openPractice.emit(id);
+  }
+
 
   ngOnDestroy() {
     this.alive = false;

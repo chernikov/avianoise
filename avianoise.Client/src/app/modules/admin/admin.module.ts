@@ -21,10 +21,29 @@ import { AdminComponent } from './containers/admin.component';
 import { PostListComponent } from './_components/post-list/post-list.component';
 import { EditPostComponent } from './_components/edit-post/edit-post.component';
 import { PostItemComponent } from './_components/post-item/post-item.component';
+
+
+
 import { FeedbacksComponent } from './_components/feedback/feedback.component';
+import { PracticeListComponent } from './_components/practice-list/practice-list.component';
+import { EditPracticeComponent } from './_components/edit-practice/edit-practice.component';
+import { PracticeItemComponent } from './_components/practice-item/practice-item.component';
 
 @NgModule({
-    declarations: [AdminComponent, EditAirportComponent, AirportComponent, AirportListComponent, FeedbacksComponent, NumberToArrayPipe, PostListComponent, EditPostComponent, PostItemComponent],
+    declarations: [AdminComponent, 
+        EditAirportComponent, 
+        AirportComponent, 
+        AirportListComponent,
+        FeedbacksComponent,
+         NumberToArrayPipe, 
+         PostListComponent,
+          EditPostComponent,
+           PostItemComponent,
+
+           PracticeListComponent,
+          EditPracticeComponent,
+           PracticeItemComponent
+        ],
     imports: [
         SharedModule,
         ThemeModule,

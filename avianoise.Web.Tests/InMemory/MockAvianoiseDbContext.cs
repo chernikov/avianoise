@@ -20,6 +20,7 @@ namespace avianoise.Web.Tests.InMemory
         public DbSet<LogMessage> LogMessages { get; set; }
         public DbSet<Point> Points { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Practice> Practices { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }

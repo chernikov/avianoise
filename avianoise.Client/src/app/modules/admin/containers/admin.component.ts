@@ -26,6 +26,11 @@ export class AdminComponent {
         title: "Тексти",
         link: '/admin/post/',
         icon: 'book-open-outline'
+      },
+	   {
+        title: "Практики",
+        link: '/admin/practice/',
+        icon: 'book-open-outline'
       }
     ]
   }

@@ -1,0 +1,15 @@
+app-practice-item {
+    width : 100%;
+}
+
+nb-card-header {
+    display: flex;
+    flex-direction: row;
+
+    button {
+        flex-grow: 0;
+    }
+    .divider {
+        flex-grow: 1;
+    }
+}
