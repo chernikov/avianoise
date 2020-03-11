@@ -31,6 +31,16 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
   }
 
+  updateAllOrder(list : Post[]) {
+    this.updateOrder(list);
+    list.forEach(p => {
+      if (p.posts && p.posts.length)
+      {
+        this.updateAllOrder(p.posts);
+      }
+    })
+  }
+
  
   updateAll() {
     this.getPosts();
@@ -60,13 +70,14 @@ export class PostListComponent implements OnInit, OnDestroy {
   leftItem(event : Post) {
     debugger;
     var sublings = this.findSublings(this.posts, event.postId);
-
     if (sublings && sublings.length) {
       event.postId = sublings[0].postId;
     } else {
       event.postId = null;
     }
-    this.postService.put(event).pipe(takeWhile(() => this.alive)).subscribe(p =>  this.updateAll());
+    this.postService.put(event).pipe(takeWhile(() => this.alive)).subscribe(p =>  {
+      this.updateAll();
+    });
   }
 
   rightItem(event : Post) {
