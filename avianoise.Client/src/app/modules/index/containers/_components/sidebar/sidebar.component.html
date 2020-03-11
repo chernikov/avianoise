@@ -89,7 +89,7 @@
         <div class="arrow-up arrow" *ngIf="listItemIsOpen == 'posts'; else arrowDown"></div>
       </div>
       <div class="body" *ngIf="listItemIsOpen == 'posts'" [@if-slide]>
-        <div *ngFor="let post of postMenu">
+        <div class="post-wrap" *ngFor="let post of postMenu">
           <app-post-item [item]="post" (open)="onOpenPost($event)"></app-post-item>
         </div>
       </div>
@@ -100,7 +100,7 @@
         <div class="arrow-up arrow" *ngIf="listItemIsOpen == 'practices'; else arrowDown"></div>
       </div>
       <div class="body" *ngIf="listItemIsOpen == 'practices'" [@if-slide]>
-        <div *ngFor="let practice of practiceMenu">
+        <div class="practice-wrap" *ngFor="let practice of practiceMenu">
           <app-practice-item [item]="practice" (open)="onOpenPractice($event)"></app-practice-item>
         </div>
       </div>

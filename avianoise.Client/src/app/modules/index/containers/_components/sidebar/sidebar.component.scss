@@ -59,7 +59,7 @@
   .body {
     position: relative;
     padding-top: 20px;
-    padding-bottom: 30px;
+    padding-bottom: 20px;
 
     &:after {
       content: '';
@@ -70,20 +70,8 @@
       left: 0;
       background: linear-gradient(94.75deg, #29C2D9 1.48%, $primary 48.23%, #ECA0DC 90.05%);
     }
-
-    .post-title {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-left: 15px;
-      transition: .4s;
+    .post-wrap, .practice-wrap {
       margin-bottom: 10px;
-
-      &:hover {
-        color: $primary;
-      }
-
       &:last-child {
         margin-bottom: unset;
       }
