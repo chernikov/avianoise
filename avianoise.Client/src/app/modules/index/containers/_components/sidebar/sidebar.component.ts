@@ -61,11 +61,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     } else {
       this.listItemIsOpen = item;
     }
-    /* if (this.listItemIsOpen === number) {
-      this.listItemIsOpen = null;
-    } else {
-      this.listItemIsOpen = number;
-    } */
   }
 
   onToggleKadastr() {

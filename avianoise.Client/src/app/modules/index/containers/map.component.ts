@@ -141,9 +141,13 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe(param => {
       if(param.id) {
         this.openPost(param.id);
+        this.menuIsOpen = true;
+        this.listItemIsOpen = 'posts';
       } 
       if(param.practiceId) {
         this.openPractice(param.practiceId);
+        this.menuIsOpen = true;
+        this.listItemIsOpen = 'practices';
       } 
       else {
         this.containerMode = 1;
