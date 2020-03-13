@@ -33,18 +33,17 @@
           justify-content: center;
           align-items: center;
           margin-bottom: 12px;
-
-          span {
-            white-space: pre;
-            font-weight: 700;
-            &.value {
-                margin-left: 13px;
-                font-size: 25px;
+          .value {
+              margin-left: 13px;
+              font-size: 25px;
+              white-space: pre;
+              font-weight: 700;
             }
-            &.dicibels {
-                font-size: 18px;
+            .dicibels {
+              font-size: 18px;
+              white-space: pre;
+              font-weight: 700;
             }
-          }
         }
 
         .bottom {
@@ -55,6 +54,14 @@
           letter-spacing: 0.035em;
           color: #A5B7E3;
           white-space: pre;
+          .info {
+            text-transform: none;
+            white-space: normal;
+            font-size: 12px;
+            font-weight: 200;
+            margin-top: 10px;
+            line-height: 14px;
+          }
         }
 
         &.no-data {
@@ -106,7 +113,7 @@
     z-index: 2;
 
     .noise-info-container {
-      padding: 40px 22px 0 22px;
+      padding: 30px 15px 0 15px;
       width: 100%;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
@@ -114,16 +121,33 @@
 
       .item-wrap {
         width: 50%;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
 
         &:nth-child(2n-1) {
           padding-right: 0;
         }
 
         .item {
-          max-width: 170px;
           margin-right: auto;
           margin-left: auto;
+          .top {
+            margin-bottom: 5px;
+            .value {
+              font-size: 22px;
+              margin-left: 5px;
+              .dicibels {
+                font-size: 14px;
+              }
+            }
+            img {
+              width: 25px;
+            }
+          }
+          .bottom {
+            .info {
+              margin-top: 5px;
+            }
+          }
         }
       }
     }
@@ -143,7 +167,6 @@
             }
 
             .value {
-              margin-left: 5px;
               font-size: 16px;
               .dicibels {
                   font-size: 10px;
@@ -153,6 +176,11 @@
 
           .bottom {
             font-size: 12px;
+            .info {
+              margin-top: 0;
+              font-size: 10px;
+              line-height: 12px;
+            }
           }
 
           &.no-data {

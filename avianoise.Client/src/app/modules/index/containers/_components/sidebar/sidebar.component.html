@@ -6,18 +6,6 @@
         <div class="arrow-up arrow" *ngIf="listItemIsOpen == 'legend'; else arrowDown"></div>
       </div>
       <div class="body" *ngIf="listItemIsOpen == 'legend'" [@if-slide]>
-        <div class="body-item kadastr-map">
-          <div class="row">
-            <label class="switch">
-              <input type="checkbox" [(ngModel)]="isKadastrLayer" (change)="onToggleKadastr(isKadastrLayer)" />
-              <span class="toggle"></span>
-            </label>
-            <span class="toggle-active" [class.is-active]="isKadastrLayer">
-              <img src="assets/images/map-icon.svg">
-              Кадастрова карта України
-            </span>
-          </div>
-        </div>
         <div class="body-item noise-maps">
           <div class="title">Карти шуму</div>
           <div class="row">

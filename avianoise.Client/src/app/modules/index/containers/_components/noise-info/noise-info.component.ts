@@ -16,5 +16,6 @@ export class NoiseInfoComponent implements OnInit {
 
   onChangeMapLayer(layer: number) {
     this.changeMapLayer.emit(layer);
+    console.log(this.noiseInfo);
   }
 }

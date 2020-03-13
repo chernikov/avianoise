@@ -16,7 +16,6 @@ import { PracticeService } from '@services/practice.service';
   ]
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  @Output() toggleKadastr = new EventEmitter();
   @Output() changeMapLayer = new EventEmitter();
   @Output() openPost = new EventEmitter();
   @Output() openPractice = new EventEmitter();
@@ -28,9 +27,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   practiceMenu: Practice[];
 
   menuIsOpen: boolean;
-
-
-  isKadastrLayer: boolean;
 
   constructor(
     private postService: PostService,
@@ -61,10 +57,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     } else {
       this.listItemIsOpen = item;
     }
-  }
-
-  onToggleKadastr() {
-    this.toggleKadastr.emit(this.isKadastrLayer);
   }
 
   onChangeMapLayer() {

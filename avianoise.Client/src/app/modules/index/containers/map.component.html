@@ -6,16 +6,28 @@
         <div #gmap class="map"></div>
 
         <div class="noise-control-wrap" (click)="onNoiseInfo()">
-          <div class="hight">75-85 дБ</div>
-          <div class="medium">65-75 дБ</div>
-          <div class="low">50-65 дБ</div>
+          <div class="hight">75-85 дБА</div>
+          <div class="medium">65-75 дБА</div>
+          <div class="low">50-65 дБА</div>
           <div class="info">info</div>
         </div>
-
-        <div class="layer-info-wrap" *ngIf="selectedLayerInfo">
-          <img src="{{ selectedLayerInfo.src }}">
-          <span class="white-shadow-text">{{ selectedLayerInfo.text }}</span>
+        <div class="top-left-block">
+          <div class="layer-info-wrap" *ngIf="selectedLayerInfo">
+            <img src="{{ selectedLayerInfo.src }}">
+            <span class="white-shadow-text">{{ selectedLayerInfo.text }}</span>
+          </div>
+          <div class="kadastr-wrap">
+            <label class="switch">
+              <input type="checkbox" [(ngModel)]="isKadastrLayer" (change)="toggleKadastr()" />
+              <span class="toggle"></span>
+            </label>
+            <span class="toggle-active" [class.is-active]="isKadastrLayer">
+              <img src="assets/images/map-icon.svg">
+              <span class="white-shadow-text">Кадастрова карта України</span>
+            </span>
+          </div>
         </div>
+        
 
         <div class="scale-button">
           <div class="top" (click)="zoomIn()"></div>
@@ -56,7 +68,7 @@
       </div>
 
       <app-toast [type]="toastType" *ngIf="toastIsShowed" [@if-opacity]></app-toast>
-      <app-sidebar *ngIf="menuIsOpen" [selectedLayer]="selectedLayer" [listItemIsOpen]="listItemIsOpen" (toggleKadastr)="toggleKadastr($event)" (changeMapLayer)="changeMapLayer($event)" 
+      <app-sidebar *ngIf="menuIsOpen" [selectedLayer]="selectedLayer" [listItemIsOpen]="listItemIsOpen" (changeMapLayer)="changeMapLayer($event)" 
       (openPost)="openPost($event)" (openPractice)="openPractice($event)"
       ></app-sidebar>
       <app-sidebar-search *ngIf="searchIsActive" [airports]="airports" (onSelectAirport)="onSelectAirport($event)"></app-sidebar-search>

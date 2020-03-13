@@ -54,7 +54,7 @@
                   <nb-checkbox [(ngModel)]="line.isSelect" (change)="toggleLine(line)">Відобразити</nb-checkbox>
                   <span>{{ line.name }} </span>
                   <span class="not-published" [class.is-published]="line.published">{{ line.published ? 'Опубліковано' : 'Не опубліковано' }}</span>
-                  <span>Рівень шуму: {{ line.level }}дБ</span>
+                  <span>Рівень шуму: {{ line.level }}дБА</span>
                   <div>
                     <button class="mr-3" nbButton (click)="onEditLine(line)" [disabled]="line.isDeleting">Редагувати</button>
                     <button nbButton [status]="'danger'" (click)="onDeleteLine(line)" [disabled]="line.isDeleting || line.isEditing" [nbSpinner]="line.isDeleting">Видалити</button>

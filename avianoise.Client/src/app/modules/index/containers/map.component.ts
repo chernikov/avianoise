@@ -29,6 +29,7 @@ export interface INoiseInfo {
   src: string;
   text: string;
   noData: boolean;
+  info: string;
 }
 
 export interface ILayersInfo {
@@ -38,6 +39,7 @@ export interface ILayersInfo {
   textShort: string;
   dayNightType: number;
   noiseType: number;
+  info: string;
 }
 
 var layersInfo: ILayersInfo[] = [
@@ -47,7 +49,8 @@ var layersInfo: ILayersInfo[] = [
     text: 'Денний еквівалентний',
     textShort: 'Денний екв.',
     dayNightType: 1,
-    noiseType: 2
+    noiseType: 2,
+    info: 'Середній рівень шуму вдень (08:00 – 22:00) в обраній вами точці'
   },
   {
     id: 2,
@@ -55,7 +58,8 @@ var layersInfo: ILayersInfo[] = [
     text: 'Денний максимальний',
     textShort: 'Денний макс.',
     dayNightType: 1,
-    noiseType: 1
+    noiseType: 1,
+    info: 'Найвищий рівень шуму вдень (08:00 – 22:00) в обраній вами точці'
   },
   {
     id: 3,
@@ -63,7 +67,8 @@ var layersInfo: ILayersInfo[] = [
     text: 'Нічний еквівалентний',
     textShort: 'Нічний екв.',
     dayNightType: 2,
-    noiseType: 2
+    noiseType: 2,
+    info: 'Середній рівень шуму вночі (22:00 – 08:00) в обраній вами точці'
   },
   {
     id: 4,
@@ -71,7 +76,8 @@ var layersInfo: ILayersInfo[] = [
     text: 'Нічний максимальний',
     textShort: 'Нічний макс.',
     dayNightType: 2,
-    noiseType: 1
+    noiseType: 1,
+    info: 'Найвищий рівень шуму вночі (22:00 – 08:00) в обраній вами точці'
   }
 ]
 
@@ -390,14 +396,16 @@ export class MapComponent implements OnInit, AfterViewInit {
           value: level,
           text: item.textShort,
           src: item.src,
-          noData: false
+          noData: false,
+          info: item.info
         };
       } else {
         noiseLevelItem = {
           value: 'Немає шумів',
           text: item.textShort,
           src: item.src,
-          noData: true
+          noData: true,
+          info: item.info
         }
       }
       this.noiseInfo.push(noiseLevelItem);
@@ -438,9 +446,8 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.map.setZoom(zoom - 2);
   }
 
-  toggleKadastr(checked: boolean) {
+  toggleKadastr() {
     if(this.containerMode === 1) {
-      this.isKadastrLayer = checked;
       if (this.isKadastrLayer) {
         this.map.overlayMapTypes.push(this.landcover);
       } else {
