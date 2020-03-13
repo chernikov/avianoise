@@ -8,10 +8,13 @@
       <div class="item" [class.no-data]="item.noData" (click)="onChangeMapLayer(i + 1)">
         <div class="top">
           <img src="{{ item.src }}">
-          <span class="value">{{ item.value }}<span class="dicibels">дБ</span></span>
+          <span class="value">{{ item.value }}<span class="dicibels">дБА</span></span>
         </div>
         <div class="bottom">
           {{ item.text }}
+          <div class="info">
+            {{ item.info }}
+          </div>
         </div>
       </div>
     </div>
